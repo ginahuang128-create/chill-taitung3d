@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>台東三日遊 8/27–8/29</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@600;700&family=Noto+Sans+TC:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0e0f0d;
+    --card: #1a1c17;
+    --border: #2a2c26;
+    --text: #ece9e1;
+    --muted: #8f8d84;
+    --d1: #c8e87a;
+    --d2: #7ab8e8;
+    --d3: #e8a064;
+    --warn: #e8836a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Noto Sans TC', sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    padding-bottom: 40px;
+  }
+
+  /* ── Header ── */
+  .hero {
+    padding: 24px 16px 16px;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .hero-title {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 22px;
+    font-weight: 700;
+  }
+  .hero-title span { color: var(--d1); }
+  .hero-sub { font-size: 12px; color: var(--muted); }
+
+  /* ── Chip rows (highlights) ── */
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 0 16px 14px;
+  }
+  .chip {
+    font-size: 12px;
+    padding: 5px 10px;
+    border-radius: 99px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    color: var(--text);
+    white-space: nowrap;
+  }
+
+  /* ── Notice strip ── */
+  .notice {
+    margin: 0 16px 16px;
+    border-radius: 10px;
+    background: rgba(232,131,106,.08);
+    border: 1px solid rgba(232,131,106,.25);
+    padding: 10px 12px;
+  }
+  .notice-line {
+    font-size: 12px;
+    color: var(--text);
+    line-height: 1.6;
+    padding-left: 14px;
+    position: relative;
+  }
+  .notice-line + .notice-line { margin-top: 5px; }
+  .notice-line::before {
+    content: '!';
+    position: absolute; left: 0; top: 0;
+    color: var(--warn);
+    font-weight: 700;
+    font-size: 12px;
+  }
+
+  /* ── Tabs ── */
+  .tabs {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 6px;
+    padding: 0 16px;
+    margin-bottom: 16px;
+    position: sticky;
+    top: 0;
+    background: var(--bg);
+    padding-top: 8px;
+    padding-bottom: 8px;
+    z-index: 10;
+  }
+  .tab {
+    min-height: 48px;
+    padding: 8px 6px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: var(--card);
+    cursor: pointer;
+    text-align: center;
+    transition: all .15s;
+  }
+  .tab-day { font-size: 10px; color: var(--muted); }
+  .tab-title { font-size: 12.5px; font-weight: 500; color: var(--muted); margin-top: 1px; }
+  .tab.on { background: rgba(255,255,255,.03); }
+  .tab.on.a1 { border-color: var(--d1); } .tab.on.a1 .tab-day { color: var(--d1); } .tab.on.a1 .tab-title { color: var(--text); }
+  .tab.on.a2 { border-color: var(--d2); } .tab.on.a2 .tab-day { color: var(--d2); } .tab.on.a2 .tab-title { color: var(--text); }
+  .tab.on.a3 { border-color: var(--d3); } .tab.on.a3 .tab-day { color: var(--d3); } .tab.on.a3 .tab-title { color: var(--text); }
+
+  .plan { display: none; padding: 0 16px; }
+  .plan.active { display: block; }
+
+  /* ── Timeline ── */
+  .tl { display: flex; flex-direction: column; }
+  .row { display: grid; grid-template-columns: 34px 14px 1fr; gap: 0 8px; }
+  .time {
+    font-size: 11px; color: var(--muted);
+    padding-top: 12px; text-align: right;
+    font-variant-numeric: tabular-nums;
+    line-height: 1.3;
+  }
+  .spine { display: flex; flex-direction: column; align-items: center; }
+  .dot { width: 7px; height: 7px; border-radius: 50%; margin-top: 15px; flex-shrink: 0; }
+  .dot-d1 { background: var(--d1); }
+  .dot-d2 { background: var(--d2); }
+  .dot-d3 { background: var(--d3); }
+  .line { flex: 1; width: 1px; background: var(--border); min-height: 8px; }
+
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    padding: 8px 10px;
+    margin: 4px 0;
+    min-height: 44px;
+  }
+  a.card { display: block; text-decoration: none; color: inherit; position: relative; }
+  a.card::after {
+    content: '↗'; position: absolute; top: 8px; right: 9px;
+    font-size: 10px; color: var(--muted);
+  }
+
+  .card-row { display: flex; align-items: baseline; justify-content: space-between; gap: 6px; }
+  .card-title { font-size: 13.5px; font-weight: 500; color: var(--text); line-height: 1.35; }
+  .card-desc { font-size: 12px; color: var(--muted); line-height: 1.5; margin-top: 2px; }
+
+  .tag {
+    font-size: 10px; font-weight: 500; padding: 1px 7px;
+    border-radius: 99px; white-space: nowrap; flex-shrink: 0;
+  }
+  .t-eat { background: rgba(200,232,122,.12); color: #b9dd6f; }
+  .t-see { background: rgba(122,184,232,.12); color: #7fb8e8; }
+  .t-exp { background: rgba(232,160,100,.12); color: #e0a468; }
+  .t-hot { background: rgba(180,140,240,.12); color: #b393e8; }
+  .t-drv { background: rgba(180,180,160,.10); color: #a3a196; }
+  .t-warn { background: rgba(232,131,106,.14); color: var(--warn); }
+
+  .tl-end { height: 4px; }
+
+  /* ── Budget ── */
+  .budget {
+    margin: 20px 16px 0;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px;
+  }
+  .budget-h { font-size: 13px; font-weight: 600; color: var(--d1); margin-bottom: 10px; }
+  .brow {
+    display: flex; justify-content: space-between; gap: 8px;
+    padding: 6px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 12.5px;
+  }
+  .brow:last-of-type { border-bottom: none; }
+  .brow .l { color: var(--text); }
+  .brow .v { color: var(--muted); white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .btotal {
+    margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border);
+    display: flex; justify-content: space-between; align-items: baseline;
+  }
+  .btotal .l { font-size: 13px; font-weight: 600; color: var(--text); }
+  .btotal .v { font-size: 19px; font-weight: 700; color: var(--d1); font-family: 'Noto Serif TC', serif; }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-title">台東<span>三日遊</span></div>
+  <div class="hero-sub">08/27（四）–08/29（六）· 無車族</div>
+</div>
+
+<div class="chips">
+  <span class="chip">🚐 全程專車</span>
+  <span class="chip">🌳 鸞山會走路的樹</span>
+  <span class="chip">🌌 小野柳夜訪星空</span>
+  <span class="chip">🚂 藍皮解憂號</span>
+</div>
+
+<div class="notice">
+  <div class="notice-line">Day1/2 需 4 人成團，建議現在下單並問客服人數</div>
+  <div class="notice-line">Day1 集合 17:00（非 20:00）</div>
+  <div class="notice-line">Day3 帶身分證/護照；枋寮北上車少，先查時刻表</div>
+</div>
+
+<div class="tabs">
+  <button class="tab on a1" onclick="sw('d1',this,'a1')">
+    <div class="tab-day">DAY 1</div>
+    <div class="tab-title">市區·夜景</div>
+  </button>
+  <button class="tab" onclick="sw('d2',this,'a2')">
+    <div class="tab-day">DAY 2</div>
+    <div class="tab-title">鸞山部落</div>
+  </button>
+  <button class="tab" onclick="sw('d3',this,'a3')">
+    <div class="tab-day">DAY 3</div>
+    <div class="tab-title">藍皮解憂號</div>
+  </button>
+</div>
+
+<!-- DAY 1 -->
+<div id="d1" class="plan active">
+  <div class="tl">
+    <div class="row">
+      <div class="time">09:30</div>
+      <div class="spine"><div class="dot dot-d1"></div><div class="line"></div></div>
+      <div class="card">
+        <div class="card-row"><div class="card-title">台鐵自強號 台北→台東</div><span class="tag t-drv">交通</span></div>
+        <div class="card-desc">約 3.5–4 小時</div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="time">14:00</div>
+      <div class="spine"><div class="dot dot-d1"></div><div class="line"></div></div>
+      <a href="https://maps.google.com/?q=路德行旅台東1館" target="_blank" class="card">
+        <div class="card-row"><div class="card-title">路德行旅台東 1 館</div><span class="tag t-hot">住宿</span></div>
+      </a>
+    </div>
+    <div class="row">
+      <div class="time">15:00</div>
+      <div class="spine"><div class="dot dot-d1"></div><div class="line"></div></div>
+      <div class="card">
+        <div class="card-row"><div class="card-title">市區漫步</div><span class="tag t-see">散步</span></div>
+        <div class="card-desc">琵琶湖／鐵花村</div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="time">15:30</div>
+      <div class="spine"><div class="dot dot-d1"></div><div class="line"></div></div>
+      <div class="card">
+        <div class="card-row"><div class="card-title">先吃飽再出發</div><span class="tag t-eat">晚餐</span></div>
+        <div class="card-desc">阿鋐炸雞／寶桑豆花／客來吃樂</div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="time">17:00</div>
+      <div class="spine"><div class="dot dot-d1"></div><div class="line"></div></div>
+      <div class="card">
+        <div class="card-row"><div class="card-title">飯店接送出發</div><span class="tag t-warn">4人成團</span></div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="time">17:30</div>
+      <div class="spine"><div class="dot dot-d1"></div><div class="line"></div></div>
+      <a href="https://maps.google.com/?q=小野柳+台東" target="_blank" class="card">
+        <div class="card-row"><div class="card-title">小野柳風景區</div><span class="tag t-exp">生態</span></div>
+        <div class="card-desc">夜間地質＋寄居蟹導覽</div>
+      </a>
+    </div>
+    <div class="row">
+      <div class="time">20:00</div>
+      <div class="spine"><div class="dot dot-d1"></div><div class="line"></div></div>
+      <a href="https://maps.google.com/?q=星星部落+台東" target="_blank" class="card">
+        <div class="card-row"><div class="card-title">星星部落景觀咖啡</div><span class="tag t-see">夜景</span></div>
+        <div class="card-desc">台東夜景＋星空導覽</div>
+      </a>
+    </div>
+    <div class="row">
+      <div class="time">22:00</div>
+      <div class="spine"><div class="dot dot-d1"></div></div>
+      <div class="card">
+        <div class="card-title">送回飯店</div>
+      </div>
+    </div>
+    <div class="tl-end"></div>
+  </div>
+</div>
+
+<!-- DAY 2 -->
+<div id="d2" class="plan">
+  <div class="tl">
+    <div class="row">
+      <div class="time">08:20</div>
+      <div class="spine"><div class="dot dot-d2"></div><div class="line"></div></div>
+      <div class="card">
+        <div class="card-row"><div class="card-title">飯店門口接送</div><span class="tag t-warn">4人成團</span></div>
+        <div class="card-desc">2-3人補差價 $500/人</div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="time">09:30</div>
+      <div class="spine"><div class="dot dot-d2"></div><div class="line"></div></div>
+      <a href="https://maps.google.com/?q=鸞山部落森林博物館" target="_blank" class="card">
+        <div class="card-row"><div class="card-title">鸞山森林博物館</div><span class="tag t-exp">部落文化</span></div>
+        <div class="card-desc">會走路的樹＋爬樹冒險</div>
+      </a>
+    </div>
+    <div class="row">
+      <div class="time">13:00</div>
+      <div class="spine"><div class="dot dot-d2"></div><div class="line"></div></div>
+      <div class="card">
+        <div class="card-row"><div class="card-title">獵人風味餐＋搗麻糬</div><span class="tag t-eat">午餐</span></div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="time">14:00</div>
+      <div class="spine"><div class="dot dot-d2"></div><div class="line"></div></div>
+      <a href="https://maps.google.com/?q=鹿野紅烏龍茶行" target="_blank" class="card">
+        <div class="card-row"><div class="card-title">鹿野紅烏龍茶行</div><span class="tag t-see">品茗</span></div>
+      </a>
+    </div>
+    <div class="row">
+      <div class="time">15:00</div>
+      <div class="spine"><div class="dot dot-d2"></div><div class="line"></div></div>
+      <a href="https://maps.google.com/?q=老王咖啡+台東" target="_blank" class="card">
+        <div class="card-row"><div class="card-title">老王咖啡</div><span class="tag t-eat">下午茶</span></div>
+      </a>
+    </div>
+    <div class="row">
+      <div class="time">16:00</div>
+      <div class="spine"><div class="dot dot-d2"></div></div>
+      <div class="card">
+        <div class="card-title">送回市區飯店</div>
+      </div>
+    </div>
+    <div class="tl-end"></div>
+  </div>
+</div>
+
+<!-- DAY 3 -->
+<div id="d3" class="plan">
+  <div class="tl">
+    <div class="row">
+      <div class="time">09:00</div>
+      <div class="spine"><div class="dot dot-d3"></div><div class="line"></div></div>
+      <div class="card">
+        <div class="card-row"><div class="card-title">退房＋買伴手禮</div><span class="tag t-eat">早午餐</span></div>
+        <div class="card-desc">地瓜酥、米麻糬</div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="time">13:40</div>
+      <div class="spine"><div class="dot dot-d3"></div><div class="line"></div></div>
+      <div class="card">
+        <div class="card-row"><div class="card-title">計程車→台東火車站</div><span class="tag t-drv">交通</span></div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="time">14:10</div>
+      <div class="spine"><div class="dot dot-d3"></div><div class="line"></div></div>
+      <a href="https://maps.google.com/?q=台東車站" target="_blank" class="card">
+        <div class="card-row"><div class="card-title">台東車站上車</div><span class="tag t-drv">出發</span></div>
+        <div class="card-desc">藍皮解憂號單程，帶證件</div>
+      </a>
+    </div>
+    <div class="row">
+      <div class="time">14:57<br>–16:01</div>
+      <div class="spine"><div class="dot dot-d3"></div><div class="line"></div></div>
+      <a href="https://maps.google.com/?q=金崙車站" target="_blank" class="card">
+        <div class="card-row"><div class="card-title">金崙車站</div><span class="tag t-see">下車導覽</span></div>
+        <div class="card-desc">金崙部落走讀，停留約 1 小時</div>
+      </a>
+    </div>
+    <div class="row">
+      <div class="time">16:28</div>
+      <div class="spine"><div class="dot dot-d3"></div><div class="line"></div></div>
+      <a href="https://maps.google.com/?q=大武車站" target="_blank" class="card">
+        <div class="card-row"><div class="card-title">大武車站</div><span class="tag t-see">車上導覽</span></div>
+      </a>
+    </div>
+    <div class="row">
+      <div class="time">17:05<br>–17:23</div>
+      <div class="spine"><div class="dot dot-d3"></div><div class="line"></div></div>
+      <a href="https://maps.google.com/?q=枋山車站" target="_blank" class="card">
+        <div class="card-row"><div class="card-title">枋山車站</div><span class="tag t-see">下車導覽</span></div>
+        <div class="card-desc">全台最南端秘境海景</div>
+      </a>
+    </div>
+    <div class="row">
+      <div class="time">17:38</div>
+      <div class="spine"><div class="dot dot-d3"></div><div class="line"></div></div>
+      <a href="https://maps.google.com/?q=枋寮車站" target="_blank" class="card">
+        <div class="card-row"><div class="card-title">枋寮站下車</div><span class="tag t-drv">抵達</span></div>
+      </a>
+    </div>
+    <div class="row">
+      <div class="time">18:41</div>
+      <div class="spine"><div class="dot dot-d3"></div><div class="line"></div></div>
+      <div class="card">
+        <div class="card-row"><div class="card-title">轉乘台灣好行墾丁快線</div><span class="tag t-drv">巴士</span></div>
+        <div class="card-desc">步行至枋寮站牌 → 搭往高鐵左營站，約 1 小時 10 分</div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="time">19:55</div>
+      <div class="spine"><div class="dot dot-d3"></div><div class="line"></div></div>
+      <div class="card">
+        <div class="card-row"><div class="card-title">高鐵左營站轉乘</div><span class="tag t-drv">高鐵</span></div>
+        <div class="card-desc">搭乘高鐵往南港/台北，約 1 小時 34 分</div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="time">21:29</div>
+      <div class="spine"><div class="dot dot-d3"></div></div>
+      <div class="card">
+        <div class="card-title">抵達台北車站</div>
+        <div class="card-desc">實際班次時刻依台鐵/公車當日公告為準</div>
+      </div>
+    </div>
+    <div class="tl-end"></div>
+  </div>
+</div>
+
+<!-- 預算 -->
+<div class="budget">
+  <div class="budget-h">💰 預算（每人）</div>
+  <div class="brow"><div class="l">去程台鐵</div><div class="v">$936</div></div>
+  <div class="brow"><div class="l">回程墾丁快線+高鐵</div><div class="v">約$1,654</div></div>
+  <div class="brow"><div class="l">在地短程交通</div><div class="v">約$200</div></div>
+  <div class="brow"><div class="l">住宿 2 晚</div><div class="v">$1,476</div></div>
+  <div class="brow"><div class="l">小野柳夜遊</div><div class="v">約$1,200</div></div>
+  <div class="brow"><div class="l">鸞山部落(含補差價)</div><div class="v">約$1,700</div></div>
+  <div class="brow"><div class="l">藍皮解憂號</div><div class="v">$799</div></div>
+  <div class="brow"><div class="l">餐飲雜支</div><div class="v">約$1,500</div></div>
+  <div class="brow"><div class="l">彈性緩衝</div><div class="v">約$800</div></div>
+  <div class="btotal"><div class="l">總計</div><div class="v">約$10,265</div></div>
+</div>
+
+<!-- 分帳 -->
+<div class="budget" id="splitBox">
+  <div class="budget-h">👫 分帳小工具</div>
+  <div id="splitRows"></div>
+  <button id="addRowBtn" style="width:100%;margin-top:6px;padding:9px;border-radius:8px;border:1px dashed var(--border);background:none;color:var(--muted);font-size:12.5px;">＋ 新增支出</button>
+  <div style="display:flex;gap:8px;margin-top:12px;">
+    <div style="flex:1;background:rgba(200,232,122,.08);border-radius:8px;padding:8px;text-align:center;">
+      <div style="font-size:11px;color:var(--muted);">甲已付</div>
+      <div id="paidA" style="font-size:16px;font-weight:600;color:var(--d1);">$0</div>
+    </div>
+    <div style="flex:1;background:rgba(122,184,232,.08);border-radius:8px;padding:8px;text-align:center;">
+      <div style="font-size:11px;color:var(--muted);">乙已付</div>
+      <div id="paidB" style="font-size:16px;font-weight:600;color:var(--d2);">$0</div>
+    </div>
+  </div>
+  <div class="btotal" id="settleRow">
+    <div class="l">結算</div>
+    <div class="v" id="settleText" style="font-size:14px;">尚無支出</div>
+  </div>
+</div>
+
+<script>
+function sw(id, btn, cls) {
+  document.querySelectorAll('.plan').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(b => { b.classList.remove('on','a1','a2','a3'); });
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('on', cls);
+}
+
+// ── 分帳小工具 ──
+let expenses = [
+  { name: '住宿 2 晚', amount: 2952, payer: 'A' },
+  { name: '小野柳夜遊', amount: 2400, payer: 'B' },
+  { name: '鸞山部落', amount: 3400, payer: 'A' },
+];
+
+function renderSplit() {
+  const rowsEl = document.getElementById('splitRows');
+  rowsEl.innerHTML = '';
+  expenses.forEach((e, i) => {
+    const row = document.createElement('div');
+    row.style.cssText = 'display:flex;gap:6px;align-items:center;margin-bottom:6px;';
+    row.innerHTML = `
+      <input type="text" value="${e.name}" placeholder="項目" style="flex:2;min-width:0;padding:7px 8px;border-radius:7px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:12.5px;">
+      <input type="number" value="${e.amount}" placeholder="金額" style="flex:1.3;min-width:0;padding:7px 8px;border-radius:7px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:12.5px;">
+      <select style="flex:1;padding:7px 4px;border-radius:7px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:12.5px;">
+        <option value="A" ${e.payer==='A'?'selected':''}>甲付</option>
+        <option value="B" ${e.payer==='B'?'selected':''}>乙付</option>
+      </select>
+      <button style="padding:6px 9px;border-radius:7px;border:1px solid var(--border);background:none;color:var(--warn);font-size:12px;">✕</button>
+    `;
+    const [nameInput, amountInput, payerSelect, delBtn] = row.children;
+    nameInput.oninput = () => { expenses[i].name = nameInput.value; };
+    amountInput.oninput = () => { expenses[i].amount = Number(amountInput.value) || 0; calcSettle(); };
+    payerSelect.onchange = () => { expenses[i].payer = payerSelect.value; calcSettle(); };
+    delBtn.onclick = () => { expenses.splice(i, 1); renderSplit(); calcSettle(); };
+    rowsEl.appendChild(row);
+  });
+  calcSettle();
+}
+
+function calcSettle() {
+  const paidA = expenses.filter(e => e.payer === 'A').reduce((s, e) => s + e.amount, 0);
+  const paidB = expenses.filter(e => e.payer === 'B').reduce((s, e) => s + e.amount, 0);
+  document.getElementById('paidA').textContent = '$' + paidA.toLocaleString();
+  document.getElementById('paidB').textContent = '$' + paidB.toLocaleString();
+  const total = paidA + paidB;
+  const settleText = document.getElementById('settleText');
+  if (total === 0) { settleText.textContent = '尚無支出'; return; }
+  const half = total / 2;
+  const diff = paidA - half;
+  if (Math.abs(diff) < 1) { settleText.textContent = '兩人打平'; }
+  else if (diff > 0) { settleText.textContent = `乙需付甲 $${Math.round(diff).toLocaleString()}`; }
+  else { settleText.textContent = `甲需付乙 $${Math.round(-diff).toLocaleString()}`; }
+}
+
+document.getElementById('addRowBtn').onclick = () => {
+  expenses.push({ name: '', amount: 0, payer: 'A' });
+  renderSplit();
+};
+
+renderSplit();
+</script>
+</body>
+</html>
