@@ -554,6 +554,11 @@ document.getElementById('addRowBtn').onclick = () => {
  *    https://docs.google.com/spreadsheets/d/xxxxxxxxxxxxx/edit#gid=0）
  *    直接貼到下面 SHEET_CSV_URL 就好，程式會自動轉換成 CSV 匯出格式。
  *    （如果你本來就有 CSV 直連網址，也可以直接貼，程式會偵測並照原樣使用。）
+ *
+ * 【進階】如果 CSV 方式偶爾讀不到（例如權限、快取問題），可以改用
+ * 「景點圖片API.gs」這支 Google Apps Script，部署成網頁應用程式後
+ * 會得到一個更穩定的 JSON 網址，一樣直接貼到 SHEET_CSV_URL 即可，
+ * 程式會自動判斷是 JSON 還是 CSV 格式，不用改其他程式碼。
  * ================================================================= */
 
 const SHEET_CSV_URL = ''; // ← 貼你的 Google 試算表連結或 CSV 網址
@@ -605,29 +610,43 @@ function applyImages() {
 }
 
 async function loadImages() {
-  if (!SHEET_CSV_URL) return;
+  if (!https://script.google.com/macros/s/AKfycbyUU_yCCJJj6sU5fVimHJI1uy-P4MPPBC3nfHvikEhryleF1KnuhB_LCv4rFzoXO6X7aw/exec) return;
+  const rawUrl = SHEET_CSV_URL.trim();
   try {
-    const csvUrl = toCsvExportUrl(SHEET_CSV_URL.trim());
-    const res = await fetch(csvUrl);
+    const url = toCsvExportUrl(rawUrl);
+    const res = await fetch(url);
     if (!res.ok) throw new Error('HTTP ' + res.status);
     const text = await res.text();
-    const rows = parseCSV(text);
-    const header = rows.shift().map(h => h.trim().toLowerCase());
-    const keyIdx = header.indexOf('key');
-    const urlIdx = header.indexOf('image_url');
-    if (keyIdx === -1 || urlIdx === -1) {
-      console.warn('試算表欄位需為 key, image_url（目前讀到的欄位：' + header.join(', ') + '）');
-      return;
+
+    // 先嘗試當作 JSON 解析（Google Apps Script 網頁應用程式輸出的格式）
+    let parsedAsJson = false;
+    try {
+      const json = JSON.parse(text);
+      if (json && json.error) { console.warn('圖片來源回傳錯誤：' + json.error); return; }
+      Object.assign(imageMap, json);
+      parsedAsJson = true;
+    } catch (jsonErr) { /* 不是 JSON，往下改用 CSV 解析 */ }
+
+    if (!parsedAsJson) {
+      const rows = parseCSV(text);
+      const header = rows.shift().map(h => h.trim().toLowerCase());
+      const keyIdx = header.indexOf('key');
+      const urlIdx = header.indexOf('image_url');
+      if (keyIdx === -1 || urlIdx === -1) {
+        console.warn('試算表欄位需為 key, image_url（目前讀到的欄位：' + header.join(', ') + '）');
+        return;
+      }
+      rows.forEach(r => {
+        const k = (r[keyIdx] || '').trim();
+        const v = (r[urlIdx] || '').trim();
+        if (k && v) imageMap[k] = v;
+      });
     }
-    rows.forEach(r => {
-      const k = (r[keyIdx] || '').trim();
-      const v = (r[urlIdx] || '').trim();
-      if (k && v) imageMap[k] = v;
-    });
+
     applyImages();
-    console.log(`已從 Google 試算表載入 ${Object.keys(imageMap).length} 筆圖片`);
+    console.log(`已從 Google 試算表載入 ${Object.keys(imageMap).length} 筆圖片（來源：${parsedAsJson ? 'Apps Script JSON' : 'CSV 匯出'}）`);
   } catch (e) {
-    console.warn('圖片載入失敗，請確認：1) 試算表分享權限已開放「知道連結的任何人可檢視」 2) 欄位名稱為 key, image_url', e);
+    console.warn('圖片載入失敗，請確認：1) 試算表分享權限已開放「知道連結的任何人可檢視」，或 Apps Script 已部署為「所有人」可存取 2) 欄位名稱為 key, image_url', e);
   }
 }
 
