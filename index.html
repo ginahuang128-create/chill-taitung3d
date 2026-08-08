@@ -8,660 +8,481 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@600;700&family=Noto+Sans+TC:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0A1410;
-    --card: rgba(15,32,20,.68);
-    --card-solid: #10241A;
-    --border: rgba(153,170,56,.28);
-    --text: #ECEFDD;
-    --muted: rgba(236,239,221,.60);
-    --d1: #41B7DC; /* Day1 知本泡湯 */
-    --d2: #C9A15E; /* Day2 關山慢活 */
-    --d3: #E1E289; /* Day3 藍皮賦歸 */
-    --warn: #E88C6A;
-    --brand: #41B7DC;
-    --blur: blur(14px);
+    --bg: #F7F4EC;
+    --ink: #1D2016;
+    --muted: #8B8F7C;
+    --line: #E7E2D2;
+    --card: #FFFFFF;
+    --pill: #14150F;
+    --d1: #2FA0C4; /* Day1 知本泡湯 */
+    --d2: #C79A4B; /* Day2 關山慢活 */
+    --d3: #9B9B34; /* Day3 藍皮賦歸 */
+    --t-eat: #E2963A;
+    --t-see: #3E8FD1;
+    --t-hot: #A374CB;
+    --t-drv: #8A9078;
+    --shadow: 0 10px 26px -14px rgba(20,20,10,.35);
+    --shadow-lg: 0 18px 40px -16px rgba(20,20,10,.4);
   }
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
   html { -webkit-text-size-adjust: 100%; }
-
-  /* ── 全頁背景圖（可被 Google 試算表 key=bg 覆蓋，預設用指定山景照） ── */
-  .bg-layer {
-    position: fixed; inset: 0; z-index: -2;
-    background-image: url("data:image/jpeg;base64,__BG_BASE64__");
-    background-size: cover; background-position: center 30%;
-  }
-  .bg-layer::after {
-    content: ''; position: absolute; inset: 0;
-    background: linear-gradient(180deg, rgba(8,16,11,.72) 0%, rgba(8,16,11,.86) 45%, #0A1410 100%);
-  }
-
   body {
-    color: var(--text);
+    color: var(--ink);
+    background: var(--bg);
     font-family: 'Noto Sans TC', sans-serif;
     font-size: 14px;
     line-height: 1.5;
-    padding-bottom: 40px;
+    padding-bottom: 96px;
     max-width: 480px;
     margin: 0 auto;
     position: relative;
+    min-height: 100vh;
   }
+  a { color: inherit; }
+  ::-webkit-scrollbar { display: none; }
 
   /* ── Header ── */
-  .hero { padding: 26px 16px 14px; }
-  .hero-eyebrow { font-size: 11px; letter-spacing: .12em; color: var(--d1); text-transform: uppercase; margin-bottom: 6px; font-weight: 600; }
-  .hero-title { font-family: 'Noto Serif TC', serif; font-size: 24px; font-weight: 700; line-height: 1.3; }
-  .hero-title span { color: var(--d1); }
-  .hero-sub { font-size: 12px; color: var(--muted); margin-top: 6px; }
+  .app-header { display: flex; justify-content: space-between; align-items: flex-start; padding: 22px 18px 4px; }
+  .app-title { font-family: 'Noto Serif TC', serif; font-size: 25px; font-weight: 700; }
+  .app-title span { color: var(--d1); }
+  .app-sub { font-size: 11.5px; color: var(--muted); margin-top: 4px; }
+  .app-icons { display: flex; gap: 8px; flex-shrink: 0; }
+  .icon-btn { width: 34px; height: 34px; border-radius: 50%; background: var(--card); border: 1px solid var(--line); display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow); font-size: 14px; }
 
-  /* ── Chip rows ── */
-  .chips { display: flex; flex-wrap: wrap; gap: 6px; padding: 14px 16px 12px; }
-  .chip { font-size: 12px; padding: 6px 11px; border-radius: 99px; background: var(--card); backdrop-filter: var(--blur); border: 1px solid var(--border); color: var(--text); white-space: nowrap; }
+  /* ── Day tabs (Jungle/Beach/Mountain 風格) ── */
+  .day-tabs { display: flex; gap: 22px; padding: 18px 18px 2px; overflow-x: auto; }
+  .day-tab { font-size: 15px; color: var(--muted); font-weight: 600; white-space: nowrap; padding-bottom: 8px; border-bottom: 2px solid transparent; background: none; border-top: none; border-left: none; border-right: none; }
+  .day-tab.active { color: var(--ink); }
+  .day-tab.active.a1 { border-color: var(--d1); }
+  .day-tab.active.a2 { border-color: var(--d2); }
+  .day-tab.active.a3 { border-color: var(--d3); }
+  .day-desc { padding: 10px 18px 2px; font-size: 11.5px; color: var(--muted); }
 
-  /* ── Notice ── */
-  .notice { margin: 0 16px 16px; border-radius: 12px; background: rgba(232,131,106,.10); border: 1px solid rgba(232,131,106,.28); padding: 10px 12px; }
-  .notice-line { font-size: 11.5px; color: var(--text); line-height: 1.6; padding-left: 14px; position: relative; }
-  .notice-line + .notice-line { margin-top: 5px; }
-  .notice-line::before { content: '!'; position: absolute; left: 0; top: 0; color: var(--warn); font-weight: 700; font-size: 12px; }
+  /* ── 主輪播卡片（大圖，左右滑動） ── */
+  .carousel { display: flex; gap: 14px; overflow-x: auto; scroll-snap-type: x mandatory; padding: 14px 18px 6px; scroll-padding: 0 18px; }
+  .c-card { scroll-snap-align: center; flex: 0 0 76%; min-height: 240px; border-radius: 24px; position: relative; overflow: hidden; background-size: cover; background-position: center; box-shadow: var(--shadow); transform: scale(.93); opacity: .72; transition: transform .28s ease, opacity .28s ease; cursor: pointer; }
+  .c-card.focus { transform: scale(1); opacity: 1; }
+  .c-card.type-eat { background: linear-gradient(160deg, #F7CE94, #E2963A); }
+  .c-card.type-see { background: linear-gradient(160deg, #A9D3F2, #3E8FD1); }
+  .c-card.type-hot { background: linear-gradient(160deg, #DCC4F0, #A374CB); }
+  .c-card.type-drv { background: linear-gradient(160deg, #D6D9C9, #8A9078); }
+  .c-card.has-photo { background-color: #1c2016; }
+  .ph-icon { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 46px; opacity: .55; }
+  .has-photo .ph-icon { display: none; }
+  .c-card::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0) 45%, rgba(6,10,6,.72) 100%); }
+  .c-badge { position: absolute; top: 12px; left: 12px; z-index: 2; background: rgba(0,0,0,.42); color: #fff; font-size: 10.5px; padding: 4px 10px; border-radius: 99px; backdrop-filter: blur(6px); }
+  .c-heart { position: absolute; top: 10px; right: 10px; z-index: 2; width: 30px; height: 30px; border-radius: 50%; background: rgba(255,255,255,.85); display: flex; align-items: center; justify-content: center; font-size: 13px; }
+  .c-info { position: absolute; left: 0; right: 0; bottom: 0; z-index: 2; padding: 14px 16px 16px; }
+  .c-time { font-size: 10.5px; color: rgba(255,255,255,.85); letter-spacing: .04em; font-variant-numeric: tabular-nums; }
+  .c-title { font-size: 16.5px; font-weight: 700; color: #fff; margin-top: 3px; line-height: 1.3; }
+  .c-loc { font-size: 11px; color: rgba(255,255,255,.8); margin-top: 3px; }
 
-  /* ── Tabs (Discover 分類列風格) ── */
-  .tabs { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; padding: 8px 16px; margin-bottom: 4px; position: sticky; top: 0; z-index: 10; background: rgba(9,18,14,.88); backdrop-filter: var(--blur); }
-  .tab { min-height: 50px; padding: 8px 6px; border-radius: 12px; border: 1px solid var(--border); background: var(--card); cursor: pointer; text-align: center; transition: all .15s; }
-  .tab-day { font-size: 10px; color: var(--muted); letter-spacing: .04em; }
-  .tab-title { font-size: 12px; font-weight: 500; color: var(--muted); margin-top: 2px; }
-  .tab.on { background: rgba(255,255,255,.05); }
-  .tab.on.a1 { border-color: var(--d1); } .tab.on.a1 .tab-day { color: var(--d1); } .tab.on.a1 .tab-title { color: var(--text); }
-  .tab.on.a2 { border-color: var(--d2); } .tab.on.a2 .tab-day { color: var(--d2); } .tab.on.a2 .tab-title { color: var(--text); }
-  .tab.on.a3 { border-color: var(--d3); } .tab.on.a3 .tab-day { color: var(--d3); } .tab.on.a3 .tab-title { color: var(--text); }
+  /* ── 行程時刻條（Top Destinations 風格，可橫滑並置中放大） ── */
+  .section-head { display: flex; justify-content: space-between; align-items: center; padding: 18px 18px 8px; }
+  .section-title { font-size: 14.5px; font-weight: 700; }
+  .section-hint { font-size: 10.5px; color: var(--muted); }
+  .chip-strip { display: flex; gap: 10px; overflow-x: auto; padding: 2px 18px 6px; scroll-snap-type: x proximity; scroll-padding: 0 18px; }
+  .chip-card { scroll-snap-align: center; flex: 0 0 104px; border-radius: 16px; background: var(--card); border: 1px solid var(--line); overflow: hidden; box-shadow: var(--shadow); transform: scale(.94); transition: transform .2s ease, border-color .2s ease; cursor: pointer; }
+  .chip-card.focus { transform: scale(1.04); border-color: var(--ink); }
+  .chip-thumb { height: 66px; background-size: cover; background-position: center; position: relative; }
+  .chip-card.type-eat .chip-thumb { background: linear-gradient(160deg, #F7CE94, #E2963A); }
+  .chip-card.type-see .chip-thumb { background: linear-gradient(160deg, #A9D3F2, #3E8FD1); }
+  .chip-card.type-hot .chip-thumb { background: linear-gradient(160deg, #DCC4F0, #A374CB); }
+  .chip-card.type-drv .chip-thumb { background: linear-gradient(160deg, #D6D9C9, #8A9078); }
+  .chip-thumb.has-photo { background-color: #1c2016; }
+  .chip-time { position: absolute; top: 5px; left: 5px; font-size: 9px; background: rgba(0,0,0,.48); color: #fff; padding: 2px 6px; border-radius: 99px; }
+  .chip-body { padding: 7px 8px 9px; }
+  .chip-title { font-size: 10.8px; font-weight: 600; line-height: 1.3; color: var(--ink); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 
-  .plan { display: none; padding: 14px 16px 0; }
-  .plan.active { display: block; }
+  /* ── Views ── */
+  .view { display: none; }
+  .view.active { display: block; }
 
-  /* ── Timeline scaffold ── */
-  .tl { display: flex; flex-direction: column; }
-  .row { display: grid; grid-template-columns: 34px 14px 1fr; gap: 0 8px; }
-  .time { font-size: 11px; color: var(--muted); padding-top: 14px; text-align: right; font-variant-numeric: tabular-nums; line-height: 1.3; }
-  .spine { display: flex; flex-direction: column; align-items: center; }
-  .dot { width: 7px; height: 7px; border-radius: 50%; margin-top: 17px; flex-shrink: 0; }
-  .dot-d1 { background: var(--d1); } .dot-d2 { background: var(--d2); } .dot-d3 { background: var(--d3); }
-  .line { flex: 1; width: 1px; background: var(--border); min-height: 8px; }
-  .tl-end { height: 4px; }
+  /* ── 資訊卡（須知＋亮點） ── */
+  .info-wrap { padding: 18px 18px 4px; }
+  .info-title { font-family: 'Noto Serif TC', serif; font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+  .info-sub { font-size: 12px; color: var(--muted); margin-bottom: 14px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+  .chip { font-size: 11.5px; padding: 6px 11px; border-radius: 99px; background: var(--card); border: 1px solid var(--line); box-shadow: var(--shadow); white-space: nowrap; }
+  .notice { border-radius: 14px; background: #FBEFE8; border: 1px solid #F0D2BE; padding: 12px 13px; }
+  .notice-line { font-size: 11.5px; color: var(--ink); line-height: 1.6; padding-left: 14px; position: relative; }
+  .notice-line + .notice-line { margin-top: 6px; }
+  .notice-line::before { content: '!'; position: absolute; left: 0; top: 0; color: #D9713F; font-weight: 700; font-size: 12px; }
 
-  /* ── Stop card：仿 Discover / 詳情頁風格 ── */
-  .stop { position: relative; border-radius: 18px; overflow: hidden; border: 1px solid var(--border); margin: 6px 0; background: var(--card-solid); }
-  .stop-media {
-    position: relative; min-height: 96px; background-size: cover; background-position: center;
-    background-color: rgba(255,255,255,.04);
-  }
-  .stop.t-eat .stop-media { background-color: rgba(185,221,111,.10); }
-  .stop.t-see .stop-media { background-color: rgba(127,184,232,.10); }
-  .stop.t-exp .stop-media { background-color: rgba(224,164,104,.10); }
-  .stop.t-hot .stop-media { background-color: rgba(179,147,232,.10); }
-  .stop.t-drv .stop-media { background-color: rgba(163,161,150,.08); }
-  .stop-media::after { content:''; position:absolute; inset:0; background: linear-gradient(180deg, rgba(0,0,0,0) 55%, rgba(8,16,12,.55) 100%); }
-  .stop-media.has-photo { min-height: 150px; }
-
-  .stop-tag { position: absolute; top: 9px; right: 9px; z-index: 2; font-size: 10px; font-weight: 600; padding: 3px 9px; border-radius: 99px; background: rgba(0,0,0,.4); backdrop-filter: var(--blur); color: #fff; border: 1px solid rgba(255,255,255,.18); }
-  .thumb-stack { position: absolute; top: 9px; right: 9px; z-index: 2; display: flex; flex-direction: column; gap: 4px; }
-  .thumb-stack.with-tag { top: 34px; }
-  .thumb { width: 28px; height: 28px; border-radius: 8px; background: rgba(255,255,255,.12); background-size: cover; background-position: center; border: 1.5px solid rgba(255,255,255,.35); }
-
-  .stop-panel { padding: 10px 12px 11px; }
-  .stop-headrow { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
-  .stop-title { font-size: 14px; font-weight: 700; color: #fff; line-height: 1.35; }
-  .stop-loc { font-size: 11px; color: var(--muted); margin-top: 3px; }
-  .stop-mapbtn {
-    flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%;
-    background: var(--d1); color: #062028; display: flex; align-items: center; justify-content: center;
-    font-size: 14px; font-weight: 700; text-decoration: none;
-  }
-
-  .stop-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 9px; }
-  .stat { background: rgba(255,255,255,.05); border: 1px solid var(--border); border-radius: 9px; padding: 6px 6px; text-align: center; }
-  .stat-label { font-size: 9.5px; color: var(--muted); }
-  .stat-val { font-size: 11.5px; color: var(--text); font-weight: 600; margin-top: 2px; line-height: 1.25; }
-
-  .stop-desc { font-size: 11.5px; color: var(--muted); line-height: 1.6; margin-top: 8px; }
-
-  a.stop-link { display: block; text-decoration: none; color: inherit; }
-
-  /* ── Budget ── */
-  .budget { margin: 22px 16px 0; background: var(--card); backdrop-filter: var(--blur); border: 1px solid var(--border); border-radius: 16px; padding: 14px 14px 16px; }
-  .budget-h { font-size: 13px; font-weight: 600; color: var(--d1); margin-bottom: 10px; }
-  .brow { display: flex; justify-content: space-between; gap: 8px; padding: 6px 0; border-bottom: 1px solid var(--border); font-size: 12.5px; }
+  /* ── Budget / Split（白卡片） ── */
+  .panel { margin: 18px 18px 0; background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 15px 15px 17px; box-shadow: var(--shadow); }
+  .panel-h { font-size: 13.5px; font-weight: 700; color: var(--ink); margin-bottom: 10px; }
+  .brow { display: flex; justify-content: space-between; gap: 8px; padding: 7px 0; border-bottom: 1px solid var(--line); font-size: 12.5px; }
   .brow:last-of-type { border-bottom: none; }
-  .brow .l { color: var(--text); } .brow .v { color: var(--muted); white-space: nowrap; font-variant-numeric: tabular-nums; }
-  .btotal { margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: baseline; }
-  .btotal .l { font-size: 13px; font-weight: 600; color: var(--text); }
+  .brow .l { color: var(--ink); } .brow .v { color: var(--muted); white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .btotal { margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--line); display: flex; justify-content: space-between; align-items: baseline; }
+  .btotal .l { font-size: 13px; font-weight: 700; color: var(--ink); }
   .btotal .v { font-size: 19px; font-weight: 700; color: var(--d1); font-family: 'Noto Serif TC', serif; }
   .budget-note { font-size: 10.5px; color: var(--muted); margin-top: 10px; line-height: 1.6; }
+
+  /* ── Bottom nav ── */
+  .bottom-nav { position: fixed; left: 16px; right: 16px; bottom: 14px; max-width: 448px; margin: 0 auto; background: var(--pill); border-radius: 28px; display: flex; justify-content: space-around; padding: 9px; z-index: 60; box-shadow: 0 16px 32px -12px rgba(0,0,0,.5); }
+  .nav-btn { width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,.55); font-size: 17px; background: none; border: none; }
+  .nav-btn.active { background: #fff; color: var(--ink); }
+
+  /* ── Detail overlay（詳情頁） ── */
+  .detail-overlay { position: fixed; inset: 0; z-index: 100; background: #0B0E09; transform: translateY(100%); transition: transform .34s cubic-bezier(.22,.9,.32,1); overflow-y: auto; max-width: 480px; margin: 0 auto; }
+  .detail-overlay.open { transform: translateY(0); }
+  .detail-hero { position: relative; min-height: 320px; background-size: cover; background-position: center; }
+  .detail-hero.type-eat { background: linear-gradient(160deg, #F7CE94, #E2963A); }
+  .detail-hero.type-see { background: linear-gradient(160deg, #A9D3F2, #3E8FD1); }
+  .detail-hero.type-hot { background: linear-gradient(160deg, #DCC4F0, #A374CB); }
+  .detail-hero.type-drv { background: linear-gradient(160deg, #D6D9C9, #8A9078); }
+  .detail-hero.has-photo { background-color: #1c2016; }
+  .detail-hero::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,.1), rgba(8,10,6,.9)); }
+  .detail-top { position: absolute; top: 0; left: 0; right: 0; display: flex; justify-content: space-between; padding: 18px; z-index: 2; }
+  .circle-btn { width: 38px; height: 38px; border-radius: 50%; background: rgba(255,255,255,.16); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 16px; border: 1px solid rgba(255,255,255,.25); }
+  .detail-gallery { position: absolute; top: 64px; right: 18px; display: flex; flex-direction: column; gap: 6px; z-index: 2; }
+  .detail-thumb { width: 40px; height: 40px; border-radius: 10px; background-size: cover; background-position: center; background-color: rgba(255,255,255,.15); border: 1.5px solid rgba(255,255,255,.5); }
+  .detail-heading { position: relative; z-index: 2; padding: 0 22px 24px; }
+  .detail-eyebrow { font-size: 11px; color: rgba(255,255,255,.7); margin-bottom: 6px; letter-spacing: .04em; }
+  .detail-title { font-family: 'Noto Serif TC', serif; font-size: 23px; font-weight: 700; color: #fff; line-height: 1.35; }
+  .detail-loc { font-size: 12px; color: rgba(255,255,255,.78); margin-top: 8px; }
+  .detail-body { background: var(--bg); border-radius: 26px 26px 0 0; margin-top: -18px; position: relative; z-index: 3; padding: 22px 20px 110px; min-height: 40vh; }
+  .detail-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .dstat { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 12px 6px; text-align: center; }
+  .dstat-label { font-size: 10px; color: var(--muted); }
+  .dstat-val { font-size: 12.5px; font-weight: 700; margin-top: 5px; line-height: 1.3; }
+  .detail-desc-h { font-size: 14px; font-weight: 700; margin-top: 24px; }
+  .detail-desc { font-size: 12.5px; color: #5B5F4A; line-height: 1.7; margin-top: 9px; }
+  .detail-bottom { position: fixed; left: 0; right: 0; bottom: 0; max-width: 480px; margin: 0 auto; background: #fff; border-top: 1px solid var(--line); padding: 14px 20px; display: flex; justify-content: space-between; align-items: center; z-index: 4; }
+  .detail-price-label { font-size: 10.5px; color: var(--muted); }
+  .detail-price-val { font-size: 18px; font-weight: 700; font-family: 'Noto Serif TC', serif; }
+  .detail-go { width: 46px; height: 46px; border-radius: 50%; background: var(--ink); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 18px; text-decoration: none; flex-shrink: 0; }
 </style>
 </head>
 <body>
 
-<div class="bg-layer" data-key="bg"></div>
-
-<div class="hero">
-  <div class="hero-eyebrow">Taitung · 3 Days</div>
-  <div class="hero-title">知本解憂<span>．</span>藍皮慢行</div>
-  <div class="hero-sub">不趕、少走路，公車＋火車＋藍皮解憂號串起的泡湯提案</div>
-</div>
-
-<div class="chips">
-  <span class="chip">♨️ 知本溫泉一泊二食</span>
-  <span class="chip">🍞 關山火盛製餅舖</span>
-  <span class="chip">🚂 藍皮解憂號</span>
-  <span class="chip">🐢 每天只安排 2–3 個定點</span>
-</div>
-
-<div class="notice">
-  <div class="notice-line">全程搭區間車／公車／台灣好行代步，不自駕不騎車；若想更省時間，段落可升級成半日包車（4人以內約 $1,200/車，均攤更划算）</div>
-  <div class="notice-line">火盛製餅舖每日限量，建議出發前一天或當天早上先電話預約（08-981-1173，週四公休）</div>
-  <div class="notice-line">Day3 藍皮解憂號建議提前 3–7 天於雄獅官網或 KKday 訂票，並攜帶證件；所有票價時刻依台鐵／公路客運當日公告為準</div>
-</div>
-
-<div class="tabs">
-  <button class="tab on a1" onclick="sw('d1',this,'a1')">
-    <div class="tab-day">DAY 1</div>
-    <div class="tab-title">知本泡湯過夜</div>
-  </button>
-  <button class="tab" onclick="sw('d2',this,'a2')">
-    <div class="tab-day">DAY 2</div>
-    <div class="tab-title">關山慢活</div>
-  </button>
-  <button class="tab" onclick="sw('d3',this,'a3')">
-    <div class="tab-day">DAY 3</div>
-    <div class="tab-title">藍皮解憂賦歸</div>
-  </button>
-</div>
-
-<!-- DAY 1 -->
-<div id="d1" class="plan active">
-  <div class="tl">
-
-    <div class="row">
-      <div class="time">09:26</div>
-      <div class="spine"><div class="dot dot-d1"></div><div class="line"></div></div>
-      <div class="stop t-drv" data-key="taipei-station">
-        <div class="stop-media"><span class="stop-tag">交通</span></div>
-        <div class="stop-panel">
-          <div class="stop-title">台鐵自強號 台北→台東</div>
-          <div class="stop-loc">約 3.5–4 小時，建議提前訂票劃位</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="time">13:00</div>
-      <div class="spine"><div class="dot dot-d1"></div><div class="line"></div></div>
-      <a href="https://maps.google.com/?q=台東車站" target="_blank" class="stop-link">
-      <div class="stop t-drv" data-key="taitung-station">
-        <div class="stop-media"><span class="stop-tag">轉乘</span></div>
-        <div class="stop-panel">
-          <div class="stop-headrow">
-            <div><div class="stop-title">台東車站，月台轉乘區間車</div><div class="stop-loc">📍 不出站，同月台候車，銜接約 15–20 分</div></div>
-            <span class="stop-mapbtn">›</span>
-          </div>
-        </div>
-      </div>
-      </a>
-    </div>
-
-    <div class="row">
-      <div class="time">13:40</div>
-      <div class="spine"><div class="dot dot-d1"></div><div class="line"></div></div>
-      <a href="https://maps.google.com/?q=知本車站" target="_blank" class="stop-link">
-      <div class="stop t-drv" data-key="zhiben-station">
-        <div class="stop-media"><span class="stop-tag">$26／人</span></div>
-        <div class="stop-panel">
-          <div class="stop-headrow">
-            <div><div class="stop-title">抵達知本車站</div><div class="stop-loc">📍 多數溫泉飯店提供免費接駁，先向飯店預約時段</div></div>
-            <span class="stop-mapbtn">›</span>
-          </div>
-        </div>
-      </div>
-      </a>
-    </div>
-
-    <div class="row">
-      <div class="time">14:00<br>–19:00</div>
-      <div class="spine"><div class="dot dot-d1"></div><div class="line"></div></div>
-      <a href="https://maps.google.com/?q=知本溫泉" target="_blank" class="stop-link">
-      <div class="stop t-hot" data-key="zhiben-hotel,zhiben-hotel-room,zhiben-hotel-pool">
-        <div class="stop-media">
-          <div class="thumb-stack"></div>
-          <span class="stop-tag">一泊二食</span>
-        </div>
-        <div class="stop-panel">
-          <div class="stop-headrow">
-            <div><div class="stop-title">知本溫泉飯店 Check-in＋泡湯</div><div class="stop-loc">📍 知本溫泉區．先寄放行李，傍晚再慢慢泡</div></div>
-            <span class="stop-mapbtn">›</span>
-          </div>
-          <div class="stop-stats">
-            <div class="stat"><div class="stat-label">泉質</div><div class="stat-val">碳酸氫鈉泉</div></div>
-            <div class="stat"><div class="stat-label">水溫</div><div class="stat-val">38–42°C</div></div>
-            <div class="stat"><div class="stat-label">大眾池</div><div class="stat-val">住客免費</div></div>
-          </div>
-        </div>
-      </div>
-      </a>
-    </div>
-
-    <div class="row">
-      <div class="time">14:30<br>–15:10</div>
-      <div class="spine"><div class="dot dot-d1"></div><div class="line"></div></div>
-      <a href="https://maps.google.com/?q=知本國家森林遊樂區" target="_blank" class="stop-link">
-      <div class="stop t-see" data-key="zhiben-forest">
-        <div class="stop-media"><span class="stop-tag">輕鬆走</span></div>
-        <div class="stop-panel">
-          <div class="stop-headrow">
-            <div><div class="stop-title">知本國家森林遊樂區</div><div class="stop-loc">📍 台東縣卑南鄉</div></div>
-            <span class="stop-mapbtn">›</span>
-          </div>
-          <div class="stop-stats">
-            <div class="stat"><div class="stat-label">步道</div><div class="stat-val">白榕園環線</div></div>
-            <div class="stat"><div class="stat-label">門票</div><div class="stat-val">約$80</div></div>
-            <div class="stat"><div class="stat-label">建議停留</div><div class="stat-val">30–40分</div></div>
-          </div>
-          <div class="stop-desc">選最平緩的環形步道走走即可，不必走全程，看老榕樹跟森林浴。</div>
-        </div>
-      </div>
-      </a>
-    </div>
-
-    <div class="row">
-      <div class="time">16:00<br>–17:00</div>
-      <div class="spine"><div class="dot dot-d1"></div><div class="line"></div></div>
-      <a href="https://maps.google.com/?q=知本溫泉老街" target="_blank" class="stop-link">
-      <div class="stop t-eat" data-key="zhiben-street">
-        <div class="stop-media"><span class="stop-tag">小逛</span></div>
-        <div class="stop-panel">
-          <div class="stop-headrow">
-            <div><div class="stop-title">知本溫泉老街</div><div class="stop-loc">📍 走路可回飯店</div></div>
-            <span class="stop-mapbtn">›</span>
-          </div>
-          <div class="stop-desc">煮溫泉蛋、買點心，逛累了幾步就能回飯店。</div>
-        </div>
-      </div>
-      </a>
-    </div>
-
-    <div class="row">
-      <div class="time">19:00</div>
-      <div class="spine"><div class="dot dot-d1"></div></div>
-      <div class="stop t-eat" data-key="zhiben-dinner">
-        <div class="stop-media"><span class="stop-tag">晚餐</span></div>
-        <div class="stop-panel">
-          <div class="stop-title">飯店內用晚餐／附近小吃</div>
-          <div class="stop-loc">泡完湯直接吃飯，不用再移動</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="tl-end"></div>
+<!-- Header -->
+<div class="app-header">
+  <div>
+    <div class="app-title">知本解憂<span>．</span>藍皮慢行</div>
+    <div class="app-sub">Taitung · 3 Days ｜不趕、少走路的泡湯提案</div>
+  </div>
+  <div class="app-icons">
+    <button class="icon-btn" onclick="switchView('info')">ℹ️</button>
   </div>
 </div>
 
-<!-- DAY 2 -->
-<div id="d2" class="plan">
-  <div class="tl">
+<!-- Day tabs -->
+<div class="day-tabs" id="dayTabs"></div>
+<div class="day-desc" id="dayDesc"></div>
 
-    <div class="row">
-      <div class="time">08:30</div>
-      <div class="spine"><div class="dot dot-d2"></div><div class="line"></div></div>
-      <div class="stop t-hot" data-key="zhiben-hotel-pool">
-        <div class="stop-media"><span class="stop-tag">悠閒</span></div>
-        <div class="stop-panel">
-          <div class="stop-title">晨浴，不設鬧鐘</div>
-          <div class="stop-loc">睡到自然醒再去泡一次晨湯</div>
-        </div>
-      </div>
+<!-- Discover view -->
+<div id="view-discover" class="view active">
+  <div class="carousel" id="carousel"></div>
+
+  <div class="section-head">
+    <div class="section-title">當日時刻總覽</div>
+    <div class="section-hint">左右滑動查看</div>
+  </div>
+  <div class="chip-strip" id="chipStrip"></div>
+</div>
+
+<!-- Info view -->
+<div id="view-info" class="view">
+  <div class="info-wrap">
+    <div class="info-title">行前須知</div>
+    <div class="info-sub">出發前先看一眼，路上更安心</div>
+    <div class="chips">
+      <span class="chip">♨️ 知本溫泉一泊二食</span>
+      <span class="chip">🍞 關山火盛製餅舖</span>
+      <span class="chip">🚂 藍皮解憂號</span>
+      <span class="chip">🐢 每天只安排 2–3 個定點</span>
     </div>
-
-    <div class="row">
-      <div class="time">10:00</div>
-      <div class="spine"><div class="dot dot-d2"></div><div class="line"></div></div>
-      <div class="stop t-drv" data-key="zhiben-hotel">
-        <div class="stop-media"><span class="stop-tag">交通</span></div>
-        <div class="stop-panel">
-          <div class="stop-title">退房，飯店接駁回知本車站</div>
-        </div>
-      </div>
+    <div class="notice">
+      <div class="notice-line">全程搭區間車／公車／台灣好行代步，不自駕不騎車；若想更省時間，段落可升級成半日包車（4人以內約 $1,200/車，均攤更划算）</div>
+      <div class="notice-line">火盛製餅舖每日限量，建議出發前一天或當天早上先電話預約（08-981-1173，週四公休）</div>
+      <div class="notice-line">Day3 藍皮解憂號建議提前 3–7 天於雄獅官網或 KKday 訂票，並攜帶證件；所有票價時刻依台鐵／公路客運當日公告為準</div>
     </div>
-
-    <div class="row">
-      <div class="time">10:30<br>–11:20</div>
-      <div class="spine"><div class="dot dot-d2"></div><div class="line"></div></div>
-      <a href="https://maps.google.com/?q=關山車站" target="_blank" class="stop-link">
-      <div class="stop t-drv" data-key="guanshan-train">
-        <div class="stop-media"><span class="stop-tag">約$70／人</span></div>
-        <div class="stop-panel">
-          <div class="stop-headrow">
-            <div><div class="stop-title">區間車 知本→關山</div><div class="stop-loc">📍 沿縱谷風景，車程約 50 分</div></div>
-            <span class="stop-mapbtn">›</span>
-          </div>
-        </div>
-      </div>
-      </a>
-    </div>
-
-    <div class="row">
-      <div class="time">11:30</div>
-      <div class="spine"><div class="dot dot-d2"></div><div class="line"></div></div>
-      <a href="https://maps.google.com/?q=火盛製餅舖" target="_blank" class="stop-link">
-      <div class="stop t-eat" data-key="huosheng-bakery">
-        <div class="stop-media"><span class="stop-tag">記得先預約</span></div>
-        <div class="stop-panel">
-          <div class="stop-headrow">
-            <div><div class="stop-title">火盛製餅舖</div><div class="stop-loc">📍 關山鎮中山路90-1號</div></div>
-            <span class="stop-mapbtn">›</span>
-          </div>
-          <div class="stop-stats">
-            <div class="stat"><div class="stat-label">必買</div><div class="stat-val">爆餡紅豆吐司</div></div>
-            <div class="stat"><div class="stat-label">預訂</div><div class="stat-val">電話預約</div></div>
-            <div class="stat"><div class="stat-label">公休</div><div class="stat-val">每週四</div></div>
-          </div>
-          <div class="stop-desc">50年老店，吐司每日限量，沒預約常撲空。當車上點心或帶回台北都合適。</div>
-        </div>
-      </div>
-      </a>
-    </div>
-
-    <div class="row">
-      <div class="time">12:00<br>–13:00</div>
-      <div class="spine"><div class="dot dot-d2"></div><div class="line"></div></div>
-      <a href="https://maps.google.com/?q=關山環鎮自行車道" target="_blank" class="stop-link">
-      <div class="stop t-see" data-key="guanshan-bikepath,guanshan-ebike">
-        <div class="stop-media">
-          <div class="thumb-stack"></div>
-          <span class="stop-tag">全程平地</span>
-        </div>
-        <div class="stop-panel">
-          <div class="stop-headrow">
-            <div><div class="stop-title">關山環鎮自行車道</div><div class="stop-loc">📍 台灣第一條環鎮自行車道</div></div>
-            <span class="stop-mapbtn">›</span>
-          </div>
-          <div class="stop-stats">
-            <div class="stat"><div class="stat-label">距離</div><div class="stat-val">約12km</div></div>
-            <div class="stat"><div class="stat-label">難度</div><div class="stat-val">低・平緩</div></div>
-            <div class="stat"><div class="stat-label">租車</div><div class="stat-val">電動車約$150</div></div>
-          </div>
-          <div class="stop-desc">租電動輔助車繞一小段稻田風景即可，不必騎完整圈，很省腳力。</div>
-        </div>
-      </div>
-      </a>
-    </div>
-
-    <div class="row">
-      <div class="time">13:00<br>–14:00</div>
-      <div class="spine"><div class="dot dot-d2"></div><div class="line"></div></div>
-      <div class="stop t-eat" data-key="guanshan-lunch">
-        <div class="stop-media"><span class="stop-tag">午餐</span></div>
-        <div class="stop-panel">
-          <div class="stop-title">關山在地小吃</div>
-          <div class="stop-loc">便當／米苔目，吃飽準備回程</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="time">14:30<br>–15:10</div>
-      <div class="spine"><div class="dot dot-d2"></div><div class="line"></div></div>
-      <a href="https://maps.google.com/?q=台東車站" target="_blank" class="stop-link">
-      <div class="stop t-drv" data-key="taitung-station">
-        <div class="stop-media"><span class="stop-tag">約$45／人</span></div>
-        <div class="stop-panel">
-          <div class="stop-headrow">
-            <div><div class="stop-title">區間車 關山→台東</div><div class="stop-loc">📍 車程約 35–40 分</div></div>
-            <span class="stop-mapbtn">›</span>
-          </div>
-        </div>
-      </div>
-      </a>
-    </div>
-
-    <div class="row">
-      <div class="time">15:20</div>
-      <div class="spine"><div class="dot dot-d2"></div><div class="line"></div></div>
-      <div class="stop t-drv" data-key="taitung-hotel">
-        <div class="stop-media"><span class="stop-tag">卸行李</span></div>
-        <div class="stop-panel">
-          <div class="stop-title">市區飯店 Check-in</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="time">15:45<br>–17:30</div>
-      <div class="spine"><div class="dot dot-d2"></div><div class="line"></div></div>
-      <a href="https://maps.google.com/?q=台東鐵花村" target="_blank" class="stop-link">
-      <div class="stop t-eat" data-key="tiehua-village">
-        <div class="stop-media"><span class="stop-tag">咖啡・發呆</span></div>
-        <div class="stop-panel">
-          <div class="stop-headrow">
-            <div><div class="stop-title">鐵花村／文創園區</div><div class="stop-loc">📍 台東市新生路</div></div>
-            <span class="stop-mapbtn">›</span>
-          </div>
-          <div class="stop-desc">遮陽棚下坐著喝咖啡，不特別排景點，隨意逛逛市集攤位。</div>
-        </div>
-      </div>
-      </a>
-    </div>
-
-    <div class="row">
-      <div class="time">18:00</div>
-      <div class="spine"><div class="dot dot-d2"></div></div>
-      <a href="https://maps.google.com/?q=台東觀光夜市" target="_blank" class="stop-link">
-      <div class="stop t-eat" data-key="taitung-night-market">
-        <div class="stop-media"><span class="stop-tag">晚餐</span></div>
-        <div class="stop-panel">
-          <div class="stop-headrow">
-            <div><div class="stop-title">台東觀光夜市／四維夜市</div><div class="stop-loc">📍 走路可到就不叫車</div></div>
-            <span class="stop-mapbtn">›</span>
-          </div>
-        </div>
-      </div>
-      </a>
-    </div>
-
-    <div class="tl-end"></div>
   </div>
 </div>
 
-<!-- DAY 3 -->
-<div id="d3" class="plan">
-  <div class="tl">
-
-    <div class="row">
-      <div class="time">09:00</div>
-      <div class="spine"><div class="dot dot-d3"></div><div class="line"></div></div>
-      <div class="stop t-eat" data-key="taitung-hotel">
-        <div class="stop-media"><span class="stop-tag">早午餐</span></div>
-        <div class="stop-panel">
-          <div class="stop-title">退房＋買伴手禮</div>
-          <div class="stop-loc">地瓜酥、米麻糬，飯店附近解決即可</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="time">11:20</div>
-      <div class="spine"><div class="dot dot-d3"></div><div class="line"></div></div>
-      <a href="https://maps.google.com/?q=台東車站" target="_blank" class="stop-link">
-      <div class="stop t-drv" data-key="taitung-station">
-        <div class="stop-media"><span class="stop-tag">交通</span></div>
-        <div class="stop-panel">
-          <div class="stop-title">計程車→台東車站報到</div>
-        </div>
-      </div>
-      </a>
-    </div>
-
-    <div class="row">
-      <div class="time">12:10</div>
-      <div class="spine"><div class="dot dot-d3"></div><div class="line"></div></div>
-      <a href="https://maps.google.com/?q=台東車站" target="_blank" class="stop-link">
-      <div class="stop t-hot" data-key="blue-train,blue-train-view">
-        <div class="stop-media">
-          <div class="thumb-stack"></div>
-          <span class="stop-tag">$699／人</span>
-        </div>
-        <div class="stop-panel">
-          <div class="stop-headrow">
-            <div><div class="stop-title">藍皮解憂號 台東發車</div><div class="stop-loc">📍 南下往枋寮，南迴海景路線</div></div>
-            <span class="stop-mapbtn">›</span>
-          </div>
-          <div class="stop-stats">
-            <div class="stat"><div class="stat-label">車程</div><div class="stat-val">約3小時</div></div>
-            <div class="stat"><div class="stat-label">停靠</div><div class="stat-val">3站下車導覽</div></div>
-            <div class="stat"><div class="stat-label">票價</div><div class="stat-val">單程$699</div></div>
-          </div>
-          <div class="stop-desc">太麻里／金崙／枋山三站下車導覽，其餘時間坐著看海就好。</div>
-        </div>
-      </div>
-      </a>
-    </div>
-
-    <div class="row">
-      <div class="time">車上<br>導覽</div>
-      <div class="spine"><div class="dot dot-d3"></div><div class="line"></div></div>
-      <a href="https://maps.google.com/?q=太麻里車站" target="_blank" class="stop-link">
-      <div class="stop t-see" data-key="taimali-station">
-        <div class="stop-media"><span class="stop-tag">下車拍照</span></div>
-        <div class="stop-panel">
-          <div class="stop-headrow"><div><div class="stop-title">太麻里車站</div></div><span class="stop-mapbtn">›</span></div>
-        </div>
-      </div>
-      </a>
-    </div>
-
-    <div class="row">
-      <div class="time">車上<br>導覽</div>
-      <div class="spine"><div class="dot dot-d3"></div><div class="line"></div></div>
-      <a href="https://maps.google.com/?q=金崙車站" target="_blank" class="stop-link">
-      <div class="stop t-see" data-key="jinlun-station">
-        <div class="stop-media"><span class="stop-tag">下車導覽</span></div>
-        <div class="stop-panel">
-          <div class="stop-headrow"><div><div class="stop-title">金崙車站</div><div class="stop-loc">📍 金崙部落走讀，約20–30分</div></div><span class="stop-mapbtn">›</span></div>
-        </div>
-      </div>
-      </a>
-    </div>
-
-    <div class="row">
-      <div class="time">車上<br>導覽</div>
-      <div class="spine"><div class="dot dot-d3"></div><div class="line"></div></div>
-      <a href="https://maps.google.com/?q=枋山車站" target="_blank" class="stop-link">
-      <div class="stop t-see" data-key="fangshan-station">
-        <div class="stop-media"><span class="stop-tag">下車導覽</span></div>
-        <div class="stop-panel">
-          <div class="stop-headrow"><div><div class="stop-title">枋山車站</div><div class="stop-loc">📍 全台最南端秘境海景</div></div><span class="stop-mapbtn">›</span></div>
-        </div>
-      </div>
-      </a>
-    </div>
-
-    <div class="row">
-      <div class="time">約15:00</div>
-      <div class="spine"><div class="dot dot-d3"></div><div class="line"></div></div>
-      <a href="https://maps.google.com/?q=枋寮車站" target="_blank" class="stop-link">
-      <div class="stop t-drv" data-key="fangliao-station">
-        <div class="stop-media"><span class="stop-tag">抵達</span></div>
-        <div class="stop-panel">
-          <div class="stop-title">枋寮站下車</div>
-        </div>
-      </div>
-      </a>
-    </div>
-
-    <div class="row">
-      <div class="time">15:20</div>
-      <div class="spine"><div class="dot dot-d3"></div><div class="line"></div></div>
-      <div class="stop t-drv" data-key="kenting-express">
-        <div class="stop-media"><span class="stop-tag">$196</span></div>
-        <div class="stop-panel">
-          <div class="stop-title">轉乘台灣好行墾丁快線</div>
-          <div class="stop-loc">步行至站牌即可搭車 → 往高鐵左營站，約 1 小時 10 分</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="time">16:30</div>
-      <div class="spine"><div class="dot dot-d3"></div><div class="line"></div></div>
-      <div class="stop t-drv" data-key="zuoying-station">
-        <div class="stop-media"><span class="stop-tag">高鐵</span></div>
-        <div class="stop-panel">
-          <div class="stop-title">高鐵左營站轉乘</div>
-          <div class="stop-loc">搭乘高鐵往南港/台北，約 1 小時 34 分</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="time">18:34</div>
-      <div class="spine"><div class="dot dot-d3"></div></div>
-      <div class="stop t-drv" data-key="taipei-station">
-        <div class="stop-media"><span class="stop-tag">結束</span></div>
-        <div class="stop-panel">
-          <div class="stop-title">抵達台北車站，行程結束</div>
-          <div class="stop-loc">實際班次時刻依台鐵/公路客運/高鐵當日公告為準</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="tl-end"></div>
+<!-- Budget view -->
+<div id="view-budget" class="view">
+  <div class="panel">
+    <div class="panel-h">💰 預算（每人，已壓縮）</div>
+    <div class="brow"><div class="l">台北→台東 自強號</div><div class="v">$903</div></div>
+    <div class="brow"><div class="l">台東→知本 區間車</div><div class="v">$26</div></div>
+    <div class="brow"><div class="l">知本溫泉一泊二食（雙人房均分，含大眾池）</div><div class="v">約$2,280</div></div>
+    <div class="brow"><div class="l">知本→關山→台東 區間車（兩段）</div><div class="v">約$115</div></div>
+    <div class="brow"><div class="l">關山環鎮電動輔助車（2小時）</div><div class="v">約$150</div></div>
+    <div class="brow"><div class="l">火盛製餅舖 紅豆吐司（伴手禮）</div><div class="v">約$60</div></div>
+    <div class="brow"><div class="l">市區住宿 1 晚（雙人房均分）</div><div class="v">約$750</div></div>
+    <div class="brow"><div class="l">藍皮解憂號 單程套票</div><div class="v">$699</div></div>
+    <div class="brow"><div class="l">枋寮→高鐵左營 台灣好行墾丁快線</div><div class="v">$196</div></div>
+    <div class="brow"><div class="l">高鐵左營→台北</div><div class="v">約$1,350</div></div>
+    <div class="brow"><div class="l">三天餐飲雜支</div><div class="v">約$1,400</div></div>
+    <div class="brow"><div class="l">彈性緩衝</div><div class="v">約$500</div></div>
+    <div class="btotal"><div class="l">總計</div><div class="v">約$8,429</div></div>
+    <div class="budget-note">加了關山來回與火盛製餅舖後比純市區行程貴約$140/人，仍低於原始版本。以上為淡季平日估算，假日及旺季溫泉住宿價格會上升，區間車票價僅供參考，實際依台鐵公告為準。</div>
   </div>
 </div>
 
-<!-- 預算 -->
-<div class="budget">
-  <div class="budget-h">💰 預算（每人，已壓縮）</div>
-  <div class="brow"><div class="l">台北→台東 自強號</div><div class="v">$903</div></div>
-  <div class="brow"><div class="l">台東→知本 區間車</div><div class="v">$26</div></div>
-  <div class="brow"><div class="l">知本溫泉一泊二食（雙人房均分，含大眾池）</div><div class="v">約$2,280</div></div>
-  <div class="brow"><div class="l">知本→關山→台東 區間車（兩段）</div><div class="v">約$115</div></div>
-  <div class="brow"><div class="l">關山環鎮電動輔助車（2小時）</div><div class="v">約$150</div></div>
-  <div class="brow"><div class="l">火盛製餅舖 紅豆吐司（伴手禮）</div><div class="v">約$60</div></div>
-  <div class="brow"><div class="l">市區住宿 1 晚（雙人房均分）</div><div class="v">約$750</div></div>
-  <div class="brow"><div class="l">藍皮解憂號 單程套票</div><div class="v">$699</div></div>
-  <div class="brow"><div class="l">枋寮→高鐵左營 台灣好行墾丁快線</div><div class="v">$196</div></div>
-  <div class="brow"><div class="l">高鐵左營→台北</div><div class="v">約$1,350</div></div>
-  <div class="brow"><div class="l">三天餐飲雜支</div><div class="v">約$1,400</div></div>
-  <div class="brow"><div class="l">彈性緩衝</div><div class="v">約$500</div></div>
-  <div class="btotal"><div class="l">總計</div><div class="v">約$8,429</div></div>
-  <div class="budget-note">加了關山來回與火盛製餅舖後比純市區行程貴約$140/人，仍低於原始版本。若想省掉區間車轉乘、改半日包車直達關山，總價會再增加，但省下等車時間。以上為淡季平日估算，假日及旺季溫泉住宿價格會上升，區間車票價僅供參考，實際依台鐵公告為準。</div>
-</div>
-
-<!-- 分帳 -->
-<div class="budget" id="splitBox">
-  <div class="budget-h">👫 分帳小工具</div>
-  <div id="splitRows"></div>
-  <button id="addRowBtn" style="width:100%;margin-top:6px;padding:9px;border-radius:8px;border:1px dashed var(--border);background:none;color:var(--muted);font-size:12.5px;">＋ 新增支出</button>
-  <div style="display:flex;gap:8px;margin-top:12px;">
-    <div style="flex:1;background:rgba(65,183,220,.08);border-radius:8px;padding:8px;text-align:center;">
-      <div style="font-size:11px;color:var(--muted);">Gina 已付</div>
-      <div id="paidA" style="font-size:16px;font-weight:600;color:var(--d1);">$0</div>
+<!-- Split view -->
+<div id="view-split" class="view">
+  <div class="panel" id="splitBox">
+    <div class="panel-h">👫 分帳小工具</div>
+    <div id="splitRows"></div>
+    <button id="addRowBtn" style="width:100%;margin-top:6px;padding:9px;border-radius:8px;border:1px dashed var(--line);background:none;color:var(--muted);font-size:12.5px;">＋ 新增支出</button>
+    <div style="display:flex;gap:8px;margin-top:12px;">
+      <div style="flex:1;background:rgba(47,160,196,.10);border-radius:8px;padding:8px;text-align:center;">
+        <div style="font-size:11px;color:var(--muted);">Gina 已付</div>
+        <div id="paidA" style="font-size:16px;font-weight:700;color:var(--d1);">$0</div>
+      </div>
+      <div style="flex:1;background:rgba(199,154,75,.12);border-radius:8px;padding:8px;text-align:center;">
+        <div style="font-size:11px;color:var(--muted);">念臻 已付</div>
+        <div id="paidB" style="font-size:16px;font-weight:700;color:var(--d2);">$0</div>
+      </div>
     </div>
-    <div style="flex:1;background:rgba(201,161,94,.10);border-radius:8px;padding:8px;text-align:center;">
-      <div style="font-size:11px;color:var(--muted);">念臻 已付</div>
-      <div id="paidB" style="font-size:16px;font-weight:600;color:var(--d2);">$0</div>
+    <div class="btotal" id="settleRow">
+      <div class="l">結算</div>
+      <div class="v" id="settleText" style="font-size:14px;">尚無支出</div>
     </div>
   </div>
-  <div class="btotal" id="settleRow">
-    <div class="l">結算</div>
-    <div class="v" id="settleText" style="font-size:14px;">尚無支出</div>
+</div>
+
+<!-- Bottom nav -->
+<div class="bottom-nav">
+  <button class="nav-btn active" data-nav="discover" onclick="switchView('discover',this)">🏠</button>
+  <button class="nav-btn" data-nav="info" onclick="switchView('info',this)">ℹ️</button>
+  <button class="nav-btn" data-nav="budget" onclick="switchView('budget',this)">💰</button>
+  <button class="nav-btn" data-nav="split" onclick="switchView('split',this)">👫</button>
+</div>
+
+<!-- Detail overlay -->
+<div class="detail-overlay" id="detailOverlay">
+  <div class="detail-hero" id="detailHero">
+    <div class="detail-top">
+      <button class="circle-btn" onclick="closeDetail()">‹</button>
+      <button class="circle-btn" id="detailHeart" onclick="this.textContent=this.textContent==='♡'?'♥':'♡'">♡</button>
+    </div>
+    <div class="detail-gallery" id="detailGallery"></div>
+    <div class="detail-heading">
+      <div class="detail-eyebrow" id="detailEyebrow"></div>
+      <div class="detail-title" id="detailTitle"></div>
+      <div class="detail-loc" id="detailLoc"></div>
+    </div>
+  </div>
+  <div class="detail-body">
+    <div class="detail-stats" id="detailStats"></div>
+    <div class="detail-desc-h">Description</div>
+    <div class="detail-desc" id="detailDesc"></div>
+  </div>
+  <div class="detail-bottom">
+    <div>
+      <div class="detail-price-label" id="detailPriceLabel">參考資訊</div>
+      <div class="detail-price-val" id="detailPriceVal">—</div>
+    </div>
+    <a class="detail-go" id="detailGo" href="#" target="_blank">→</a>
   </div>
 </div>
 
 <script>
-function sw(id, btn, cls) {
-  document.querySelectorAll('.plan').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.tab').forEach(b => { b.classList.remove('on','a1','a2','a3'); });
-  document.getElementById(id).classList.add('active');
-  btn.classList.add('on', cls);
+/* ============ 行程資料 ============ */
+const TYPE_LABEL = { eat: '美食', see: '景點', hot: '溫泉', drv: '交通' };
+const TYPE_ICON  = { eat: '🍜', see: '🌿', hot: '♨️', drv: '🚌' };
+
+const days = [
+  { id:'d1', label:'Day 1', accent:'a1', color:'d1', title:'知本泡湯過夜', stops: [
+    { time:'09:26', tag:'交通', type:'drv', key:'taipei-station', title:'台鐵自強號 台北→台東', loc:'約 3.5–4 小時，建議提前訂票劃位' },
+    { time:'13:00', tag:'轉乘', type:'drv', key:'taitung-station', title:'台東車站，月台轉乘區間車', loc:'📍 不出站，同月台候車，銜接約 15–20 分', link:'https://maps.google.com/?q=台東車站' },
+    { time:'13:40', tag:'$26／人', type:'drv', key:'zhiben-station', title:'抵達知本車站', loc:'📍 多數溫泉飯店提供免費接駁，先向飯店預約時段', link:'https://maps.google.com/?q=知本車站' },
+    { time:'14:00–19:00', tag:'一泊二食', type:'hot', key:'zhiben-hotel', gallery:['zhiben-hotel-room','zhiben-hotel-pool'], title:'知本溫泉飯店 Check-in＋泡湯', loc:'📍 知本溫泉區．先寄放行李，傍晚再慢慢泡', stats:[{l:'泉質',v:'碳酸氫鈉泉'},{l:'水溫',v:'38–42°C'},{l:'大眾池',v:'住客免費'}], link:'https://maps.google.com/?q=知本溫泉' },
+    { time:'14:30–15:10', tag:'輕鬆走', type:'see', key:'zhiben-forest', title:'知本國家森林遊樂區', loc:'📍 台東縣卑南鄉', stats:[{l:'步道',v:'白榕園環線'},{l:'門票',v:'約$80'},{l:'建議停留',v:'30–40分'}], desc:'選最平緩的環形步道走走即可，不必走全程，看老榕樹跟森林浴。', link:'https://maps.google.com/?q=知本國家森林遊樂區' },
+    { time:'16:00–17:00', tag:'小逛', type:'eat', key:'zhiben-street', title:'知本溫泉老街', loc:'📍 走路可回飯店', desc:'煮溫泉蛋、買點心，逛累了幾步就能回飯店。', link:'https://maps.google.com/?q=知本溫泉老街' },
+    { time:'19:00', tag:'晚餐', type:'eat', key:'zhiben-dinner', title:'飯店內用晚餐／附近小吃', loc:'泡完湯直接吃飯，不用再移動' },
+  ]},
+  { id:'d2', label:'Day 2', accent:'a2', color:'d2', title:'關山慢活', stops: [
+    { time:'08:30', tag:'悠閒', type:'hot', key:'zhiben-hotel-pool', title:'晨浴，不設鬧鐘', loc:'睡到自然醒再去泡一次晨湯' },
+    { time:'10:00', tag:'交通', type:'drv', key:'zhiben-hotel', title:'退房，飯店接駁回知本車站' },
+    { time:'10:30–11:20', tag:'約$70／人', type:'drv', key:'guanshan-train', title:'區間車 知本→關山', loc:'📍 沿縱谷風景，車程約 50 分', link:'https://maps.google.com/?q=關山車站' },
+    { time:'11:30', tag:'記得先預約', type:'eat', key:'huosheng-bakery', title:'火盛製餅舖', loc:'📍 關山鎮中山路90-1號', stats:[{l:'必買',v:'爆餡紅豆吐司'},{l:'預訂',v:'電話預約'},{l:'公休',v:'每週四'}], desc:'50年老店，吐司每日限量，沒預約常撲空。當車上點心或帶回台北都合適。', link:'https://maps.google.com/?q=火盛製餅舖' },
+    { time:'12:00–13:00', tag:'全程平地', type:'see', key:'guanshan-bikepath', gallery:['guanshan-ebike'], title:'關山環鎮自行車道', loc:'📍 台灣第一條環鎮自行車道', stats:[{l:'距離',v:'約12km'},{l:'難度',v:'低・平緩'},{l:'租車',v:'電動車約$150'}], desc:'租電動輔助車繞一小段稻田風景即可，不必騎完整圈，很省腳力。', link:'https://maps.google.com/?q=關山環鎮自行車道' },
+    { time:'13:00–14:00', tag:'午餐', type:'eat', key:'guanshan-lunch', title:'關山在地小吃', loc:'便當／米苔目，吃飽準備回程' },
+    { time:'14:30–15:10', tag:'約$45／人', type:'drv', key:'taitung-station', title:'區間車 關山→台東', loc:'📍 車程約 35–40 分', link:'https://maps.google.com/?q=台東車站' },
+    { time:'15:20', tag:'卸行李', type:'drv', key:'taitung-hotel', title:'市區飯店 Check-in' },
+    { time:'15:45–17:30', tag:'咖啡・發呆', type:'eat', key:'tiehua-village', title:'鐵花村／文創園區', loc:'📍 台東市新生路', desc:'遮陽棚下坐著喝咖啡，不特別排景點，隨意逛逛市集攤位。', link:'https://maps.google.com/?q=台東鐵花村' },
+    { time:'18:00', tag:'晚餐', type:'eat', key:'taitung-night-market', title:'台東觀光夜市／四維夜市', loc:'📍 走路可到就不叫車', link:'https://maps.google.com/?q=台東觀光夜市' },
+  ]},
+  { id:'d3', label:'Day 3', accent:'a3', color:'d3', title:'藍皮解憂賦歸', stops: [
+    { time:'09:00', tag:'早午餐', type:'eat', key:'taitung-hotel', title:'退房＋買伴手禮', loc:'地瓜酥、米麻糬，飯店附近解決即可' },
+    { time:'11:20', tag:'交通', type:'drv', key:'taitung-station', title:'計程車→台東車站報到', link:'https://maps.google.com/?q=台東車站' },
+    { time:'12:10', tag:'$699／人', type:'hot', key:'blue-train', gallery:['blue-train-view'], title:'藍皮解憂號 台東發車', loc:'📍 南下往枋寮，南迴海景路線', stats:[{l:'車程',v:'約3小時'},{l:'停靠',v:'3站下車導覽'},{l:'票價',v:'單程$699'}], desc:'太麻里／金崙／枋山三站下車導覽，其餘時間坐著看海就好。', link:'https://maps.google.com/?q=台東車站' },
+    { time:'車上導覽', tag:'下車拍照', type:'see', key:'taimali-station', title:'太麻里車站', link:'https://maps.google.com/?q=太麻里車站' },
+    { time:'車上導覽', tag:'下車導覽', type:'see', key:'jinlun-station', title:'金崙車站', loc:'📍 金崙部落走讀，約20–30分', link:'https://maps.google.com/?q=金崙車站' },
+    { time:'車上導覽', tag:'下車導覽', type:'see', key:'fangshan-station', title:'枋山車站', loc:'📍 全台最南端秘境海景', link:'https://maps.google.com/?q=枋山車站' },
+    { time:'約15:00', tag:'抵達', type:'drv', key:'fangliao-station', title:'枋寮站下車', link:'https://maps.google.com/?q=枋寮車站' },
+    { time:'15:20', tag:'$196', type:'drv', key:'kenting-express', title:'轉乘台灣好行墾丁快線', loc:'步行至站牌即可搭車 → 往高鐵左營站，約 1 小時 10 分' },
+    { time:'16:30', tag:'高鐵', type:'drv', key:'zuoying-station', title:'高鐵左營站轉乘', loc:'搭乘高鐵往南港/台北，約 1 小時 34 分' },
+    { time:'18:34', tag:'結束', type:'drv', key:'taipei-station', title:'抵達台北車站，行程結束', loc:'實際班次時刻依台鐵/公路客運/高鐵當日公告為準' },
+  ]},
+];
+
+let currentDay = 0;
+let imageMap = {}; // key -> image url，由 Google 試算表載入後填入
+
+/* ============ 渲染 ============ */
+function renderDayTabs() {
+  const wrap = document.getElementById('dayTabs');
+  wrap.innerHTML = '';
+  days.forEach((d, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'day-tab' + (i === currentDay ? ' active ' + d.accent : '');
+    btn.textContent = d.label;
+    btn.onclick = () => { currentDay = i; renderAll(); };
+    wrap.appendChild(btn);
+  });
+  document.getElementById('dayDesc').textContent = `${days[currentDay].label} · ${days[currentDay].title}`;
 }
 
-// ── 分帳小工具 ──
+function cardMediaClass(stop) {
+  return 'type-' + stop.type;
+}
+
+function renderCarousel() {
+  const wrap = document.getElementById('carousel');
+  wrap.innerHTML = '';
+  days[currentDay].stops.forEach((s, i) => {
+    const card = document.createElement('div');
+    card.className = 'c-card ' + cardMediaClass(s);
+    card.dataset.key = s.key;
+    card.onclick = () => openDetail(currentDay, i);
+    card.innerHTML = `
+      <div class="ph-icon">${TYPE_ICON[s.type]}</div>
+      <span class="c-badge">${s.tag || TYPE_LABEL[s.type]}</span>
+      <span class="c-heart">♡</span>
+      <div class="c-info">
+        <div class="c-time">${s.time}</div>
+        <div class="c-title">${s.title}</div>
+        ${s.loc ? `<div class="c-loc">${s.loc.replace('📍 ','')}</div>` : ''}
+      </div>`;
+    wrap.appendChild(card);
+  });
+}
+
+function renderChipStrip() {
+  const wrap = document.getElementById('chipStrip');
+  wrap.innerHTML = '';
+  days[currentDay].stops.forEach((s, i) => {
+    const chip = document.createElement('div');
+    chip.className = 'chip-card ' + cardMediaClass(s);
+    chip.onclick = () => {
+      openDetail(currentDay, i);
+    };
+    chip.innerHTML = `
+      <div class="chip-thumb" data-key="${s.key}">
+        <span class="chip-time">${s.time.split('–')[0]}</span>
+      </div>
+      <div class="chip-body"><div class="chip-title">${s.title}</div></div>`;
+    chip.dataset.index = i;
+    wrap.appendChild(chip);
+  });
+}
+
+function setupFocusScroll(container, cardSelector) {
+  function update() {
+    const rect = container.getBoundingClientRect();
+    const center = rect.left + rect.width / 2;
+    let closest = null, closestDist = Infinity;
+    container.querySelectorAll(cardSelector).forEach(c => {
+      const r = c.getBoundingClientRect();
+      const dist = Math.abs((r.left + r.width / 2) - center);
+      if (dist < closestDist) { closestDist = dist; closest = c; }
+      c.classList.remove('focus');
+    });
+    if (closest) closest.classList.add('focus');
+  }
+  container.addEventListener('scroll', () => requestAnimationFrame(update), { passive: true });
+  update();
+}
+
+function renderAll() {
+  renderDayTabs();
+  renderCarousel();
+  renderChipStrip();
+  applyImages();
+  setupFocusScroll(document.getElementById('carousel'), '.c-card');
+  setupFocusScroll(document.getElementById('chipStrip'), '.chip-card');
+}
+
+/* ============ 詳情頁 ============ */
+function openDetail(dayIdx, stopIdx) {
+  window.currentDetail = { day: dayIdx, stop: stopIdx };
+  const s = days[dayIdx].stops[stopIdx];
+  const hero = document.getElementById('detailHero');
+  hero.className = 'detail-hero ' + cardMediaClass(s);
+  const photo = imageMap[s.key];
+  if (photo) { hero.style.backgroundImage = `url("${photo}")`; hero.classList.add('has-photo'); }
+  else { hero.style.backgroundImage = 'none'; }
+
+  document.getElementById('detailEyebrow').textContent = `${days[dayIdx].label} · ${s.time}`;
+  document.getElementById('detailTitle').textContent = s.title;
+  document.getElementById('detailLoc').textContent = s.loc ? s.loc.replace('📍 ', '📍 ') : (s.tag || '');
+
+  // gallery thumbs
+  const galWrap = document.getElementById('detailGallery');
+  galWrap.innerHTML = '';
+  (s.gallery || []).forEach(k => {
+    const url = imageMap[k];
+    if (url) {
+      const d = document.createElement('div');
+      d.className = 'detail-thumb';
+      d.style.backgroundImage = `url("${url}")`;
+      galWrap.appendChild(d);
+    }
+  });
+
+  // stats
+  const statsWrap = document.getElementById('detailStats');
+  const stats = s.stats && s.stats.length ? s.stats.slice(0, 3) : [
+    { l: '時段', v: s.time },
+    { l: '類型', v: TYPE_LABEL[s.type] },
+    { l: '備註', v: s.tag || '—' },
+  ];
+  statsWrap.innerHTML = stats.map(st => `<div class="dstat"><div class="dstat-label">${st.l}</div><div class="dstat-val">${st.v}</div></div>`).join('');
+
+  document.getElementById('detailDesc').textContent = s.desc || '這一站沒有太多安排，放慢腳步，跟著時刻走就好。';
+
+  const priceLabel = document.getElementById('detailPriceLabel');
+  const priceVal = document.getElementById('detailPriceVal');
+  if (s.tag && /[\$￥]/.test(s.tag)) { priceLabel.textContent = '參考費用'; priceVal.textContent = s.tag; }
+  else { priceLabel.textContent = '時段'; priceVal.textContent = s.time; }
+
+  const goBtn = document.getElementById('detailGo');
+  if (s.link) { goBtn.href = s.link; goBtn.style.opacity = 1; goBtn.style.pointerEvents = 'auto'; }
+  else { goBtn.href = '#'; goBtn.style.opacity = .35; goBtn.style.pointerEvents = 'none'; }
+
+  document.getElementById('detailHeart').textContent = '♡';
+  document.getElementById('detailOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeDetail() {
+  document.getElementById('detailOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+/* ============ 頁籤切換（底部導覽） ============ */
+function switchView(name, btn) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById('view-' + name).classList.add('active');
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  const target = btn || document.querySelector(`.nav-btn[data-nav="${name}"]`);
+  if (target) target.classList.add('active');
+  const tabsRow = document.getElementById('dayTabs');
+  const dayDesc = document.getElementById('dayDesc');
+  const showTabs = name === 'discover';
+  tabsRow.style.display = showTabs ? 'flex' : 'none';
+  dayDesc.style.display = showTabs ? 'block' : 'none';
+}
+
+/* ============ 分帳小工具 ============ */
 let expenses = [
   { name: '知本溫泉一泊二食', amount: 4560, payer: 'A' },
   { name: '市區住宿 1 晚', amount: 1500, payer: 'B' },
@@ -675,13 +496,13 @@ function renderSplit() {
     const row = document.createElement('div');
     row.style.cssText = 'display:flex;gap:6px;align-items:center;margin-bottom:6px;';
     row.innerHTML = `
-      <input type="text" value="${e.name}" placeholder="項目" style="flex:2;min-width:0;padding:7px 8px;border-radius:7px;border:1px solid var(--border);background:var(--card-solid);color:var(--text);font-size:12.5px;">
-      <input type="number" value="${e.amount}" placeholder="金額" style="flex:1.3;min-width:0;padding:7px 8px;border-radius:7px;border:1px solid var(--border);background:var(--card-solid);color:var(--text);font-size:12.5px;">
-      <select style="flex:1;padding:7px 4px;border-radius:7px;border:1px solid var(--border);background:var(--card-solid);color:var(--text);font-size:12.5px;">
+      <input type="text" value="${e.name}" placeholder="項目" style="flex:2;min-width:0;padding:7px 8px;border-radius:7px;border:1px solid var(--line);background:#fff;color:var(--ink);font-size:12.5px;">
+      <input type="number" value="${e.amount}" placeholder="金額" style="flex:1.3;min-width:0;padding:7px 8px;border-radius:7px;border:1px solid var(--line);background:#fff;color:var(--ink);font-size:12.5px;">
+      <select style="flex:1;padding:7px 4px;border-radius:7px;border:1px solid var(--line);background:#fff;color:var(--ink);font-size:12.5px;">
         <option value="A" ${e.payer==='A'?'selected':''}>Gina付</option>
         <option value="B" ${e.payer==='B'?'selected':''}>念臻付</option>
       </select>
-      <button style="padding:6px 9px;border-radius:7px;border:1px solid var(--border);background:none;color:var(--warn);font-size:12px;">✕</button>
+      <button style="padding:6px 9px;border-radius:7px;border:1px solid var(--line);background:none;color:#D9713F;font-size:12px;">✕</button>
     `;
     const [nameInput, amountInput, payerSelect, delBtn] = row.children;
     nameInput.oninput = () => { expenses[i].name = nameInput.value; };
@@ -713,53 +534,106 @@ document.getElementById('addRowBtn').onclick = () => {
   renderSplit();
 };
 
-renderSplit();
+/* ============ Google 試算表串圖（景點照片）============
+ *
+ * 【設定步驟】
+ * 1. 開一份 Google 試算表，第一列（標題列）填：key, image_url
+ *    第二列開始，每一列放一個景點：
+ *       key                image_url
+ *       zhiben-hotel       https://.../照片1.jpg
+ *       zhiben-hotel-room  https://.../照片2.jpg
+ *       zhiben-hotel-pool  https://.../照片3.jpg
+ *    key 要跟程式碼裡 days[] 資料中每個景點的 key（或 gallery 裡的 key）完全對應。
+ *    image_url 建議放「可直接公開存取」的圖片網址（例如已上傳到網路相簿、圖床、
+ *    或 Google Drive 圖片用 https://drive.google.com/uc?export=view&id=檔案ID 這種直連格式）。
+ *
+ * 2. 點右上角「共用」，把權限改成「知道連結的任何人」都可以「檢視」。
+ *    （不需要特別做「發布到網路」，只要分享權限開放就能讀取。）
+ *
+ * 3. 複製瀏覽器網址列上的試算表連結（長這樣：
+ *    https://docs.google.com/spreadsheets/d/xxxxxxxxxxxxx/edit#gid=0）
+ *    直接貼到下面 SHEET_CSV_URL 就好，程式會自動轉換成 CSV 匯出格式。
+ *    （如果你本來就有 CSV 直連網址，也可以直接貼，程式會偵測並照原樣使用。）
+ * ================================================================= */
 
-// ── Google 試算表串圖（景點照片）：貼上你發布的 CSV 網址即可 ──
-// 欄位需為 key, image_url。整頁背景圖預設用內建照片，若試算表有填 key="bg" 會自動覆蓋。
-const SHEET_CSV_URL = '';
+const SHEET_CSV_URL = ''; // ← 貼你的 Google 試算表連結或 CSV 網址
+
+// 把一般的 Google 試算表分享連結，自動轉成可直接抓取的 CSV 匯出網址
+function toCsvExportUrl(url) {
+  const m = url.match(/\/spreadsheets\/d\/([a-zA-Z0-9-_]+)/);
+  if (!m) return url; // 不是標準試算表連結，當作已經是 CSV 網址直接使用
+  const gidMatch = url.match(/[?&#]gid=(\d+)/);
+  const gid = gidMatch ? gidMatch[1] : '0';
+  return `https://docs.google.com/spreadsheets/d/${m[1]}/export?format=csv&gid=${gid}`;
+}
+
+// 簡易但穩健的 CSV 解析（支援欄位內有逗號、換行、雙引號的情況）
+function parseCSV(text) {
+  const rows = [];
+  let row = [], field = '', inQuotes = false;
+  for (let i = 0; i < text.length; i++) {
+    const c = text[i], next = text[i + 1];
+    if (inQuotes) {
+      if (c === '"' && next === '"') { field += '"'; i++; }
+      else if (c === '"') { inQuotes = false; }
+      else { field += c; }
+    } else {
+      if (c === '"') { inQuotes = true; }
+      else if (c === ',') { row.push(field); field = ''; }
+      else if (c === '\r') { /* 忽略 */ }
+      else if (c === '\n') { row.push(field); rows.push(row); row = []; field = ''; }
+      else { field += c; }
+    }
+  }
+  if (field.length || row.length) { row.push(field); rows.push(row); }
+  return rows.filter(r => r.some(c => c.trim() !== ''));
+}
+
+function applyImages() {
+  document.querySelectorAll('.c-card[data-key]').forEach(el => {
+    const url = imageMap[el.dataset.key];
+    if (url) { el.style.backgroundImage = `url("${url}")`; el.classList.add('has-photo'); }
+  });
+  document.querySelectorAll('.chip-thumb[data-key]').forEach(el => {
+    const url = imageMap[el.dataset.key];
+    if (url) { el.style.backgroundImage = `url("${url}")`; el.classList.add('has-photo'); }
+  });
+  // 若細節頁正開著，同步更新裡面的大圖與縮圖
+  if (document.getElementById('detailOverlay').classList.contains('open') && window.currentDetail) {
+    openDetail(window.currentDetail.day, window.currentDetail.stop);
+  }
+}
 
 async function loadImages() {
   if (!SHEET_CSV_URL) return;
   try {
-    const res = await fetch(SHEET_CSV_URL);
+    const csvUrl = toCsvExportUrl(SHEET_CSV_URL.trim());
+    const res = await fetch(csvUrl);
+    if (!res.ok) throw new Error('HTTP ' + res.status);
     const text = await res.text();
-    const rows = text.trim().split('\n').map(r => r.split(',').map(c => c.replace(/^"|"$/g, '').trim()));
-    const header = rows.shift();
+    const rows = parseCSV(text);
+    const header = rows.shift().map(h => h.trim().toLowerCase());
     const keyIdx = header.indexOf('key');
     const urlIdx = header.indexOf('image_url');
-    if (keyIdx === -1 || urlIdx === -1) { console.warn('試算表欄位需為 key, image_url'); return; }
-    const map = {};
-    rows.forEach(r => { if (r[keyIdx]) map[r[keyIdx]] = r[urlIdx]; });
-
-    document.querySelectorAll('[data-key]').forEach(el => {
-      const keys = el.dataset.key.split(',').map(s => s.trim());
-      const main = keys[0];
-      if (map[main]) {
-        const media = el.classList.contains('bg-layer') ? el : el.querySelector('.stop-media');
-        if (media) {
-          media.style.backgroundImage = `url("${map[main]}")`;
-          media.classList.add('has-photo');
-        }
-      }
-      const thumbWrap = el.querySelector('.thumb-stack');
-      if (thumbWrap && keys.length > 1) {
-        thumbWrap.innerHTML = '';
-        thumbWrap.classList.add('with-tag');
-        keys.slice(1, 4).forEach(k => {
-          if (map[k]) {
-            const d = document.createElement('div');
-            d.className = 'thumb';
-            d.style.backgroundImage = `url("${map[k]}")`;
-            thumbWrap.appendChild(d);
-          }
-        });
-      }
+    if (keyIdx === -1 || urlIdx === -1) {
+      console.warn('試算表欄位需為 key, image_url（目前讀到的欄位：' + header.join(', ') + '）');
+      return;
+    }
+    rows.forEach(r => {
+      const k = (r[keyIdx] || '').trim();
+      const v = (r[urlIdx] || '').trim();
+      if (k && v) imageMap[k] = v;
     });
+    applyImages();
+    console.log(`已從 Google 試算表載入 ${Object.keys(imageMap).length} 筆圖片`);
   } catch (e) {
-    console.warn('圖片載入失敗，請確認 Google 試算表已「發布到網路」且格式為 CSV', e);
+    console.warn('圖片載入失敗，請確認：1) 試算表分享權限已開放「知道連結的任何人可檢視」 2) 欄位名稱為 key, image_url', e);
   }
 }
+
+/* ============ 初始化 ============ */
+renderAll();
+renderSplit();
 loadImages();
 </script>
 </body>
