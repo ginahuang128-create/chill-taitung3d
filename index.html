@@ -2,7 +2,7 @@
 <html lang="zh-TW">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, viewport-fit=cover">
 <title>知本解憂．藍皮慢行 三日提案</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>♨️</text></svg>">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@600;700&family=Noto+Sans+TC:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -60,7 +60,7 @@
 
   /* ── 主輪播卡片（大圖，左右滑動） ── */
   .carousel { display: flex; gap: 14px; overflow-x: auto; scroll-snap-type: x mandatory; padding: 14px 18px 6px; scroll-padding: 0 18px; }
-  .c-card { scroll-snap-align: center; flex: 0 0 76%; min-height: 240px; border-radius: 24px; position: relative; overflow: hidden; background-size: cover; background-position: center; box-shadow: var(--shadow); transform: scale(.93); opacity: .72; transition: transform .28s ease, opacity .28s ease; cursor: pointer; }
+  .c-card { scroll-snap-align: center; flex: 0 0 68%; aspect-ratio: 3 / 4.3; border-radius: 26px; position: relative; overflow: hidden; background-size: cover; background-position: center; box-shadow: var(--shadow); transform: scale(.92); opacity: .7; transition: transform .28s ease, opacity .28s ease; cursor: pointer; }
   .c-card.focus { transform: scale(1); opacity: 1; }
   .c-card.type-eat { background: linear-gradient(160deg, #F7CE94, #E2963A); }
   .c-card.type-see { background: linear-gradient(160deg, #A9D3F2, #3E8FD1); }
@@ -70,12 +70,14 @@
   .ph-icon { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 46px; opacity: .55; }
   .has-photo .ph-icon { display: none; }
   .c-card::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0) 45%, rgba(6,10,6,.72) 100%); }
-  .c-badge { position: absolute; top: 12px; left: 12px; z-index: 2; background: rgba(0,0,0,.42); color: #fff; font-size: 10.5px; padding: 4px 10px; border-radius: 99px; backdrop-filter: blur(6px); }
-  .c-heart { position: absolute; top: 10px; right: 10px; z-index: 2; width: 30px; height: 30px; border-radius: 50%; background: rgba(255,255,255,.85); display: flex; align-items: center; justify-content: center; font-size: 13px; }
-  .c-info { position: absolute; left: 0; right: 0; bottom: 0; z-index: 2; padding: 14px 16px 16px; }
-  .c-time { font-size: 10.5px; color: rgba(255,255,255,.85); letter-spacing: .04em; font-variant-numeric: tabular-nums; }
-  .c-title { font-size: 16.5px; font-weight: 700; color: #fff; margin-top: 3px; line-height: 1.3; }
-  .c-loc { font-size: 11px; color: rgba(255,255,255,.8); margin-top: 3px; }
+  .c-badge { position: absolute; top: 14px; left: 14px; z-index: 2; background: rgba(0,0,0,.42); color: #fff; font-size: 11px; padding: 5px 11px; border-radius: 99px; backdrop-filter: blur(6px); }
+  .c-heart { position: absolute; top: 12px; right: 12px; z-index: 2; width: 34px; height: 34px; border-radius: 50%; background: rgba(255,255,255,.88); display: flex; align-items: center; justify-content: center; font-size: 15px; touch-action: manipulation; }
+  .c-heart:active { transform: scale(.9); }
+  .c-heart.liked { background: #E2545C; color: #fff; }
+  .c-info { position: absolute; left: 0; right: 0; bottom: 0; z-index: 2; padding: 16px 18px 18px; }
+  .c-time { font-size: 11px; color: rgba(255,255,255,.85); letter-spacing: .04em; font-variant-numeric: tabular-nums; }
+  .c-title { font-size: 19px; font-weight: 700; color: #fff; margin-top: 4px; line-height: 1.3; }
+  .c-loc { font-size: 12px; color: rgba(255,255,255,.8); margin-top: 4px; }
 
   /* ── 行程時刻條（Top Destinations 風格，可橫滑並置中放大） ── */
   .section-head { display: flex; justify-content: space-between; align-items: center; padding: 18px 18px 8px; }
@@ -120,40 +122,64 @@
   .btotal .v { font-size: 19px; font-weight: 700; color: var(--d1); font-family: 'Noto Serif TC', serif; }
   .budget-note { font-size: 10.5px; color: var(--muted); margin-top: 10px; line-height: 1.6; }
 
+  /* ── 行前準備打勾清單 ── */
+  .checklist-item { display: flex; align-items: center; gap: 10px; padding: 10px 2px; border-bottom: 1px solid var(--line); }
+  .checklist-item:last-child { border-bottom: none; }
+  .checklist-box { width: 22px; height: 22px; border-radius: 7px; border: 1.5px solid var(--line); flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 13px; color: #fff; background: #fff; }
+  .checklist-item.checked .checklist-box { background: var(--d1); border-color: var(--d1); }
+  .checklist-text { font-size: 12.5px; color: var(--ink); flex: 1; }
+  .checklist-item.checked .checklist-text { color: var(--muted); text-decoration: line-through; }
+
   /* ── Bottom nav ── */
   .bottom-nav { position: fixed; left: 16px; right: 16px; bottom: 14px; max-width: 448px; margin: 0 auto; background: var(--pill); border-radius: 28px; display: flex; justify-content: space-around; padding: 9px; z-index: 60; box-shadow: 0 16px 32px -12px rgba(0,0,0,.5); }
   .nav-btn { width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,.55); font-size: 17px; background: none; border: none; }
   .nav-btn.active { background: #fff; color: var(--ink); }
 
   /* ── Detail overlay（詳情頁） ── */
-  .detail-overlay { position: fixed; inset: 0; z-index: 100; background: #0B0E09; transform: translateY(100%); transition: transform .34s cubic-bezier(.22,.9,.32,1); overflow-y: auto; max-width: 480px; margin: 0 auto; }
+  .detail-overlay { position: fixed; inset: 0; z-index: 100; background: var(--bg); transform: translateY(100%); transition: transform .34s cubic-bezier(.22,.9,.32,1); overflow-y: auto; -webkit-overflow-scrolling: touch; max-width: 480px; margin: 0 auto; }
   .detail-overlay.open { transform: translateY(0); }
-  .detail-hero { position: relative; min-height: 320px; background-size: cover; background-position: center; }
+  .detail-hero-wrap { padding: 16px 16px 0; }
+  .detail-hero { position: relative; min-height: 300px; border-radius: 26px; overflow: hidden; background-size: cover; background-position: center; box-shadow: var(--shadow-lg); }
   .detail-hero.type-eat { background: linear-gradient(160deg, #F7CE94, #E2963A); }
   .detail-hero.type-see { background: linear-gradient(160deg, #A9D3F2, #3E8FD1); }
   .detail-hero.type-hot { background: linear-gradient(160deg, #DCC4F0, #A374CB); }
   .detail-hero.type-drv { background: linear-gradient(160deg, #D6D9C9, #8A9078); }
   .detail-hero.has-photo { background-color: #1c2016; }
-  .detail-hero::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,.1), rgba(8,10,6,.9)); }
-  .detail-top { position: absolute; top: 0; left: 0; right: 0; display: flex; justify-content: space-between; padding: 18px; z-index: 2; }
-  .circle-btn { width: 38px; height: 38px; border-radius: 50%; background: rgba(255,255,255,.16); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 16px; border: 1px solid rgba(255,255,255,.25); }
-  .detail-gallery { position: absolute; top: 64px; right: 18px; display: flex; flex-direction: column; gap: 6px; z-index: 2; }
-  .detail-thumb { width: 40px; height: 40px; border-radius: 10px; background-size: cover; background-position: center; background-color: rgba(255,255,255,.15); border: 1.5px solid rgba(255,255,255,.5); }
-  .detail-heading { position: relative; z-index: 2; padding: 0 22px 24px; }
-  .detail-eyebrow { font-size: 11px; color: rgba(255,255,255,.7); margin-bottom: 6px; letter-spacing: .04em; }
-  .detail-title { font-family: 'Noto Serif TC', serif; font-size: 23px; font-weight: 700; color: #fff; line-height: 1.35; }
-  .detail-loc { font-size: 12px; color: rgba(255,255,255,.78); margin-top: 8px; }
-  .detail-body { background: var(--bg); border-radius: 26px 26px 0 0; margin-top: -18px; position: relative; z-index: 3; padding: 22px 20px 110px; min-height: 40vh; }
-  .detail-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .detail-hero::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,.05) 55%, rgba(6,10,6,.35) 100%); }
+  .detail-top { position: absolute; top: 0; left: 0; right: 0; display: flex; justify-content: space-between; padding: 16px; z-index: 2; }
+  .circle-btn { width: 42px; height: 42px; border-radius: 50%; background: rgba(255,255,255,.22); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 19px; border: 1px solid rgba(255,255,255,.3); touch-action: manipulation; }
+  .circle-btn:active { transform: scale(.92); }
+  .circle-btn#detailHeart.liked { background: #E2545C; border-color: #E2545C; }
+  .detail-gallery { position: absolute; top: 66px; right: 16px; display: flex; flex-direction: column; gap: 8px; z-index: 2; }
+  .detail-thumb { width: 56px; height: 56px; border-radius: 14px; background-size: cover; background-position: center; background-color: rgba(255,255,255,.15); border: 2px solid rgba(255,255,255,.55); touch-action: manipulation; transition: transform .15s ease; }
+  .detail-thumb:active { transform: scale(.92); }
+
+  /* ── 縮圖點擊放大燈箱（正方形） ── */
+  .thumb-lightbox { position: fixed; inset: 0; z-index: 200; background: rgba(10,12,8,.8); display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity .2s ease; }
+  .thumb-lightbox.open { opacity: 1; pointer-events: auto; }
+  .thumb-lightbox img { width: 78vw; max-width: 340px; aspect-ratio: 1 / 1; object-fit: cover; border-radius: 22px; box-shadow: 0 24px 60px rgba(0,0,0,.5); }
+  .detail-heading { padding: 16px 18px 4px; }
+  .detail-eyebrow { font-size: 11px; color: var(--muted); margin-bottom: 5px; letter-spacing: .04em; }
+  .detail-title { font-family: 'Noto Serif TC', serif; font-size: 21px; font-weight: 700; color: var(--ink); line-height: 1.35; }
+  .detail-loc { font-size: 12px; color: var(--muted); margin-top: 6px; }
+  .detail-body { position: relative; padding: 14px 20px calc(110px + env(safe-area-inset-bottom)); min-height: 30vh; }
+  .detail-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 8px; }
   .dstat { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 12px 6px; text-align: center; }
   .dstat-label { font-size: 10px; color: var(--muted); }
   .dstat-val { font-size: 12.5px; font-weight: 700; margin-top: 5px; line-height: 1.3; }
-  .detail-desc-h { font-size: 14px; font-weight: 700; margin-top: 24px; }
+  .detail-desc-h { font-size: 14px; font-weight: 700; margin-top: 22px; }
   .detail-desc { font-size: 12.5px; color: #5B5F4A; line-height: 1.7; margin-top: 9px; }
-  .detail-bottom { position: fixed; left: 0; right: 0; bottom: 0; max-width: 480px; margin: 0 auto; background: #fff; border-top: 1px solid var(--line); padding: 14px 20px; display: flex; justify-content: space-between; align-items: center; z-index: 4; }
+  .detail-bottom { position: fixed; left: 0; right: 0; bottom: 0; max-width: 480px; margin: 0 auto; background: #fff; border-top: 1px solid var(--line); padding: 14px 20px calc(14px + env(safe-area-inset-bottom)); display: flex; justify-content: space-between; align-items: center; z-index: 4; }
   .detail-price-label { font-size: 10.5px; color: var(--muted); }
   .detail-price-val { font-size: 18px; font-weight: 700; font-family: 'Noto Serif TC', serif; }
-  .detail-go { width: 46px; height: 46px; border-radius: 50%; background: var(--ink); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 18px; text-decoration: none; flex-shrink: 0; }
+  .detail-go { width: 48px; height: 48px; border-radius: 50%; background: var(--ink); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 18px; text-decoration: none; flex-shrink: 0; touch-action: manipulation; }
+  .detail-go:active { transform: scale(.94); }
+
+  /* ── 手機操作優化：可點擊元素統一有按壓回饋、最小點擊區塊 ── */
+  button, .stop-mapbtn, .nav-btn, .icon-btn, .c-card, .chip-card, .checklist-item { touch-action: manipulation; }
+  .icon-btn:active, .nav-btn:active { transform: scale(.92); }
+  .c-card:active { transform: scale(.97) !important; }
+  .carousel, .chip-strip, .day-tabs { -webkit-overflow-scrolling: touch; }
 </style>
 </head>
 <body>
@@ -161,8 +187,8 @@
 <!-- Header -->
 <div class="app-header">
   <div>
-    <div class="app-title">知本解憂<span>．</span>藍皮慢行</div>
-    <div class="app-sub">Taitung · 3 Days ｜不趕、少走路的泡湯提案</div>
+    <div class="app-title" id="siteTitle">知本解憂<span>．</span>藍皮慢行</div>
+    <div class="app-sub" id="siteSub">Taitung · 3 Days ｜不趕、少走路的泡湯提案</div>
   </div>
   <div class="app-icons">
     <button class="icon-btn" onclick="switchView('info')">ℹ️</button>
@@ -179,7 +205,7 @@
 
   <div class="section-head">
     <div class="section-title">當日時刻總覽</div>
-    <div class="section-hint">左右滑動查看</div>
+    <div class="section-hint">點一下放大／點大圖看細節</div>
   </div>
   <div class="chip-strip" id="chipStrip"></div>
 </div>
@@ -200,6 +226,14 @@
       <div class="notice-line">火盛製餅舖每日限量，建議出發前一天或當天早上先電話預約（08-981-1173，週四公休）</div>
       <div class="notice-line">Day3 藍皮解憂號建議提前 3–7 天於雄獅官網或 KKday 訂票，並攜帶證件；所有票價時刻依台鐵／公路客運當日公告為準</div>
     </div>
+  </div>
+
+  <div class="panel" style="margin-top:16px;">
+    <div class="panel-h" style="display:flex;justify-content:space-between;align-items:center;">
+      <span>✅ 行前準備清單</span>
+      <span id="checklistProgress" style="font-size:11px;font-weight:400;color:var(--muted);">0/0</span>
+    </div>
+    <div id="checklistWrap"></div>
   </div>
 </div>
 
@@ -257,17 +291,19 @@
 
 <!-- Detail overlay -->
 <div class="detail-overlay" id="detailOverlay">
-  <div class="detail-hero" id="detailHero">
-    <div class="detail-top">
-      <button class="circle-btn" onclick="closeDetail()">‹</button>
-      <button class="circle-btn" id="detailHeart" onclick="this.textContent=this.textContent==='♡'?'♥':'♡'">♡</button>
+  <div class="detail-hero-wrap">
+    <div class="detail-hero" id="detailHero">
+      <div class="detail-top">
+        <button class="circle-btn" onclick="closeDetail()" aria-label="返回">‹</button>
+        <button class="circle-btn" id="detailHeart" onclick="toggleLike()" aria-label="收藏">♡</button>
+      </div>
+      <div class="detail-gallery" id="detailGallery"></div>
     </div>
-    <div class="detail-gallery" id="detailGallery"></div>
-    <div class="detail-heading">
-      <div class="detail-eyebrow" id="detailEyebrow"></div>
-      <div class="detail-title" id="detailTitle"></div>
-      <div class="detail-loc" id="detailLoc"></div>
-    </div>
+  </div>
+  <div class="detail-heading">
+    <div class="detail-eyebrow" id="detailEyebrow"></div>
+    <div class="detail-title" id="detailTitle"></div>
+    <div class="detail-loc" id="detailLoc"></div>
   </div>
   <div class="detail-body">
     <div class="detail-stats" id="detailStats"></div>
@@ -283,12 +319,17 @@
   </div>
 </div>
 
+<!-- 縮圖點擊放大燈箱 -->
+<div class="thumb-lightbox" id="thumbLightbox" onclick="closeLightbox()">
+  <img id="thumbLightboxImg" src="" alt="">
+</div>
+
 <script>
 /* ============ 行程資料 ============ */
 const TYPE_LABEL = { eat: '美食', see: '景點', hot: '溫泉', drv: '交通' };
 const TYPE_ICON  = { eat: '🍜', see: '🌿', hot: '♨️', drv: '🚌' };
 
-const days = [
+const DEFAULT_DAYS = [
   { id:'d1', label:'Day 1', accent:'a1', color:'d1', title:'知本泡湯過夜', stops: [
     { time:'09:26', tag:'交通', type:'drv', key:'taipei-station', title:'台鐵自強號 台北→台東', loc:'約 3.5–4 小時，建議提前訂票劃位' },
     { time:'13:00', tag:'轉乘', type:'drv', key:'taitung-station', title:'台東車站，月台轉乘區間車', loc:'📍 不出站，同月台候車，銜接約 15–20 分', link:'https://maps.google.com/?q=台東車站' },
@@ -324,8 +365,13 @@ const days = [
   ]},
 ];
 
+let days = DEFAULT_DAYS; // 若成功從 Google 試算表載入資料，這裡會被整批取代
 let currentDay = 0;
-let imageMap = {}; // key -> image url，由 Google 試算表載入後填入
+
+// 判斷字串是不是看起來像可用的圖片網址（避免把資料表裡的舊佔位字串誤當圖片套用）
+function isValidImageUrl(str) {
+  return typeof str === 'string' && /^(https?:\/\/|data:image\/)/.test(str.trim());
+}
 
 /* ============ 渲染 ============ */
 function renderDayTabs() {
@@ -351,17 +397,28 @@ function renderCarousel() {
   days[currentDay].stops.forEach((s, i) => {
     const card = document.createElement('div');
     card.className = 'c-card ' + cardMediaClass(s);
-    card.dataset.key = s.key;
+    if (isValidImageUrl(s.image)) {
+      card.style.backgroundImage = `url("${s.image}")`;
+      card.classList.add('has-photo');
+    }
     card.onclick = () => openDetail(currentDay, i);
+    const likeKey = currentDay + '-' + i;
+    const liked = likedStops.has(likeKey);
     card.innerHTML = `
       <div class="ph-icon">${TYPE_ICON[s.type]}</div>
       <span class="c-badge">${s.tag || TYPE_LABEL[s.type]}</span>
-      <span class="c-heart">♡</span>
+      <span class="c-heart${liked ? ' liked' : ''}">${liked ? '♥' : '♡'}</span>
       <div class="c-info">
         <div class="c-time">${s.time}</div>
         <div class="c-title">${s.title}</div>
         ${s.loc ? `<div class="c-loc">${s.loc.replace('📍 ','')}</div>` : ''}
       </div>`;
+    const heart = card.querySelector('.c-heart');
+    heart.onclick = (e) => {
+      e.stopPropagation();
+      if (likedStops.has(likeKey)) { likedStops.delete(likeKey); heart.textContent = '♡'; heart.classList.remove('liked'); }
+      else { likedStops.add(likeKey); heart.textContent = '♥'; heart.classList.add('liked'); }
+    };
     wrap.appendChild(card);
   });
 }
@@ -373,13 +430,22 @@ function renderChipStrip() {
     const chip = document.createElement('div');
     chip.className = 'chip-card ' + cardMediaClass(s);
     chip.onclick = () => {
-      openDetail(currentDay, i);
+      // 點選這格：把上方的主輪播捲到同一個景點並放大聚焦，
+      // 這格自己也捲到置中放大，想看細節再點上方大卡片即可
+      const mainCard = document.querySelectorAll('#carousel .c-card')[i];
+      if (mainCard) mainCard.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+      chip.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
     };
     chip.innerHTML = `
-      <div class="chip-thumb" data-key="${s.key}">
+      <div class="chip-thumb">
         <span class="chip-time">${s.time.split('–')[0]}</span>
       </div>
       <div class="chip-body"><div class="chip-title">${s.title}</div></div>`;
+    if (isValidImageUrl(s.image)) {
+      const thumb = chip.querySelector('.chip-thumb');
+      thumb.style.backgroundImage = `url("${s.image}")`;
+      thumb.classList.add('has-photo');
+    }
     chip.dataset.index = i;
     wrap.appendChild(chip);
   });
@@ -406,36 +472,44 @@ function renderAll() {
   renderDayTabs();
   renderCarousel();
   renderChipStrip();
-  applyImages();
   setupFocusScroll(document.getElementById('carousel'), '.c-card');
   setupFocusScroll(document.getElementById('chipStrip'), '.chip-card');
 }
 
 /* ============ 詳情頁 ============ */
+let likedStops = new Set(); // 收藏的景點（key = day-stopIdx）
+
 function openDetail(dayIdx, stopIdx) {
+  const isSameStop = window.currentDetail && window.currentDetail.day === dayIdx && window.currentDetail.stop === stopIdx;
   window.currentDetail = { day: dayIdx, stop: stopIdx };
+  if (!isSameStop) window.currentDetailPhotoUrl = null;
   const s = days[dayIdx].stops[stopIdx];
   const hero = document.getElementById('detailHero');
   hero.className = 'detail-hero ' + cardMediaClass(s);
-  const photo = imageMap[s.key];
-  if (photo) { hero.style.backgroundImage = `url("${photo}")`; hero.classList.add('has-photo'); }
-  else { hero.style.backgroundImage = 'none'; }
+
+  // 這個景點可用的所有照片（主圖 + 圖庫），只保留看起來像真的網址的
+  const allPhotos = [s.image, ...(s.gallery || [])].filter(isValidImageUrl);
+  const mainPhotoUrl = window.currentDetailPhotoUrl || allPhotos[0] || '';
+  setHeroPhoto(mainPhotoUrl);
 
   document.getElementById('detailEyebrow').textContent = `${days[dayIdx].label} · ${s.time}`;
   document.getElementById('detailTitle').textContent = s.title;
-  document.getElementById('detailLoc').textContent = s.loc ? s.loc.replace('📍 ', '📍 ') : (s.tag || '');
+  document.getElementById('detailLoc').textContent = s.loc ? s.loc.replace('📍 ', '📍 ') : (s.tag || '這一站沒有特別的地址，跟著時刻走就好');
 
-  // gallery thumbs
+  // 圖庫縮圖（含主圖本身，點擊可切換要看的大圖）
   const galWrap = document.getElementById('detailGallery');
   galWrap.innerHTML = '';
-  (s.gallery || []).forEach(k => {
-    const url = imageMap[k];
-    if (url) {
-      const d = document.createElement('div');
-      d.className = 'detail-thumb';
-      d.style.backgroundImage = `url("${url}")`;
-      galWrap.appendChild(d);
-    }
+  allPhotos.forEach(url => {
+    const d = document.createElement('div');
+    d.className = 'detail-thumb' + (url === mainPhotoUrl ? ' active' : '');
+    d.style.backgroundImage = `url("${url}")`;
+    d.onclick = () => {
+      window.currentDetailPhotoUrl = url;
+      setHeroPhoto(url);
+      galWrap.querySelectorAll('.detail-thumb').forEach(t => t.classList.remove('active'));
+      d.classList.add('active');
+    };
+    galWrap.appendChild(d);
   });
 
   // stats
@@ -451,22 +525,92 @@ function openDetail(dayIdx, stopIdx) {
 
   const priceLabel = document.getElementById('detailPriceLabel');
   const priceVal = document.getElementById('detailPriceVal');
-  if (s.tag && /[\$￥]/.test(s.tag)) { priceLabel.textContent = '參考費用'; priceVal.textContent = s.tag; }
+  if (s.priceLabel && s.priceValue) { priceLabel.textContent = s.priceLabel; priceVal.textContent = s.priceValue; }
+  else if (s.tag && /[\$￥]/.test(s.tag)) { priceLabel.textContent = '參考費用'; priceVal.textContent = s.tag; }
   else { priceLabel.textContent = '時段'; priceVal.textContent = s.time; }
 
   const goBtn = document.getElementById('detailGo');
   if (s.link) { goBtn.href = s.link; goBtn.style.opacity = 1; goBtn.style.pointerEvents = 'auto'; }
   else { goBtn.href = '#'; goBtn.style.opacity = .35; goBtn.style.pointerEvents = 'none'; }
 
-  document.getElementById('detailHeart').textContent = '♡';
-  document.getElementById('detailOverlay').classList.add('open');
+  // 收藏狀態
+  const likeKey = dayIdx + '-' + stopIdx;
+  const heartBtn = document.getElementById('detailHeart');
+  heartBtn.dataset.likeKey = likeKey;
+  if (likedStops.has(likeKey)) { heartBtn.textContent = '♥'; heartBtn.classList.add('liked'); }
+  else { heartBtn.textContent = '♡'; heartBtn.classList.remove('liked'); }
+
+  const overlay = document.getElementById('detailOverlay');
+  const wasOpen = overlay.classList.contains('open');
+  overlay.classList.add('open');
+  overlay.scrollTop = 0;
   document.body.style.overflow = 'hidden';
+
+  // 開啟細節頁時推一筆瀏覽紀錄，讓手機的「返回」手勢／按鍵可以直接關掉這頁，
+  // 而不是離開整個網站
+  if (!wasOpen) {
+    history.pushState({ detail: true }, '');
+  }
 }
 
-function closeDetail() {
-  document.getElementById('detailOverlay').classList.remove('open');
-  document.body.style.overflow = '';
+function setHeroPhoto(url) {
+  const hero = document.getElementById('detailHero');
+  if (url) { hero.style.backgroundImage = `url("${url}")`; hero.classList.add('has-photo'); }
+  else { hero.style.backgroundImage = 'none'; hero.classList.remove('has-photo'); }
 }
+
+function toggleLike() {
+  const heartBtn = document.getElementById('detailHeart');
+  const likeKey = heartBtn.dataset.likeKey;
+  if (likedStops.has(likeKey)) {
+    likedStops.delete(likeKey);
+    heartBtn.textContent = '♡';
+    heartBtn.classList.remove('liked');
+  } else {
+    likedStops.add(likeKey);
+    heartBtn.textContent = '♥';
+    heartBtn.classList.add('liked');
+  }
+}
+
+function closeDetail(skipHistory) {
+  const overlay = document.getElementById('detailOverlay');
+  if (!overlay.classList.contains('open')) return;
+  overlay.classList.remove('open');
+  document.body.style.overflow = '';
+  window.currentDetailPhotoKey = null;
+  if (!skipHistory && history.state && history.state.detail) {
+    history.back();
+  }
+}
+
+// 手機返回鍵／左滑返回手勢：關掉細節頁而不是離開網站
+window.addEventListener('popstate', () => {
+  closeDetail(true);
+});
+
+// 由上往下滑動可以關閉細節頁
+(function setupSwipeToClose() {
+  const overlay = document.getElementById('detailOverlay');
+  let startY = 0, startedAtTop = false, dragging = false;
+  overlay.addEventListener('touchstart', e => {
+    startY = e.touches[0].clientY;
+    startedAtTop = overlay.scrollTop <= 0;
+    dragging = startedAtTop;
+  }, { passive: true });
+  overlay.addEventListener('touchmove', e => {
+    if (!dragging) return;
+    const dy = e.touches[0].clientY - startY;
+    if (dy > 0) overlay.style.transform = `translateY(${Math.min(dy, 220)}px)`;
+  }, { passive: true });
+  overlay.addEventListener('touchend', e => {
+    if (!dragging) return;
+    const dy = e.changedTouches[0].clientY - startY;
+    overlay.style.transform = '';
+    dragging = false;
+    if (dy > 110) closeDetail();
+  });
+})();
 
 /* ============ 頁籤切換（底部導覽） ============ */
 function switchView(name, btn) {
@@ -534,126 +678,91 @@ document.getElementById('addRowBtn').onclick = () => {
   renderSplit();
 };
 
-/* ============ Google 試算表串圖（景點照片）============
+/* ============ Google 試算表串「全部」行程資料（文字＋圖片）============
+ *
+ * 這裡改用 Google Apps Script 把整份行程（時間、標題、地點、介紹、價格、
+ * 圖片…全部欄位）變成一個 JSON 網址，網頁載入時直接整批換掉內建的行程內容。
  *
  * 【設定步驟】
- * 1. 開一份 Google 試算表，第一列（標題列）填：key, image_url
- *    第二列開始，每一列放一個景點：
- *       key                image_url
- *       zhiben-hotel       https://.../照片1.jpg
- *       zhiben-hotel-room  https://.../照片2.jpg
- *       zhiben-hotel-pool  https://.../照片3.jpg
- *    key 要跟程式碼裡 days[] 資料中每個景點的 key（或 gallery 裡的 key）完全對應。
- *    image_url 建議放「可直接公開存取」的圖片網址（例如已上傳到網路相簿、圖床、
- *    或 Google Drive 圖片用 https://drive.google.com/uc?export=view&id=檔案ID 這種直連格式）。
+ * 1. 開一份新的 Google 試算表，建立兩個工作表分頁，分頁名稱要完全一樣：
+ *      「Stops」－每一列是一個景點／行程站
+ *      「Days」－每一列是一天的標題／副標題
+ *    完整欄位說明、範例資料，請看隨附的「行程資料API.gs」開頭註解，
+ *    或直接匯入我一起給你的 CSV 範本（Stops.csv / Days.csv）快速開始。
  *
- * 2. 點右上角「共用」，把權限改成「知道連結的任何人」都可以「檢視」。
- *    （不需要特別做「發布到網路」，只要分享權限開放就能讀取。）
+ * 2. 把「行程資料API.gs」的內容貼進「擴充功能」→「Apps Script」，
+ *    部署成網頁應用程式（執行身分：我／存取權：所有人），
+ *    拿到 https://script.google.com/macros/s/xxx/exec 這個網址。
  *
- * 3. 複製瀏覽器網址列上的試算表連結（長這樣：
- *    https://docs.google.com/spreadsheets/d/xxxxxxxxxxxxx/edit#gid=0）
- *    直接貼到下面 SHEET_CSV_URL 就好，程式會自動轉換成 CSV 匯出格式。
- *    （如果你本來就有 CSV 直連網址，也可以直接貼，程式會偵測並照原樣使用。）
+ * 3. 貼到下面的 DATA_API_URL。之後行程內容只要改 Google 試算表，
+ *    重新整理網頁就會套用最新內容（文字、圖片都算在內），不用再改程式碼。
  *
- * 【進階】如果 CSV 方式偶爾讀不到（例如權限、快取問題），可以改用
- * 「景點圖片API.gs」這支 Google Apps Script，部署成網頁應用程式後
- * 會得到一個更穩定的 JSON 網址，一樣直接貼到 SHEET_CSV_URL 即可，
- * 程式會自動判斷是 JSON 還是 CSV 格式，不用改其他程式碼。
+ * 沒有設定 DATA_API_URL、或試算表暫時讀不到時，網頁會自動使用內建的
+ * 預設行程內容（DEFAULT_DAYS），確保頁面不會空白。
  * ================================================================= */
 
-const SHEET_CSV_URL = ''; // ← 貼你的 Google 試算表連結或 CSV 網址
+const DATA_API_URL = ''; // ← 貼你部署好的 Apps Script 網址
 
-// 把一般的 Google 試算表分享連結，自動轉成可直接抓取的 CSV 匯出網址
-function toCsvExportUrl(url) {
-  const m = url.match(/\/spreadsheets\/d\/([a-zA-Z0-9-_]+)/);
-  if (!m) return url; // 不是標準試算表連結，當作已經是 CSV 網址直接使用
-  const gidMatch = url.match(/[?&#]gid=(\d+)/);
-  const gid = gidMatch ? gidMatch[1] : '0';
-  return `https://docs.google.com/spreadsheets/d/${m[1]}/export?format=csv&gid=${gid}`;
+function isValidDaysPayload(json) {
+  return json && Array.isArray(json.days) && json.days.length > 0 &&
+    json.days.every(d => Array.isArray(d.stops));
 }
 
-// 簡易但穩健的 CSV 解析（支援欄位內有逗號、換行、雙引號的情況）
-function parseCSV(text) {
-  const rows = [];
-  let row = [], field = '', inQuotes = false;
-  for (let i = 0; i < text.length; i++) {
-    const c = text[i], next = text[i + 1];
-    if (inQuotes) {
-      if (c === '"' && next === '"') { field += '"'; i++; }
-      else if (c === '"') { inQuotes = false; }
-      else { field += c; }
-    } else {
-      if (c === '"') { inQuotes = true; }
-      else if (c === ',') { row.push(field); field = ''; }
-      else if (c === '\r') { /* 忽略 */ }
-      else if (c === '\n') { row.push(field); rows.push(row); row = []; field = ''; }
-      else { field += c; }
-    }
-  }
-  if (field.length || row.length) { row.push(field); rows.push(row); }
-  return rows.filter(r => r.some(c => c.trim() !== ''));
-}
-
-function applyImages() {
-  document.querySelectorAll('.c-card[data-key]').forEach(el => {
-    const url = imageMap[el.dataset.key];
-    if (url) { el.style.backgroundImage = `url("${url}")`; el.classList.add('has-photo'); }
-  });
-  document.querySelectorAll('.chip-thumb[data-key]').forEach(el => {
-    const url = imageMap[el.dataset.key];
-    if (url) { el.style.backgroundImage = `url("${url}")`; el.classList.add('has-photo'); }
-  });
-  // 若細節頁正開著，同步更新裡面的大圖與縮圖
-  if (document.getElementById('detailOverlay').classList.contains('open') && window.currentDetail) {
-    openDetail(window.currentDetail.day, window.currentDetail.stop);
-  }
-}
-
-async function loadImages() {
-  if (!https://script.google.com/macros/s/AKfycbyUU_yCCJJj6sU5fVimHJI1uy-P4MPPBC3nfHvikEhryleF1KnuhB_LCv4rFzoXO6X7aw/exec) return;
-  const rawUrl = SHEET_CSV_URL.trim();
+async function loadTripData() {
+  if (!DATA_API_URL) return;
   try {
-    const url = toCsvExportUrl(rawUrl);
-    const res = await fetch(url);
+    const res = await fetch(DATA_API_URL.trim());
     if (!res.ok) throw new Error('HTTP ' + res.status);
-    const text = await res.text();
+    const json = await res.json();
+    if (json && json.error) { console.warn('試算表回傳錯誤：' + json.error); return; }
+    if (!isValidDaysPayload(json)) { console.warn('試算表回傳的資料格式不正確，仍使用內建預設行程'); return; }
 
-    // 先嘗試當作 JSON 解析（Google Apps Script 網頁應用程式輸出的格式）
-    let parsedAsJson = false;
-    try {
-      const json = JSON.parse(text);
-      if (json && json.error) { console.warn('圖片來源回傳錯誤：' + json.error); return; }
-      Object.assign(imageMap, json);
-      parsedAsJson = true;
-    } catch (jsonErr) { /* 不是 JSON，往下改用 CSV 解析 */ }
-
-    if (!parsedAsJson) {
-      const rows = parseCSV(text);
-      const header = rows.shift().map(h => h.trim().toLowerCase());
-      const keyIdx = header.indexOf('key');
-      const urlIdx = header.indexOf('image_url');
-      if (keyIdx === -1 || urlIdx === -1) {
-        console.warn('試算表欄位需為 key, image_url（目前讀到的欄位：' + header.join(', ') + '）');
-        return;
-      }
-      rows.forEach(r => {
-        const k = (r[keyIdx] || '').trim();
-        const v = (r[urlIdx] || '').trim();
-        if (k && v) imageMap[k] = v;
-      });
+    days = json.days;
+    if (currentDay >= days.length) currentDay = 0;
+    renderAll();
+    // 若細節頁正開著，同步刷新內容
+    if (document.getElementById('detailOverlay').classList.contains('open') && window.currentDetail) {
+      openDetail(window.currentDetail.day, window.currentDetail.stop);
     }
-
-    applyImages();
-    console.log(`已從 Google 試算表載入 ${Object.keys(imageMap).length} 筆圖片（來源：${parsedAsJson ? 'Apps Script JSON' : 'CSV 匯出'}）`);
+    console.log(`已從 Google 試算表載入 ${days.length} 天、共 ${days.reduce((n,d)=>n+d.stops.length,0)} 個行程站`);
   } catch (e) {
-    console.warn('圖片載入失敗，請確認：1) 試算表分享權限已開放「知道連結的任何人可檢視」，或 Apps Script 已部署為「所有人」可存取 2) 欄位名稱為 key, image_url', e);
+    console.warn('行程資料載入失敗，改用內建預設行程。請確認 Apps Script 已部署為「所有人」可存取', e);
   }
+}
+
+/* ============ 行前準備清單 ============ */
+let checklist = [
+  { text: '身分證／證件（藍皮解憂號需核對）', checked: false },
+  { text: '確認知本溫泉飯店入住時間與接駁預約', checked: false },
+  { text: '電話預約火盛製餅舖（08-981-1173）', checked: false },
+  { text: '藍皮解憂號車票已完成訂購', checked: false },
+  { text: '台鐵自強號來回車票已劃位', checked: false },
+  { text: '泳裝／泡湯用品', checked: false },
+  { text: '拖鞋、輕便衣物（少走路行程）', checked: false },
+  { text: '行動電源、充電線', checked: false },
+  { text: '防曬乳、輕便雨具', checked: false },
+  { text: '暈車藥（區間車、山路路段）', checked: false },
+];
+
+function renderChecklist() {
+  const wrap = document.getElementById('checklistWrap');
+  wrap.innerHTML = '';
+  checklist.forEach((item, i) => {
+    const row = document.createElement('div');
+    row.className = 'checklist-item' + (item.checked ? ' checked' : '');
+    row.innerHTML = `<div class="checklist-box">${item.checked ? '✓' : ''}</div><div class="checklist-text">${item.text}</div>`;
+    row.onclick = () => { checklist[i].checked = !checklist[i].checked; renderChecklist(); };
+    wrap.appendChild(row);
+  });
+  const done = checklist.filter(i => i.checked).length;
+  document.getElementById('checklistProgress').textContent = `${done}/${checklist.length}`;
 }
 
 /* ============ 初始化 ============ */
 renderAll();
 renderSplit();
-loadImages();
+renderChecklist();
+loadTripData();
 </script>
 </body>
 </html>
