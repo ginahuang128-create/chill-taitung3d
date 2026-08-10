@@ -653,7 +653,7 @@ async function loadTripData() {
     // 加上時間戳並關閉快取：Google Apps Script 的網址常被瀏覽器／中繼快取記住舊回應，
     // 導致試算表明明更新了，網頁重新整理卻還是讀到舊資料。這裡強制每次都拿最新版本。
     const url = DATA_API_URL.trim() + (DATA_API_URL.includes('?') ? '&' : '?') + 'ts=' + Date.now();
-    const res = await fetch(url, { cache: 'no-store', headers: { 'Cache-Control': 'no-cache' } });
+    const res = await fetch(url, { cache: 'no-store' });
     if (!res.ok) throw new Error('HTTP ' + res.status);
     const json = await res.json();
     if (json.error) { console.warn('試算表回傳錯誤：' + json.error); return; }
