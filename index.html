@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, viewport-fit=cover">
-<title>知本解憂．藍皮慢行 三日提案</title>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>♨️</text></svg>">
+<title id="pageTitle">知本解憂．藍皮慢行 三日提案</title>
+<link id="pageFavicon" rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>♨️</text></svg>">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@700&family=Noto+Sans+TC:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#F7F4EC;--ink:#1D2016;--muted:#8B8F7C;--line:#E7E2D2;--card:#FFFFFF;--pill:#14150F;
@@ -13,7 +13,7 @@
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html{-webkit-text-size-adjust:100%}
 body{color:var(--ink);background:var(--bg);font-family:'Noto Sans TC',sans-serif;font-size:14.5px;line-height:1.55;
-padding-bottom:96px;max-width:480px;margin:0 auto;position:relative;min-height:100vh}
+padding-bottom:calc(112px + env(safe-area-inset-bottom));max-width:480px;margin:0 auto;position:relative;min-height:100vh}
 a{color:inherit}
 ::-webkit-scrollbar{display:none}
 
@@ -38,7 +38,7 @@ border:none;border-bottom:2px solid transparent;background:none}
 /* Carousel */
 .carousel{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;padding:14px 18px 6px;scroll-padding:0 18px;
 -webkit-overflow-scrolling:touch}
-.c-card{scroll-snap-align:center;flex:0 0 68%;aspect-ratio:3/4.3;border-radius:26px;position:relative;overflow:hidden;
+.c-card{scroll-snap-align:center;flex:0 0 68%;aspect-ratio:3/3.4;border-radius:26px;position:relative;overflow:hidden;
 background-size:cover;background-position:center;box-shadow:var(--shadow);transform:scale(.92);opacity:.7;
 transition:transform .28s ease,opacity .28s ease;cursor:pointer;touch-action:manipulation}
 .c-card:active{transform:scale(.97)!important}
@@ -49,10 +49,6 @@ transition:transform .28s ease,opacity .28s ease;cursor:pointer;touch-action:man
 .has-photo .ph-icon{display:none}
 .c-badge{position:absolute;top:14px;left:14px;z-index:2;background:rgba(0,0,0,.42);color:#fff;font-size:11.5px;
 padding:5px 11px;border-radius:99px;backdrop-filter:blur(6px)}
-.c-heart{position:absolute;top:12px;right:12px;z-index:2;width:36px;height:36px;border-radius:50%;
-background:rgba(255,255,255,.88);display:flex;align-items:center;justify-content:center;font-size:16px;touch-action:manipulation}
-.c-heart:active{transform:scale(.9)}
-.c-heart.liked{background:#E2545C;color:#fff}
 .c-info{position:absolute;left:0;right:0;bottom:0;z-index:2;padding:16px 18px 18px}
 .c-time{font-size:11.5px;color:rgba(255,255,255,.85);letter-spacing:.04em;font-variant-numeric:tabular-nums}
 .c-title{font-size:19px;font-weight:700;color:#fff;margin-top:4px;line-height:1.3}
@@ -118,12 +114,14 @@ display:flex;align-items:center;justify-content:center;font-size:14px;color:#fff
 .checklist-item.checked .checklist-text{color:var(--muted);text-decoration:line-through}
 
 /* Bottom nav */
-.bottom-nav{position:fixed;left:16px;right:16px;bottom:14px;max-width:448px;margin:0 auto;background:var(--pill);
-border-radius:28px;display:flex;justify-content:space-around;padding:9px;z-index:60;box-shadow:0 16px 32px -12px rgba(0,0,0,.5)}
+.bottom-nav{position:fixed;left:16px;right:16px;bottom:calc(14px + env(safe-area-inset-bottom));max-width:448px;margin:0 auto;
+background:rgba(255,253,247,.72);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+border:1px solid rgba(231,226,210,.9);
+border-radius:28px;display:flex;justify-content:space-around;padding:9px;z-index:60;box-shadow:0 16px 32px -16px rgba(60,55,35,.28)}
 .nav-btn{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;
-color:rgba(255,255,255,.55);font-size:18px;background:none;border:none;touch-action:manipulation}
+color:var(--muted);font-size:17px;background:none;border:none;touch-action:manipulation;transition:background .18s ease,color .18s ease}
 .nav-btn:active,.icon-btn:active{transform:scale(.92)}
-.nav-btn.active{background:#fff;color:var(--ink)}
+.nav-btn.active{background:var(--ink);color:#fff}
 
 /* Detail overlay */
 .detail-overlay{position:fixed;inset:0;z-index:100;background:var(--bg);transform:translateY(100%);
@@ -136,7 +134,6 @@ transition:transform .34s cubic-bezier(.22,.9,.32,1);overflow-y:auto;-webkit-ove
 .circle-btn{width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.22);backdrop-filter:blur(8px);
 display:flex;align-items:center;justify-content:center;color:#fff;font-size:19px;border:1px solid rgba(255,255,255,.3);touch-action:manipulation}
 .circle-btn:active{transform:scale(.92)}
-.circle-btn#detailHeart.liked{background:#E2545C;border-color:#E2545C}
 .detail-gallery{position:absolute;top:66px;right:16px;display:flex;flex-direction:column;gap:8px;z-index:2}
 .detail-thumb{width:56px;height:56px;border-radius:14px;background-size:cover;background-position:center;
 background-color:rgba(255,255,255,.15);border:2px solid rgba(255,255,255,.55);touch-action:manipulation;transition:transform .15s ease}
@@ -247,7 +244,6 @@ justify-content:center;font-size:18px;text-decoration:none;flex-shrink:0;touch-a
     <div class="detail-hero" id="detailHero">
       <div class="detail-top">
         <button class="circle-btn" onclick="closeDetail()" aria-label="返回">‹</button>
-        <button class="circle-btn" id="detailHeart" onclick="toggleLike()" aria-label="收藏">♡</button>
       </div>
       <div class="detail-gallery" id="detailGallery"></div>
     </div>
@@ -360,7 +356,6 @@ const DEFAULT_DAYS = [
 
 let days = DEFAULT_DAYS;
 let currentDay = 0;
-let likedStops = new Set();
 
 const isImg = s => typeof s === 'string' && /^(https?:\/\/|data:image\/)/.test(s.trim());
 
@@ -371,6 +366,9 @@ function renderMeta() {
   document.getElementById('infoTitle').textContent = meta.infoTitle;
   document.getElementById('infoSub').textContent = meta.infoSub;
   document.getElementById('budgetNote').textContent = meta.budgetNote;
+  // 分頁標題／icon：可在試算表 meta 加 pageTitle / favicon 欄位覆蓋，留空則沿用 siteTitle
+  document.getElementById('pageTitle').textContent = meta.pageTitle || meta.siteTitle;
+  if (meta.favicon) document.getElementById('pageFavicon').setAttribute('href', meta.favicon);
 }
 function renderChips() {
   document.getElementById('chipsWrap').innerHTML = chips.map(c => `<span class="chip">${c}</span>`).join('');
@@ -378,10 +376,18 @@ function renderChips() {
 function renderNotices() {
   document.getElementById('noticeWrap').innerHTML = notices.map(n => `<div class="notice-line">${n}</div>`).join('');
 }
+function rowAmount(r) {
+  // 優先用 amount 欄位；如果試算表沒填、填成文字或算不出數字，就自動從 display（例如「約$2,280」）擷取數字當備援，
+  // 這樣就不會因為 amount 沒對到而讓總計整個變 0。
+  const n = Number(r.amount);
+  if (Number.isFinite(n) && n > 0) return n;
+  const digits = String(r.display || '').replace(/[^0-9.]/g, '');
+  return digits ? Number(digits) || 0 : 0;
+}
 function renderBudget() {
   document.getElementById('budgetRows').innerHTML = budgetRows.map(r =>
     `<div class="brow"><div class="l">${r.label}</div><div class="v">${r.display}</div></div>`).join('');
-  const total = budgetRows.reduce((s, r) => s + (Number(r.amount) || 0), 0);
+  const total = budgetRows.reduce((s, r) => s + rowAmount(r), 0);
   document.getElementById('budgetTotal').textContent = '約$' + total.toLocaleString();
 }
 function renderChecklist() {
@@ -421,25 +427,14 @@ function renderCarousel() {
     card.className = 'c-card type-' + s.type;
     if (isImg(s.image)) { card.style.backgroundImage = `url("${s.image}")`; card.classList.add('has-photo'); }
     card.onclick = () => openDetail(currentDay, i);
-    const likeKey = currentDay + '-' + i;
-    const liked = likedStops.has(likeKey);
     card.innerHTML = `
       <div class="ph-icon">${TYPE_ICON[s.type]}</div>
       <span class="c-badge">${s.tag || TYPE_LABEL[s.type]}</span>
-      <span class="c-heart${liked ? ' liked' : ''}">${liked ? '♥' : '♡'}</span>
       <div class="c-info">
         <div class="c-time">${s.time}</div>
         <div class="c-title">${s.title}</div>
         ${s.loc ? `<div class="c-loc">${s.loc.replace('📍 ', '')}</div>` : ''}
       </div>`;
-    const heart = card.querySelector('.c-heart');
-    heart.onclick = e => {
-      e.stopPropagation();
-      const on = likedStops.has(likeKey);
-      if (on) likedStops.delete(likeKey); else likedStops.add(likeKey);
-      heart.textContent = on ? '♡' : '♥';
-      heart.classList.toggle('liked', !on);
-    };
     wrap.appendChild(card);
   });
 }
@@ -532,13 +527,6 @@ function openDetail(dayIdx, stopIdx) {
   if (s.link) { goBtn.href = s.link; goBtn.style.opacity = 1; goBtn.style.pointerEvents = 'auto'; }
   else { goBtn.href = '#'; goBtn.style.opacity = .35; goBtn.style.pointerEvents = 'none'; }
 
-  const likeKey = dayIdx + '-' + stopIdx;
-  const heartBtn = document.getElementById('detailHeart');
-  heartBtn.dataset.likeKey = likeKey;
-  const liked = likedStops.has(likeKey);
-  heartBtn.textContent = liked ? '♥' : '♡';
-  heartBtn.classList.toggle('liked', liked);
-
   const overlay = document.getElementById('detailOverlay');
   const wasOpen = overlay.classList.contains('open');
   overlay.classList.add('open');
@@ -551,16 +539,6 @@ function setHeroPhoto(url) {
   const hero = document.getElementById('detailHero');
   if (url) { hero.style.backgroundImage = `url("${url}")`; hero.classList.add('has-photo'); }
   else { hero.style.backgroundImage = 'none'; hero.classList.remove('has-photo'); }
-}
-
-// 右上角愛心：點一下收藏，再點一下可取消
-function toggleLike() {
-  const heartBtn = document.getElementById('detailHeart');
-  const key = heartBtn.dataset.likeKey;
-  const on = likedStops.has(key);
-  if (on) likedStops.delete(key); else likedStops.add(key);
-  heartBtn.textContent = on ? '♡' : '♥';
-  heartBtn.classList.toggle('liked', !on);
 }
 
 function closeDetail(skipHistory) {
@@ -601,12 +579,28 @@ function switchView(name, btn) {
   document.getElementById('dayDesc').style.display = show ? 'block' : 'none';
 }
 
-/* ============ 分帳小工具 ============ */
-let expenses = [
+/* ============ 分帳小工具（自動記住上次填的內容） ============ */
+const SPLIT_STORAGE_KEY = 'zhiben-trip-split-v1';
+const DEFAULT_EXPENSES = [
   { name:'知本溫泉一泊二食', amount:4560, payer:'A' },
   { name:'市區住宿 1 晚', amount:1500, payer:'B' },
   { name:'藍皮解憂號套票 x2', amount:1398, payer:'A' },
 ];
+function loadExpenses() {
+  try {
+    const saved = localStorage.getItem(SPLIT_STORAGE_KEY);
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      if (Array.isArray(parsed)) return parsed;
+    }
+  } catch (e) { console.warn('讀取分帳紀錄失敗，改用預設內容', e); }
+  return DEFAULT_EXPENSES;
+}
+function saveExpenses() {
+  try { localStorage.setItem(SPLIT_STORAGE_KEY, JSON.stringify(expenses)); }
+  catch (e) { console.warn('分帳紀錄儲存失敗', e); }
+}
+let expenses = loadExpenses();
 function renderSplit() {
   const rowsEl = document.getElementById('splitRows');
   rowsEl.innerHTML = '';
@@ -622,10 +616,10 @@ function renderSplit() {
       </select>
       <button style="padding:7px 10px;border-radius:7px;border:1px solid var(--line);background:none;color:#D9713F;font-size:13px">✕</button>`;
     const [nameInput, amountInput, payerSelect, delBtn] = row.children;
-    nameInput.oninput = () => { expenses[i].name = nameInput.value; };
-    amountInput.oninput = () => { expenses[i].amount = Number(amountInput.value) || 0; calcSettle(); };
-    payerSelect.onchange = () => { expenses[i].payer = payerSelect.value; calcSettle(); };
-    delBtn.onclick = () => { expenses.splice(i, 1); renderSplit(); };
+    nameInput.oninput = () => { expenses[i].name = nameInput.value; saveExpenses(); };
+    amountInput.oninput = () => { expenses[i].amount = Number(amountInput.value) || 0; calcSettle(); saveExpenses(); };
+    payerSelect.onchange = () => { expenses[i].payer = payerSelect.value; calcSettle(); saveExpenses(); };
+    delBtn.onclick = () => { expenses.splice(i, 1); renderSplit(); saveExpenses(); };
     rowsEl.appendChild(row);
   });
   calcSettle();
@@ -643,7 +637,7 @@ function calcSettle() {
   else if (diff > 0) settleText.textContent = `念臻需付 Gina $${Math.round(diff).toLocaleString()}`;
   else settleText.textContent = `Gina需付念臻 $${Math.round(-diff).toLocaleString()}`;
 }
-document.getElementById('addRowBtn').onclick = () => { expenses.push({ name:'', amount:0, payer:'A' }); renderSplit(); };
+document.getElementById('addRowBtn').onclick = () => { expenses.push({ name:'', amount:0, payer:'A' }); renderSplit(); saveExpenses(); };
 
 /* ============ Google 試算表串接 ============
  * 部署好 Apps Script 後，把網址貼在下面 DATA_API_URL。
@@ -656,7 +650,10 @@ const DATA_API_URL = "https://script.google.com/macros/s/AKfycbyUU_yCCJJj6sU5fVi
 async function loadTripData() {
   if (!DATA_API_URL) return;
   try {
-    const res = await fetch(DATA_API_URL.trim());
+    // 加上時間戳並關閉快取：Google Apps Script 的網址常被瀏覽器／中繼快取記住舊回應，
+    // 導致試算表明明更新了，網頁重新整理卻還是讀到舊資料。這裡強制每次都拿最新版本。
+    const url = DATA_API_URL.trim() + (DATA_API_URL.includes('?') ? '&' : '?') + 'ts=' + Date.now();
+    const res = await fetch(url, { cache: 'no-store', headers: { 'Cache-Control': 'no-cache' } });
     if (!res.ok) throw new Error('HTTP ' + res.status);
     const json = await res.json();
     if (json.error) { console.warn('試算表回傳錯誤：' + json.error); return; }
