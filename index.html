@@ -147,10 +147,13 @@ transition:transform .34s cubic-bezier(.22,.9,.32,1);overflow-y:auto;-webkit-ove
 .circle-btn{width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.22);backdrop-filter:blur(8px);
 display:flex;align-items:center;justify-content:center;color:#fff;font-size:19px;border:1px solid rgba(255,255,255,.3);touch-action:manipulation}
 .circle-btn:active{transform:scale(.92)}
-.detail-gallery{position:absolute;top:66px;right:16px;display:flex;flex-direction:column;gap:8px;z-index:2}
-.detail-thumb{width:56px;height:56px;border-radius:14px;background-size:cover;background-position:center;
-background-color:rgba(255,255,255,.15);border:2px solid rgba(255,255,255,.55);touch-action:manipulation;transition:transform .15s ease}
+.detail-gallery{position:absolute;top:66px;right:16px;bottom:16px;display:flex;flex-direction:column;gap:8px;z-index:2;
+overflow-y:auto;-webkit-overflow-scrolling:touch;scroll-snap-type:y proximity;padding-bottom:4px}
+.detail-gallery::-webkit-scrollbar{display:none}
+.detail-thumb{width:56px;height:56px;border-radius:14px;background-size:cover;background-position:center;flex-shrink:0;
+background-color:rgba(255,255,255,.15);border:2px solid rgba(255,255,255,.55);touch-action:manipulation;transition:transform .15s ease,border-color .15s ease;scroll-snap-align:end}
 .detail-thumb:active{transform:scale(.92)}
+.detail-thumb.current{border-color:#fff;box-shadow:0 0 0 2px rgba(0,0,0,.25)}
 
 .thumb-lightbox{position:fixed;inset:0;z-index:200;background:rgba(10,12,8,.8);display:flex;align-items:center;
 justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s ease}
@@ -513,15 +516,17 @@ function openDetail(dayIdx, stopIdx) {
   document.getElementById('detailTitle').textContent = s.title;
   document.getElementById('detailLoc').textContent = s.loc ? s.loc : (s.tag || '這一站沒有特別的地址，跟著時刻走就好');
 
+  // 右側縮圖：改成「當天行程導覽」，只放圖片、不放文字，點一下就切到那一站的詳情
   const galWrap = document.getElementById('detailGallery');
   galWrap.innerHTML = '';
-  allPhotos.forEach(url => {
+  days[dayIdx].stops.forEach((stop, i) => {
     const d = document.createElement('div');
-    d.className = 'detail-thumb';
-    d.style.backgroundImage = `url("${url}")`;
-    d.onclick = () => { window.currentDetailPhotoUrl = url; setHeroPhoto(url); };
+    d.className = 'detail-thumb' + (i === stopIdx ? ' current' : '');
+    if (isImg(stop.image)) d.style.backgroundImage = `url("${stop.image}")`;
+    d.onclick = () => openDetail(dayIdx, i);
     galWrap.appendChild(d);
   });
+  galWrap.querySelector('.detail-thumb.current')?.scrollIntoView({ block:'nearest' });
 
   const stats = (s.stats && s.stats.length ? s.stats.slice(0, 3) : [
     { l:'時段', v:s.time }, { l:'類型', v:TYPE_LABEL[s.type] }, { l:'備註', v:s.tag || '—' },
