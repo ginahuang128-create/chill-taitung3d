@@ -7,29 +7,42 @@
 <link id="pageFavicon" rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>♨️</text></svg>">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@700&family=Noto+Sans+TC:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#F7F4EC;--ink:#1D2016;--muted:#8B8F7C;--line:#E7E2D2;--card:#FFFFFF;--pill:#14150F;
+:root{--bg:#F3EFE4;--ink:#1D2016;--muted:#7C806E;--line:#E7E2D2;--card:#FFFFFF;--pill:#14150F;
 --d1:#2FA0C4;--d2:#C79A4B;--d3:#9B9B34;
+--glass:rgba(255,255,255,.5);--glass-soft:rgba(255,255,255,.32);--glass-line:rgba(255,255,255,.6);--glass-line-soft:rgba(29,32,22,.1);
 --shadow:0 10px 26px -14px rgba(20,20,10,.35);--shadow-lg:0 18px 40px -16px rgba(20,20,10,.4)}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html{-webkit-text-size-adjust:100%}
 body{color:var(--ink);background:var(--bg);font-family:'Noto Sans TC',sans-serif;font-size:14.5px;line-height:1.55;
-padding-bottom:calc(112px + env(safe-area-inset-bottom));max-width:480px;margin:0 auto;position:relative;min-height:100vh}
+padding-bottom:calc(112px + env(safe-area-inset-bottom));max-width:480px;margin:0 auto;position:relative;min-height:100vh;isolation:isolate}
 a{color:inherit}
 ::-webkit-scrollbar{display:none}
+
+/* 背景霧感光暈：毛玻璃需要背後有東西可以「透」，用三天主題色做柔和光斑 */
+.bg-glow{position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none}
+.bg-glow i{position:absolute;border-radius:50%;filter:blur(64px)}
+.bg-glow i:nth-child(1){width:320px;height:320px;top:-100px;left:-90px;background:var(--d1);opacity:.35}
+.bg-glow i:nth-child(2){width:280px;height:280px;top:200px;right:-110px;background:var(--d2);opacity:.3}
+.bg-glow i:nth-child(3){width:300px;height:300px;left:20%;bottom:-140px;background:var(--d3);opacity:.28}
+
+/* 共用毛玻璃卡片樣式 */
+.glass{background:var(--glass);-webkit-backdrop-filter:blur(20px) saturate(160%);backdrop-filter:blur(20px) saturate(160%);
+border:1px solid var(--glass-line)}
 
 /* Header */
 .app-header{display:flex;justify-content:space-between;align-items:flex-start;padding:22px 18px 4px}
 .app-title{font-family:'Noto Serif TC',serif;font-size:25px;font-weight:700}
 .app-sub{font-size:12px;color:var(--muted);margin-top:4px}
 .app-icons{display:flex;gap:8px;flex-shrink:0}
-.icon-btn{width:36px;height:36px;border-radius:50%;background:var(--card);border:1px solid var(--line);
-display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow);font-size:15px}
+.icon-btn{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+box-shadow:var(--shadow);font-size:15px}
 
 /* Day tabs */
+/* Day tabs：不要玻璃底色，只保留每個籤下方的顏色底線 */
 .day-tabs{display:flex;gap:22px;padding:18px 18px 2px;overflow-x:auto}
 .day-tab{font-size:15px;color:var(--muted);font-weight:600;white-space:nowrap;padding-bottom:9px;
 border:none;border-bottom:2px solid transparent;background:none}
-.day-tab.active{color:var(--ink)}
+.day-tab.active{color:var(--ink);font-weight:700}
 .day-tab.active.a1{border-color:var(--d1)}
 .day-tab.active.a2{border-color:var(--d2)}
 .day-tab.active.a3{border-color:var(--d3)}
@@ -38,7 +51,7 @@ border:none;border-bottom:2px solid transparent;background:none}
 /* Carousel */
 .carousel{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;padding:14px 18px 6px;scroll-padding:0 18px;
 -webkit-overflow-scrolling:touch}
-.c-card{scroll-snap-align:center;flex:0 0 68%;aspect-ratio:3/3.4;border-radius:26px;position:relative;overflow:hidden;
+.c-card{scroll-snap-align:center;flex:0 0 68%;aspect-ratio:1/1;border-radius:26px;position:relative;overflow:hidden;
 background-size:cover;background-position:center;box-shadow:var(--shadow);transform:scale(.92);opacity:.7;
 transition:transform .28s ease,opacity .28s ease;cursor:pointer;touch-action:manipulation}
 .c-card:active{transform:scale(.97)!important}
@@ -60,7 +73,7 @@ padding:5px 11px;border-radius:99px;backdrop-filter:blur(6px)}
 .section-hint{font-size:11px;color:var(--muted)}
 .chip-strip{display:flex;gap:10px;overflow-x:auto;padding:2px 18px 6px;scroll-snap-type:x proximity;scroll-padding:0 18px;
 -webkit-overflow-scrolling:touch}
-.chip-card{scroll-snap-align:center;flex:0 0 108px;border-radius:16px;background:var(--card);border:1px solid var(--line);
+.chip-card{scroll-snap-align:center;flex:0 0 108px;border-radius:16px;
 overflow:hidden;box-shadow:var(--shadow);transform:scale(.94);transition:transform .2s ease,border-color .2s ease;
 cursor:pointer;touch-action:manipulation}
 .chip-card.focus{transform:scale(1.04);border-color:var(--ink)}
@@ -85,15 +98,15 @@ cursor:pointer;touch-action:manipulation}
 .info-title{font-family:'Noto Serif TC',serif;font-size:20px;font-weight:700;margin-bottom:4px}
 .info-sub{font-size:12.5px;color:var(--muted);margin-bottom:14px}
 .chips{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:14px}
-.chip{font-size:12px;padding:7px 12px;border-radius:99px;background:var(--card);border:1px solid var(--line);
+.chip{font-size:12px;padding:7px 12px;border-radius:99px;background:var(--glass);-webkit-backdrop-filter:blur(14px) saturate(160%);backdrop-filter:blur(14px) saturate(160%);border:1px solid var(--glass-line);
 box-shadow:var(--shadow);white-space:nowrap}
-.notice{border-radius:14px;background:#FBEFE8;border:1px solid #F0D2BE;padding:14px}
+.notice{border-radius:14px;background:rgba(251,239,232,.6);-webkit-backdrop-filter:blur(18px) saturate(160%);backdrop-filter:blur(18px) saturate(160%);border:1px solid rgba(240,210,190,.85);padding:14px}
 .notice-line{font-size:12.5px;color:var(--ink);line-height:1.65;padding-left:15px;position:relative}
 .notice-line+.notice-line{margin-top:8px}
 .notice-line::before{content:'!';position:absolute;left:0;top:0;color:#D9713F;font-weight:700;font-size:12.5px}
 
 /* Panels */
-.panel{margin:18px 18px 0;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px 16px 18px;box-shadow:var(--shadow)}
+.panel{margin:18px 18px 0;background:var(--glass);-webkit-backdrop-filter:blur(24px) saturate(160%);backdrop-filter:blur(24px) saturate(160%);border:1px solid var(--glass-line);border-radius:18px;padding:16px 16px 18px;box-shadow:var(--shadow)}
 .panel-h{font-size:14px;font-weight:700;color:var(--ink);margin-bottom:10px}
 .brow{display:flex;justify-content:space-between;gap:8px;padding:9px 0;border-bottom:1px solid var(--line);font-size:13px}
 .brow:last-of-type{border-bottom:none}
@@ -107,16 +120,16 @@ box-shadow:var(--shadow);white-space:nowrap}
 /* Checklist */
 .checklist-item{display:flex;align-items:center;gap:10px;padding:12px 4px;border-bottom:1px solid var(--line);touch-action:manipulation}
 .checklist-item:last-child{border-bottom:none}
-.checklist-box{width:24px;height:24px;border-radius:7px;border:1.5px solid var(--line);flex-shrink:0;
-display:flex;align-items:center;justify-content:center;font-size:14px;color:#fff;background:#fff}
+.checklist-box{width:24px;height:24px;border-radius:7px;border:1.5px solid var(--glass-line-soft);flex-shrink:0;
+display:flex;align-items:center;justify-content:center;font-size:14px;color:#fff;background:rgba(255,255,255,.55)}
 .checklist-item.checked .checklist-box{background:var(--d1);border-color:var(--d1)}
 .checklist-text{font-size:13px;color:var(--ink);flex:1}
 .checklist-item.checked .checklist-text{color:var(--muted);text-decoration:line-through}
 
 /* Bottom nav */
 .bottom-nav{position:fixed;left:16px;right:16px;bottom:calc(14px + env(safe-area-inset-bottom));max-width:448px;margin:0 auto;
-background:rgba(255,253,247,.72);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
-border:1px solid rgba(231,226,210,.9);
+background:var(--glass);backdrop-filter:blur(22px) saturate(160%);-webkit-backdrop-filter:blur(22px) saturate(160%);
+border:1px solid var(--glass-line);
 border-radius:28px;display:flex;justify-content:space-around;padding:9px;z-index:60;box-shadow:0 16px 32px -16px rgba(60,55,35,.28)}
 .nav-btn{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;
 color:var(--muted);font-size:17px;background:none;border:none;touch-action:manipulation;transition:background .18s ease,color .18s ease}
@@ -149,12 +162,12 @@ justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s ease
 .detail-loc{font-size:12.5px;color:var(--muted);margin-top:6px}
 .detail-body{position:relative;padding:14px 20px calc(110px + env(safe-area-inset-bottom));min-height:30vh}
 .detail-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:8px}
-.dstat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:13px 6px;text-align:center}
+.dstat{background:var(--glass);-webkit-backdrop-filter:blur(16px) saturate(160%);backdrop-filter:blur(16px) saturate(160%);border:1px solid var(--glass-line);border-radius:14px;padding:13px 6px;text-align:center}
 .dstat-label{font-size:10.5px;color:var(--muted)}
 .dstat-val{font-size:13px;font-weight:700;margin-top:5px;line-height:1.3}
 .detail-desc-h{font-size:14.5px;font-weight:700;margin-top:22px}
 .detail-desc{font-size:13.5px;color:#5B5F4A;line-height:1.75;margin-top:9px}
-.detail-bottom{position:fixed;left:0;right:0;bottom:0;max-width:480px;margin:0 auto;background:#fff;border-top:1px solid var(--line);
+.detail-bottom{position:fixed;left:0;right:0;bottom:0;max-width:480px;margin:0 auto;background:var(--glass);-webkit-backdrop-filter:blur(24px) saturate(160%);backdrop-filter:blur(24px) saturate(160%);border-top:1px solid var(--glass-line);
 padding:14px 20px calc(14px + env(safe-area-inset-bottom));display:flex;justify-content:space-between;align-items:center;z-index:4}
 .detail-price-label{font-size:11px;color:var(--muted)}
 .detail-price-val{font-size:18.5px;font-weight:700;font-family:'Noto Serif TC',serif}
@@ -170,10 +183,11 @@ justify-content:center;font-size:18px;text-decoration:none;flex-shrink:0;touch-a
     <div class="app-title" id="siteTitle">知本解憂．藍皮慢行</div>
     <div class="app-sub" id="siteSub">Taitung · 3 Days ｜不趕、少走路的泡湯提案</div>
   </div>
-  <div class="app-icons"><button class="icon-btn" onclick="switchView('info')">ℹ️</button></div>
+  <div class="app-icons"><button class="icon-btn glass" onclick="switchView('info')">ℹ️</button></div>
 </div>
 
 <div class="day-tabs" id="dayTabs"></div>
+<div class="bg-glow"><i></i><i></i><i></i></div>
 <div class="day-desc" id="dayDesc"></div>
 
 <div id="view-discover" class="view active">
@@ -444,7 +458,7 @@ function renderChipStrip() {
   wrap.innerHTML = '';
   days[currentDay].stops.forEach((s, i) => {
     const chip = document.createElement('div');
-    chip.className = 'chip-card type-' + s.type;
+    chip.className = 'chip-card glass type-' + s.type;
     chip.onclick = () => {
       document.querySelectorAll('#carousel .c-card')[i]?.scrollIntoView({ behavior:'smooth', inline:'center', block:'nearest' });
       chip.scrollIntoView({ behavior:'smooth', inline:'center', block:'nearest' });
@@ -586,21 +600,70 @@ const DEFAULT_EXPENSES = [
   { name:'市區住宿 1 晚', amount:1500, payer:'B' },
   { name:'藍皮解憂號套票 x2', amount:1398, payer:'A' },
 ];
-function loadExpenses() {
+/* ============ 分帳資料：改成跟 Apps Script 讀寫，兩人共用同一份 ============
+ * 邏輯：打開頁面先跟後端要一次最新資料；之後每次編輯都會整批存回後端；
+ * 同時每隔幾秒背景輪詢一次，讓對方存的更動也能同步過來。
+ * 注意：這是「整批覆蓋」同步，不是逐格即時同步——如果兩人「同一秒」都在編輯，
+ * 後存的會蓋掉先存的。一般兩人輪流填、隔幾秒看一下的用法完全沒問題。
+ * ================================================= */
+function loadExpensesLocal() {
   try {
     const saved = localStorage.getItem(SPLIT_STORAGE_KEY);
     if (saved) {
       const parsed = JSON.parse(saved);
       if (Array.isArray(parsed)) return parsed;
     }
-  } catch (e) { console.warn('讀取分帳紀錄失敗，改用預設內容', e); }
+  } catch (e) { console.warn('讀取本機分帳快取失敗，改用預設內容', e); }
   return DEFAULT_EXPENSES;
 }
-function saveExpenses() {
+function cacheExpensesLocal() {
   try { localStorage.setItem(SPLIT_STORAGE_KEY, JSON.stringify(expenses)); }
-  catch (e) { console.warn('分帳紀錄儲存失敗', e); }
+  catch (e) { console.warn('本機分帳快取失敗', e); }
 }
-let expenses = loadExpenses();
+let expenses = loadExpensesLocal(); // 開頭先用本機快取墊著，避免畫面閃空，稍後會被雲端資料覆蓋
+let expensesSyncTimer = null;
+let expensesSavingTimer = null;
+let expensesEditingNow = false; // 使用者正在打字時，暫停輪詢覆蓋畫面
+
+async function fetchExpensesFromCloud() {
+  if (!DATA_API_URL) return;
+  try {
+    const url = DATA_API_URL.trim() + (DATA_API_URL.includes('?') ? '&' : '?') + 'action=expenses&ts=' + Date.now();
+    const res = await fetch(url, { cache: 'no-store' });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const json = await res.json();
+    if (json.error) { console.warn('分帳資料讀取錯誤：' + json.error); return; }
+    if (Array.isArray(json.expenses) && !expensesEditingNow) {
+      expenses = json.expenses;
+      cacheExpensesLocal();
+      renderSplit();
+    }
+  } catch (e) { console.warn('分帳資料讀取失敗，暫用本機快取', e); }
+}
+
+async function saveExpensesToCloud() {
+  if (!DATA_API_URL) { cacheExpensesLocal(); return; }
+  cacheExpensesLocal();
+  try {
+    // 用 text/plain 送出，避免瀏覽器對 Apps Script 發出 CORS 預檢請求（Apps Script 不支援預檢，會直接失敗）
+    await fetch(DATA_API_URL.trim(), {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify({ action: 'saveExpenses', expenses }),
+    });
+  } catch (e) { console.warn('分帳資料存雲端失敗，已保留在本機', e); }
+}
+function saveExpenses() {
+  // 打字時先本機存一份、debounce 0.7 秒再整批送雲端，避免每敲一個字就打一次 API
+  cacheExpensesLocal();
+  clearTimeout(expensesSavingTimer);
+  expensesSavingTimer = setTimeout(saveExpensesToCloud, 700);
+}
+function startExpensesSync() {
+  fetchExpensesFromCloud();
+  if (expensesSyncTimer) clearInterval(expensesSyncTimer);
+  expensesSyncTimer = setInterval(fetchExpensesFromCloud, 6000); // 每 6 秒背景同步一次對方的更動
+}
 function renderSplit() {
   const rowsEl = document.getElementById('splitRows');
   rowsEl.innerHTML = '';
@@ -608,16 +671,17 @@ function renderSplit() {
     const row = document.createElement('div');
     row.style.cssText = 'display:flex;gap:6px;align-items:center;margin-bottom:6px';
     row.innerHTML = `
-      <input type="text" value="${e.name}" placeholder="項目" style="flex:2;min-width:0;padding:8px;border-radius:7px;border:1px solid var(--line);background:#fff;color:var(--ink);font-size:13px">
-      <input type="number" value="${e.amount}" placeholder="金額" style="flex:1.3;min-width:0;padding:8px;border-radius:7px;border:1px solid var(--line);background:#fff;color:var(--ink);font-size:13px">
-      <select style="flex:1;padding:8px 4px;border-radius:7px;border:1px solid var(--line);background:#fff;color:var(--ink);font-size:13px">
+      <input type="text" value="${e.name}" placeholder="項目" style="flex:2;min-width:0;padding:8px;border-radius:7px;border:1px solid var(--glass-line-soft);background:rgba(255,255,255,.55);backdrop-filter:blur(10px);color:var(--ink);font-size:13px">
+      <input type="number" value="${e.amount}" placeholder="金額" style="flex:1.3;min-width:0;padding:8px;border-radius:7px;border:1px solid var(--glass-line-soft);background:rgba(255,255,255,.55);backdrop-filter:blur(10px);color:var(--ink);font-size:13px">
+      <select style="flex:1;padding:8px 4px;border-radius:7px;border:1px solid var(--glass-line-soft);background:rgba(255,255,255,.55);backdrop-filter:blur(10px);color:var(--ink);font-size:13px">
         <option value="A" ${e.payer==='A'?'selected':''}>Gina付</option>
         <option value="B" ${e.payer==='B'?'selected':''}>念臻付</option>
       </select>
-      <button style="padding:7px 10px;border-radius:7px;border:1px solid var(--line);background:none;color:#D9713F;font-size:13px">✕</button>`;
+      <button style="padding:7px 10px;border-radius:7px;border:1px solid var(--glass-line-soft);background:none;color:#D9713F;font-size:13px">✕</button>`;
     const [nameInput, amountInput, payerSelect, delBtn] = row.children;
-    nameInput.oninput = () => { expenses[i].name = nameInput.value; saveExpenses(); };
-    amountInput.oninput = () => { expenses[i].amount = Number(amountInput.value) || 0; calcSettle(); saveExpenses(); };
+    const markEditing = () => { expensesEditingNow = true; clearTimeout(window.__editIdleTimer); window.__editIdleTimer = setTimeout(() => { expensesEditingNow = false; }, 1500); };
+    nameInput.oninput = () => { markEditing(); expenses[i].name = nameInput.value; saveExpenses(); };
+    amountInput.oninput = () => { markEditing(); expenses[i].amount = Number(amountInput.value) || 0; calcSettle(); saveExpenses(); };
     payerSelect.onchange = () => { expenses[i].payer = payerSelect.value; calcSettle(); saveExpenses(); };
     delBtn.onclick = () => { expenses.splice(i, 1); renderSplit(); saveExpenses(); };
     rowsEl.appendChild(row);
@@ -683,6 +747,7 @@ renderStaticContent();
 renderTrip();
 renderSplit();
 loadTripData();
+startExpensesSync();
 </script>
 </body>
 </html>
