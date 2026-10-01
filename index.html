@@ -2,833 +2,184 @@
 <html lang="zh-TW">
 <head>
 <meta charset="UTF-8">
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<meta http-equiv="Pragma" content="no-cache">
-<meta http-equiv="Expires" content="0">
-<script>
-/* 破快取用：meta 的 Cache-Control 對「瀏覽器/中繼站怎麼快取這個 HTML 檔本身」其實沒什麼約束力，
-   很多情況（尤其 LINE 內建瀏覽器、CDN 靜態代管）還是會留著舊版本。
-   這段在頁面一載入就自動把網址補上一個當下時間戳記再導向自己一次，
-   讓每次「重新點進分享出去的網址」時，瀏覽器都會把它當成全新網址、強制抓最新版本，
-   不需要換發新網址給大家。同一分頁內手動重整不會重複觸發，避免無限跳轉。 */
-(function () {
-  try {
-    if (sessionStorage.getItem('cacheBusted')) return;
-    sessionStorage.setItem('cacheBusted', '1');
-    var url = new URL(location.href);
-    url.searchParams.set('_v', Date.now());
-    location.replace(url.toString());
-  } catch (e) { /* 無痕模式等情況可能擋掉 sessionStorage，略過即可，不影響頁面運作 */ }
-})();
-</script>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, viewport-fit=cover">
-<title id="pageTitle">縱谷風微醺・台東三日慢行</title>
-<link id="pageFavicon" rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>♨️</text></svg>">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@700&family=Noto+Sans+TC:wght@400;500;600;700&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>縱谷風微醺・台東三日慢行</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌿</text></svg>">
 <style>
-:root{--bg:#F3EFE4;--ink:#1D2016;--muted:#7C806E;--line:#E7E2D2;--card:#FFFFFF;--pill:#14150F;
---d1:#2FA0C4;--d2:#C79A4B;--d3:#9B9B34;
---glass:rgba(255,255,255,.5);--glass-soft:rgba(255,255,255,.32);--glass-line:rgba(255,255,255,.6);--glass-line-soft:rgba(29,32,22,.1);
---shadow:0 14px 34px -12px rgba(20,20,10,.24);--shadow-lg:0 24px 54px -16px rgba(20,20,10,.32)}
+:root{--bg:#F3EFE4;--ink:#1D2016;--mut:#6B6F5C;--line:#E2DCC8;--c:#2FA0C4}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-html{-webkit-text-size-adjust:100%}
-body{color:var(--ink);background:var(--bg);font-family:'Noto Sans TC',sans-serif;font-size:14.5px;line-height:1.55;
-padding-bottom:calc(112px + env(safe-area-inset-bottom));max-width:480px;margin:0 auto;position:relative;min-height:100vh;isolation:isolate}
-a{color:inherit}
-::-webkit-scrollbar{display:none}
-
-/* 背景霧感光暈：毛玻璃需要背後有東西可以「透」，用三天主題色做柔和光斑 */
-.bg-glow{position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none}
-.bg-glow i{position:absolute;border-radius:50%;filter:blur(64px)}
-.bg-glow i:nth-child(1){width:320px;height:320px;top:-100px;left:-90px;background:var(--d1);opacity:.35}
-.bg-glow i:nth-child(2){width:280px;height:280px;top:200px;right:-110px;background:var(--d2);opacity:.3}
-.bg-glow i:nth-child(3){width:300px;height:300px;left:20%;bottom:-140px;background:var(--d3);opacity:.28}
-
-/* 共用毛玻璃卡片樣式 */
-.glass{background:var(--glass);-webkit-backdrop-filter:blur(20px) saturate(160%);backdrop-filter:blur(20px) saturate(160%);
-border:1px solid var(--glass-line)}
-
-/* Header */
-.app-header{display:flex;justify-content:space-between;align-items:flex-start;padding:22px 18px 4px}
-.app-title{font-family:'Noto Serif TC',serif;font-size:25px;font-weight:700}
-.app-sub{font-size:12px;color:var(--muted);margin-top:4px}
-.app-icons{display:flex;gap:8px;flex-shrink:0}
-.icon-btn{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;
-box-shadow:var(--shadow);font-size:15px;touch-action:manipulation;transition:transform .15s ease}
-.icon-btn:active{transform:scale(.92)}
-
-/* Day tabs */
-/* Day tabs：不要玻璃底色，只保留每個籤下方的顏色底線 */
-.day-tabs{display:flex;gap:22px;padding:18px 18px 2px;overflow-x:auto}
-.day-tab{font-size:15px;color:var(--muted);font-weight:600;white-space:nowrap;padding-bottom:9px;
-border:none;border-bottom:2px solid transparent;background:none}
-.day-tab.active{color:var(--ink);font-weight:700}
-.day-tab.active.a1{border-color:var(--d1)}
-.day-tab.active.a2{border-color:var(--d2)}
-.day-tab.active.a3{border-color:var(--d3)}
-.day-desc{padding:10px 18px 2px;font-size:12px;color:var(--muted)}
-
-/* Carousel */
-.carousel{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;padding:26px 18px 34px;scroll-padding:0 18px;
--webkit-overflow-scrolling:touch}
-.c-card{scroll-snap-align:center;flex:0 0 68%;aspect-ratio:1/1;border-radius:26px;position:relative;overflow:hidden;
-background-size:cover;background-position:center;box-shadow:var(--shadow);transform:scale(.92);opacity:.7;
-transition:transform .28s ease,opacity .28s ease;cursor:pointer;touch-action:manipulation}
-.c-card:active{transform:scale(.97)!important}
-.c-card.focus{transform:scale(1);opacity:1}
-.c-card.has-photo,.chip-thumb.has-photo,.detail-hero.has-photo{background-color:#1c2016}
-.c-card::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 45%,rgba(6,10,6,.72) 100%)}
-.ph-icon{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:46px;opacity:.55}
-.has-photo .ph-icon{display:none}
-.c-badge{position:absolute;top:14px;left:14px;z-index:2;background:rgba(0,0,0,.42);color:#fff;font-size:11.5px;
-padding:5px 11px;border-radius:99px;backdrop-filter:blur(6px)}
-.c-info{position:absolute;left:0;right:0;bottom:0;z-index:2;padding:16px 18px 18px}
-.c-time{font-size:11.5px;color:rgba(255,255,255,.85);letter-spacing:.04em;font-variant-numeric:tabular-nums}
-.c-title{font-size:19px;font-weight:700;color:#fff;margin-top:4px;line-height:1.3}
-.c-loc{font-size:12.5px;color:rgba(255,255,255,.8);margin-top:4px}
-
-/* Chip strip */
-.section-head{display:flex;justify-content:space-between;align-items:center;padding:2px 18px 8px}
-.section-title{font-size:14.5px;font-weight:700}
-.section-hint{font-size:11px;color:var(--muted)}
-.chip-strip{display:flex;gap:10px;overflow-x:auto;padding:12px 18px 20px;scroll-snap-type:x proximity;scroll-padding:0 18px;
--webkit-overflow-scrolling:touch}
-.chip-card{scroll-snap-align:center;flex:0 0 108px;border-radius:16px;
-overflow:hidden;box-shadow:var(--shadow);transform:scale(.94);transition:transform .2s ease,border-color .2s ease;
-cursor:pointer;touch-action:manipulation}
-.chip-card.focus{transform:scale(1.04);border-color:var(--ink)}
-.chip-thumb{height:68px;background-size:cover;background-position:center;position:relative}
-.chip-time{position:absolute;top:5px;left:5px;font-size:9.5px;background:rgba(0,0,0,.48);color:#fff;padding:2px 6px;border-radius:99px}
-.chip-body{padding:8px 9px 10px}
-.chip-title{font-size:11.5px;font-weight:600;line-height:1.35;color:var(--ink);display:-webkit-box;
--webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-
-/* Type colors (shared across card / chip / detail hero) */
-.c-card.type-eat,.chip-card.type-eat .chip-thumb,.detail-hero.type-eat{background:linear-gradient(160deg,#F7CE94,#E2963A)}
-.c-card.type-see,.chip-card.type-see .chip-thumb,.detail-hero.type-see{background:linear-gradient(160deg,#A9D3F2,#3E8FD1)}
-.c-card.type-hot,.chip-card.type-hot .chip-thumb,.detail-hero.type-hot{background:linear-gradient(160deg,#DCC4F0,#A374CB)}
-.c-card.type-drv,.chip-card.type-drv .chip-thumb,.detail-hero.type-drv{background:linear-gradient(160deg,#D6D9C9,#8A9078)}
-
-/* Views */
-.view{display:none}
-.view.active{display:block}
-
-/* Info page */
-.info-wrap{padding:18px 18px 4px}
-.info-title{font-family:'Noto Serif TC',serif;font-size:20px;font-weight:700;margin-bottom:4px}
-.info-sub{font-size:12.5px;color:var(--muted);margin-bottom:14px}
-.chips{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:14px}
-.chip{font-size:12px;padding:7px 12px;border-radius:99px;background:var(--glass);-webkit-backdrop-filter:blur(14px) saturate(160%);backdrop-filter:blur(14px) saturate(160%);border:1px solid var(--glass-line);
-box-shadow:var(--shadow);white-space:nowrap}
-.notice{border-radius:14px;background:rgba(251,239,232,.6);-webkit-backdrop-filter:blur(18px) saturate(160%);backdrop-filter:blur(18px) saturate(160%);border:1px solid rgba(240,210,190,.85);padding:14px}
-.notice-line{font-size:12.5px;color:var(--ink);line-height:1.65;padding-left:15px;position:relative}
-.notice-line+.notice-line{margin-top:8px}
-.notice-line::before{content:'!';position:absolute;left:0;top:0;color:#D9713F;font-weight:700;font-size:12.5px}
-
-/* Panels */
-.panel{margin:18px 18px 0;background:var(--glass);-webkit-backdrop-filter:blur(24px) saturate(160%);backdrop-filter:blur(24px) saturate(160%);border:1px solid var(--glass-line);border-radius:18px;padding:16px 16px 18px;box-shadow:var(--shadow)}
-.panel-h{font-size:14px;font-weight:700;color:var(--ink);margin-bottom:10px}
-.brow{display:flex;justify-content:space-between;gap:8px;padding:9px 0;border-bottom:1px solid var(--line);font-size:13px}
-.brow:last-of-type{border-bottom:none}
-.brow .l{color:var(--ink)}
-.brow .v{color:var(--muted);white-space:nowrap;font-variant-numeric:tabular-nums}
-.btotal{margin-top:10px;padding-top:10px;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:baseline}
-.btotal .l{font-size:13.5px;font-weight:700;color:var(--ink)}
-.btotal .v{font-size:19px;font-weight:700;color:var(--d1);font-family:'Noto Serif TC',serif}
-.budget-note{font-size:11.5px;color:var(--muted);margin-top:10px;line-height:1.65}
-
-/* Checklist */
-.checklist-item{display:flex;align-items:center;gap:10px;padding:12px 4px;border-bottom:1px solid var(--line);touch-action:manipulation}
-.checklist-item:last-child{border-bottom:none}
-.checklist-box{width:24px;height:24px;border-radius:7px;border:1.5px solid var(--glass-line-soft);flex-shrink:0;
-display:flex;align-items:center;justify-content:center;font-size:14px;color:#fff;background:rgba(255,255,255,.55)}
-.checklist-item.checked .checklist-box{background:var(--d1);border-color:var(--d1)}
-.checklist-text{font-size:13px;color:var(--ink);flex:1}
-.checklist-item.checked .checklist-text{color:var(--muted);text-decoration:line-through}
-
-/* Bottom nav */
-.bottom-nav{position:fixed;left:16px;right:16px;bottom:calc(14px + env(safe-area-inset-bottom));max-width:448px;margin:0 auto;
-background:var(--glass);backdrop-filter:blur(22px) saturate(160%);-webkit-backdrop-filter:blur(22px) saturate(160%);
-border:1px solid var(--glass-line);
-border-radius:28px;display:flex;justify-content:space-around;padding:9px;z-index:60;box-shadow:0 16px 32px -16px rgba(60,55,35,.28)}
-.nav-btn{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;
-color:var(--muted);font-size:17px;background:none;border:none;touch-action:manipulation;transition:background .18s ease,color .18s ease}
-.nav-btn:active,.icon-btn:active{transform:scale(.92)}
-.nav-btn.active{background:var(--ink);color:#fff}
-
-/* Detail overlay */
-.detail-overlay{position:fixed;inset:0;z-index:100;background:var(--bg);transform:translateY(100%);
-transition:transform .34s cubic-bezier(.22,.9,.32,1);overflow-y:auto;-webkit-overflow-scrolling:touch;max-width:480px;margin:0 auto}
-.detail-overlay.open{transform:translateY(0)}
-.detail-hero-wrap{padding:24px 16px 0}
-.detail-hero{position:relative;min-height:300px;border-radius:26px;overflow:hidden;background-size:cover;background-position:center;box-shadow:var(--shadow-lg)}
-.detail-hero::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.05) 55%,rgba(6,10,6,.35) 100%)}
-.detail-top{position:absolute;top:0;left:0;right:0;display:flex;justify-content:space-between;padding:16px;z-index:2}
-.circle-btn{width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.22);backdrop-filter:blur(8px);
-display:flex;align-items:center;justify-content:center;color:#fff;font-size:19px;border:1px solid rgba(255,255,255,.3);touch-action:manipulation}
-.circle-btn:active{transform:scale(.92)}
-.detail-gallery{position:absolute;top:66px;right:16px;bottom:16px;display:flex;flex-direction:column;gap:8px;z-index:2;
-overflow-y:auto;-webkit-overflow-scrolling:touch;scroll-snap-type:y proximity;padding-bottom:4px}
-.detail-gallery::-webkit-scrollbar{display:none}
-.detail-thumb{width:56px;height:56px;border-radius:14px;background-size:cover;background-position:center;flex-shrink:0;
-background-color:rgba(255,255,255,.15);border:2px solid rgba(255,255,255,.55);touch-action:manipulation;transition:transform .15s ease,border-color .15s ease;scroll-snap-align:end}
-.detail-thumb:active{transform:scale(.92)}
-.detail-thumb.current{border-color:#fff;box-shadow:0 0 0 2px rgba(0,0,0,.25)}
-
-.thumb-lightbox{position:fixed;inset:0;z-index:200;background:rgba(10,12,8,.8);display:flex;align-items:center;
-justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s ease}
-.thumb-lightbox.open{opacity:1;pointer-events:auto}
-.thumb-lightbox img{width:78vw;max-width:340px;aspect-ratio:1/1;object-fit:cover;border-radius:22px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
-.detail-heading{padding:16px 18px 4px}
-.detail-eyebrow{font-size:11.5px;color:var(--muted);margin-bottom:5px;letter-spacing:.04em}
-.detail-title{font-family:'Noto Serif TC',serif;font-size:21px;font-weight:700;color:var(--ink);line-height:1.35}
-.detail-loc{font-size:12.5px;color:var(--muted);margin-top:6px}
-.detail-loc.mappable{display:inline-flex;align-items:center;gap:5px;color:#2C7AA8;font-weight:600;
-padding:6px 2px;margin:2px 0 0 -2px;touch-action:manipulation;text-decoration:none}
-.detail-loc.mappable:active{opacity:.6}
-.detail-loc.mappable .pin{font-size:13px}
-.detail-loc.mappable .go-hint{color:var(--muted);font-weight:400;font-size:11.5px;margin-left:1px}
-
-/* 詳情頁圖文並茂：文字說明下方的照片區 */
-.detail-photos{margin-top:18px;display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.detail-photos.single{grid-template-columns:1fr}
-.detail-photo{aspect-ratio:4/3;border-radius:16px;background-size:cover;background-position:center;
-box-shadow:var(--shadow);background-color:#eee2}
-.detail-photos.single .detail-photo{aspect-ratio:16/10}
-.detail-body{position:relative;padding:14px 20px calc(110px + env(safe-area-inset-bottom));min-height:30vh}
-.detail-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:8px}
-.dstat{background:var(--glass);-webkit-backdrop-filter:blur(16px) saturate(160%);backdrop-filter:blur(16px) saturate(160%);border:1px solid var(--glass-line);border-radius:14px;padding:13px 6px;text-align:center}
-.dstat-label{font-size:10.5px;color:var(--muted)}
-.dstat-val{font-size:13px;font-weight:700;margin-top:5px;line-height:1.3}
-.detail-desc-h{font-size:14.5px;font-weight:700;margin-top:22px}
-.detail-desc{font-size:13.5px;color:#5B5F4A;line-height:1.75;margin-top:9px}
-/* 詳情頁圖文交錯：文字段落與照片依序交替出現，而不是文字全部在上、照片全部集中在下面 */
-.detail-content{margin-top:9px}
-.detail-content .dc-text{font-size:13.5px;color:#5B5F4A;line-height:1.75}
-.detail-content .dc-text+.dc-text{margin-top:14px}
-.detail-content .dc-photo{aspect-ratio:16/10;border-radius:16px;background-size:cover;background-position:center;
-box-shadow:var(--shadow);background-color:#eee2;margin:14px 0}
-.detail-content .dc-photo+.dc-text{margin-top:0}
-.detail-bottom{position:sticky;left:0;right:0;bottom:0;max-width:480px;margin:0 auto;background:var(--glass);-webkit-backdrop-filter:blur(24px) saturate(160%);backdrop-filter:blur(24px) saturate(160%);border-top:1px solid var(--glass-line);
-padding:14px 20px calc(14px + env(safe-area-inset-bottom));display:flex;justify-content:space-between;align-items:center;z-index:4}
-.detail-price-label{font-size:11px;color:var(--muted)}
-.detail-price-val{font-size:18.5px;font-weight:700;font-family:'Noto Serif TC',serif}
-.detail-go{width:48px;height:48px;border-radius:50%;background:var(--ink);color:#fff;display:flex;align-items:center;
-justify-content:center;font-size:18px;text-decoration:none;flex-shrink:0;touch-action:manipulation}
-.detail-go:active{transform:scale(.94)}
+body{font:15px/1.55 -apple-system,"PingFang TC","Noto Sans TC","Microsoft JhengHei",sans-serif;background:var(--bg);color:var(--ink);max-width:520px;margin:0 auto;padding-bottom:calc(32px + env(safe-area-inset-bottom))}
+h1{font:700 22px "Noto Serif TC","Songti TC",serif;padding:calc(16px + env(safe-area-inset-top)) 16px 2px}
+.sub{padding:0 16px 10px;font-size:12.5px;color:var(--mut)}
+.bar{position:sticky;top:0;z-index:5;display:flex;gap:4px;overflow-x:auto;padding:8px 12px;background:var(--bg);border-bottom:1px solid var(--line)}
+.tab{flex:none;padding:8px 14px;border:0;border-radius:99px;background:none;font:600 14px inherit;font-family:inherit;color:var(--mut)}
+.tab.on{background:var(--c);color:#fff}
+.hd{padding:14px 16px 4px}.hd b{font-size:17px}
+.row{display:flex;gap:8px;flex-wrap:wrap;padding:8px 16px}
+.seg{display:flex;background:#E7E1CD;border-radius:12px;padding:3px;margin:8px 16px 0}
+.seg button{flex:1;border:0;border-radius:9px;padding:9px 6px;background:none;font:600 13px inherit;font-family:inherit;color:var(--mut)}
+.seg button.on{background:#fff;color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.12)}
+a.b,button.b{display:inline-block;padding:7px 13px;border-radius:99px;border:1px solid var(--line);background:#fff;color:var(--ink);font:600 13px inherit;font-family:inherit;text-decoration:none}
+a.b.p{background:var(--c);border-color:var(--c);color:#fff}
+.it{display:grid;grid-template-columns:50px 1fr;gap:8px;padding:0 14px}
+.tm{padding-top:15px;font-weight:700;font-size:14px;font-variant-numeric:tabular-nums}
+.cd{background:#fff;border-radius:14px;border-left:4px solid var(--c);padding:11px 13px 12px;margin:6px 0}
+.cd h3{font-size:16px;line-height:1.35}
+.ad{display:block;font-size:12.5px;color:var(--mut);margin-top:2px;text-decoration:none}
+.nt{font-size:13.5px;margin-top:6px;color:#4A4E3C}
+.w{background:#FFF1D6;border-radius:8px;padding:6px 9px;font-size:13px;margin-top:7px}
+.go{display:flex;gap:7px;margin-top:9px}
+.tx{border-left-color:#8A9078}.tx .tm{color:var(--mut)}
+.box{margin:12px 16px 0;background:#fff;border-radius:14px;padding:14px}
+.box h2{font-size:15px;margin-bottom:8px}
+.ln{display:flex;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px solid var(--line);font-size:13.5px}
+.ln:last-child{border:0}.ln span:last-child{color:var(--mut);white-space:nowrap}
+.tot{display:flex;justify-content:space-between;font-weight:700;font-size:17px;padding-top:10px}
+.nl{padding:8px 0 8px 16px;position:relative;font-size:13.5px;border-bottom:1px solid var(--line)}
+.nl:before{content:"!";position:absolute;left:2px;color:#D9713F;font-weight:700}
+.ck{display:flex;gap:10px;align-items:center;padding:11px 0;border-bottom:1px solid var(--line);font-size:14px}
+.ck i{flex:none;width:22px;height:22px;border:1.5px solid #bbb;border-radius:6px;text-align:center;color:#fff;font-style:normal;line-height:19px}
+.ck.x i{background:var(--c);border-color:var(--c)}.ck.x span{color:var(--mut);text-decoration:line-through}
+.ex{display:flex;gap:6px;margin-bottom:7px}
+.ex input,.ex select{min-width:0;padding:8px;border:1px solid var(--line);border-radius:8px;font:14px inherit;font-family:inherit;background:#fff}
 </style>
 </head>
 <body>
-
-<div class="app-header">
-  <div>
-    <div class="app-title" id="siteTitle">知本解憂．藍皮慢行</div>
-    <div class="app-sub" id="siteSub">Taitung · 3 Days ｜不趕、少走路的泡湯提案</div>
-  </div>
-  <div class="app-icons"><button class="icon-btn glass" onclick="switchView('info')">ℹ️</button></div>
-</div>
-
-<div class="day-tabs" id="dayTabs"></div>
-<div class="bg-glow"><i></i><i></i><i></i></div>
-<div class="day-desc" id="dayDesc"></div>
-
-<div id="view-discover" class="view active">
-  <div class="carousel" id="carousel"></div>
-  <div class="section-head">
-    <div class="section-title">當日時刻總覽</div>
-    <div class="section-hint">點一下放大／點大圖看細節</div>
-  </div>
-  <div class="chip-strip" id="chipStrip"></div>
-</div>
-
-<div id="view-info" class="view">
-  <div class="info-wrap">
-    <div class="info-title" id="infoTitle">行前須知</div>
-    <div class="info-sub" id="infoSub">出發前先看一眼，路上更安心</div>
-    <div class="chips" id="chipsWrap"></div>
-    <div class="notice" id="noticeWrap"></div>
-  </div>
-  <div class="panel" style="margin-top:16px">
-    <div class="panel-h" style="display:flex;justify-content:space-between;align-items:center">
-      <span>✅ 行前準備清單</span>
-      <span id="checklistProgress" style="font-size:11.5px;font-weight:400;color:var(--muted)">0/0</span>
-    </div>
-    <div id="checklistWrap"></div>
-  </div>
-</div>
-
-<div id="view-budget" class="view">
-  <div class="panel">
-    <div class="panel-h">💰 預算（每人，已壓縮）</div>
-    <div id="budgetRows"></div>
-    <div class="btotal"><div class="l">總計</div><div class="v" id="budgetTotal">—</div></div>
-    <div class="budget-note" id="budgetNote"></div>
-  </div>
-</div>
-
-<div id="view-split" class="view">
-  <div class="panel" id="splitBox">
-    <div class="panel-h">👫 分帳小工具</div>
-    <div id="splitRows"></div>
-    <button id="addRowBtn" style="width:100%;margin-top:6px;padding:10px;border-radius:8px;border:1px dashed var(--line);background:none;color:var(--muted);font-size:13px">＋ 新增支出</button>
-    <div style="display:flex;gap:8px;margin-top:12px">
-      <div style="flex:1;background:rgba(47,160,196,.10);border-radius:8px;padding:9px;text-align:center">
-        <div style="font-size:11.5px;color:var(--muted)">Gina 已付</div>
-        <div id="paidA" style="font-size:16.5px;font-weight:700;color:var(--d1)">$0</div>
-      </div>
-      <div style="flex:1;background:rgba(199,154,75,.12);border-radius:8px;padding:9px;text-align:center">
-        <div style="font-size:11.5px;color:var(--muted)">念臻 已付</div>
-        <div id="paidB" style="font-size:16.5px;font-weight:700;color:var(--d2)">$0</div>
-      </div>
-    </div>
-    <div class="btotal" id="settleRow">
-      <div class="l">結算</div>
-      <div class="v" id="settleText" style="font-size:14.5px">尚無支出</div>
-    </div>
-  </div>
-</div>
-
-<div class="bottom-nav">
-  <button class="nav-btn active" data-nav="discover" onclick="switchView('discover',this)">🏠</button>
-  <button class="nav-btn" data-nav="info" onclick="switchView('info',this)">ℹ️</button>
-  <button class="nav-btn" data-nav="budget" onclick="switchView('budget',this)">💰</button>
-  <button class="nav-btn" data-nav="split" onclick="switchView('split',this)">👫</button>
-</div>
-
-<div class="detail-overlay" id="detailOverlay">
-  <div class="detail-hero-wrap">
-    <div class="detail-hero" id="detailHero">
-      <div class="detail-top">
-        <button class="circle-btn" onclick="closeDetail()" aria-label="返回">‹</button>
-      </div>
-      <div class="detail-gallery" id="detailGallery"></div>
-    </div>
-  </div>
-  <div class="detail-heading">
-    <div class="detail-eyebrow" id="detailEyebrow"></div>
-    <div class="detail-title" id="detailTitle"></div>
-    <div class="detail-loc" id="detailLoc"></div>
-  </div>
-  <div class="detail-body">
-    <div class="detail-stats" id="detailStats"></div>
-    <div class="detail-desc-h">Description</div>
-    <div class="detail-content" id="detailContent"></div>
-  </div>
-  <div class="detail-bottom">
-    <div>
-      <div class="detail-price-label" id="detailPriceLabel">參考資訊</div>
-      <div class="detail-price-val" id="detailPriceVal">—</div>
-    </div>
-    <a class="detail-go" id="detailGo" href="#" target="_blank">→</a>
-  </div>
-</div>
-
-<div class="thumb-lightbox" id="thumbLightbox" onclick="closeLightbox()"><img id="thumbLightboxImg" src="" alt=""></div>
+<h1>縱谷風微醺・台東三日慢行</h1>
+<div class="sub">10/16–10/18 ・ 點地址看地圖，按「導航」直接開 Google Maps</div>
+<div class="bar" id="bar"></div>
+<main id="main"></main>
 
 <script>
-/* ============ 預設內容（試算表讀不到時使用） ============ */
-const TYPE_LABEL = { eat:'美食', see:'景點', hot:'溫泉', drv:'交通' };
-const TYPE_ICON  = { eat:'🍜', see:'🌿', hot:'♨️', drv:'🚌' };
+/* 資料格式：[時間, 圖示, 標題, 地圖搜尋字, 說明, 提醒(可空), 導航方式 d開車/w步行/r大眾運輸] */
+const MD="台東市安和路102巷42號 実舍台東", BN="台東縣延平鄉桃源村昇平路191號 布農部落休閒農場", TS="台東火車站";
+const DAYS=[
+{n:"Day 1",d:"10/16 五",t:"部落與海岩交織",c:"#2FA0C4",s:[
+["06:05","🚆","台北搭普悠瑪402","臺北車站","車程約4小時5分，發車前買好早餐。","已訂位 NT$936/人","r"],
+["10:10","🚉","抵達台東火車站",TS,"出站後直接搭計程車去卡塔。","","w"],
+["10:30","💎","卡塔文化工作室：琉璃珠 DIY","台東市中興路二段191號 卡塔文化工作室","約90分鐘，Klook 已訂位 NT$390/人。計程車約 $170–200（估）。","10:30 前到，準備 Klook 憑證","d"],
+["12:00","🍲","卑南豬血湯 侯記老店","台東市更生北路76號 卑南豬血湯侯記","10:00–17:30，週五有開。計程車約 $130–170（估）。","只收現金、不能預約，要排隊","d"],
+["13:55","🚌","台鐵台東站搭 8101D",TS,"台11線海岸風光，半日券 NT$250/人。","須先上台灣好行官網訂位","w"],
+["15:20","🌊","阿美族民俗中心","阿美族民俗中心 台東","包含在套票內，約70分鐘。11:00/14:00 展演趕不上，改玩射箭、竹炮（另計費）。","","d"],
+["17:00","🍺","都蘭新東糖廠文化園區","都蘭新東糖廠文化園區","約40分鐘，戶外免費。店家快打烊，以散步看老廠房為主。","","d"],
+["18:15","🔦","小野柳夜訪生態導覽","富岡地質公園 小野柳","約60分鐘，現場加購 NT$150/人。","長褲、包鞋、自備手電筒","d"],
+["20:20","🚌","抵達台東轉運站","台東轉運站","台鐵台東站 19:45 先到。","","w"],
+["20:45","🏨","Check-in 実舍台東",MD,"入住 15:30 後；住雙人房。火車站步行約6分鐘。","晚到，先通知民宿","w"],
+["21:00","🍢","台東觀光夜市","台東觀光夜市","週五有開（約16:30–00:00）。派大星蚵仔煎、烤肉刈包、炸雞阿鋐。","","w"]]},
+{n:"Day 2",d:"10/17 六",t:"八部合音・鹿野高台",c:"#C79A4B",
+A:[
+["08:00","🥟","早餐：秒殺水煎包","台東市廣東路246號 秒殺水煎包","週三至週日 05:30–09:30，常提早售完。備案：早點大王。","","w"],
+["09:30","🏨","退房、寄放行李",MD,"11:00 前退房；晚上換住小型雙床房（15:30 後可入住）。","先跟民宿確認行李寄放","w"],
+["11:20","🚕","計程車去布農部落",BN,"車程約35分，跳錶約 $500–600（估）。","前一天先預約車","d"],
+["12:00","🍽","布農部落：用餐＋DIY",BN,"皮雕或編織擇一、布農風味餐、明信片蠟印。入園出示電子憑證換實體票。","園區蚊蟲多，穿長褲薄外套","d"],
+["14:00","🎶","部落劇場：八部合音",BN,"約40分鐘，半開放無冷氣。","滿 30 人才演出；不開就改 10:30（上方切 Plan B）","d"],
+["14:40","🏹","射箭體驗",BN,"30分鐘、7支箭，約15:30離開。","","d"],
+["15:30","🌄","鹿野高台","鹿野高台","車程約15分，停留1–1.5小時。計程車約 $250–300（估）。","","d"],
+["17:00","🚆","回台東（鹿野站→台東）","鹿野火車站","區間車約 $40，班次出發前查台鐵。高台→鹿野站計程車約 $200–230（估）。回民宿入住新房型。","預算表沒列高台→鹿野站的車資","r"],
+["18:30","🍢","微光集晚餐","台東市 微光集 TTwilight Bazaar","週四至週日 17:00–22:00。煙燻手撕豬漢堡、阿粨、鯛魚燒。","","w"]],
+B:[
+["07:30","🥟","早餐：秒殺水煎包（提早）","台東市廣東路246號 秒殺水煎包","05:30 起賣，早去不排隊。買好帶回民宿吃，只吃這一攤。","","w"],
+["08:30","🏨","退房、寄行李、叫車",MD,"11:00 前退房，行李先寄，換房改晚上。","前一晚預約 09:00 的計程車","w"],
+["09:00","🚕","計程車去布農部落",BN,"車程約35分，跳錶約 $500–600（估）。","提早預約，臨時很難叫到車","d"],
+["10:00","🎟","抵達、兌換票券",BN,"出示電子憑證換實體票，先找好劇場位置。","","d"],
+["10:30","🎶","部落劇場：八部合音",BN,"約40分鐘。","10:30 場也要滿 30 人，電話一併確認","d"],
+["11:20","🍽","DIY＋布農風味餐",BN,"皮雕或編織擇一。午餐提早到 11:30–12:00。","現場確認用餐時間","d"],
+["12:30","🏹","射箭體驗",BN,"30分鐘、7支箭。","訂位時先問能否排 12:30 左右","d"],
+["13:20","🌄","鹿野高台（可多停）","鹿野高台","比 Plan A 多出約2小時：滑草、看滑翔傘、喝咖啡放空。","","d"],
+["15:00","🚆","回台東（鹿野站→台東）","鹿野火車站","區間車約 $40，班次出發前查台鐵；高台→鹿野站計程車約 $200–230（估）。","","r"],
+["15:40","🏨","入住小型雙床房",MD,"15:30 後可入住，不用再等行李。","","w"],
+["18:30","🍢","微光集晚餐","台東市 微光集 TTwilight Bazaar","週四至週日 17:00–22:00。","","w"]]},
+{n:"Day 3",d:"10/18 日",t:"關山老街・紅豆香歸途",c:"#9B9B34",s:[
+["08:30","🍳","中華早點","台東市中華路一段 中華早點","滷肉飯加半熟蛋、蛋餅。約05:30–11:30，週日一般有開。","","w"],
+["09:20","🏨","退房 実舍台東",MD,"11:00 前退房；步行約6分鐘到台東站。","","w"],
+["10:00","🚆","區間車 台東→關山",TS,"車程約36分，約 $90/人（估）。","班次先查台鐵","r"],
+["10:50","🚲","關山老街散策／環鎮單車","關山老街","約80分鐘。環鎮單車道看米田，老街有日式警察宿舍與舊車站。","","w"],
+["12:15","🍱","關山便當","臺東縣關山鎮和平路83號 關山便當","089-811-100，車站步行約10分鐘。08:30–20:00，週日有開。","先電話預訂並約取餐時間","w"],
+["14:00","🍞","火盛製餅舖：取紅豆吐司","臺東縣關山鎮中山路90-1號 火盛製餅舖","089-811-173，約 $120/條，憑姓名領取。吐司約14:00出爐。","需預訂；週四公休、週日有開","w"],
+["15:34","🚆","關山搭自強號431","關山火車站","15:34 → 台北 19:49，約 $870/人。普悠瑪425只有週六開。","還沒訂位，請盡早","r"]]}];
 
-let meta = {
-  siteTitle: '知本解憂．藍皮慢行',
-  siteSub: 'Taitung · 3 Days ｜不趕、少走路的泡湯提案',
-  infoTitle: '行前須知',
-  infoSub: '出發前先看一眼，路上更安心',
-  budgetNote: '加了關山來回與火盛製餅舖後比純市區行程貴約$140/人，仍低於原始版本。以上為淡季平日估算，假日及旺季溫泉住宿價格會上升，區間車票價僅供參考，實際依台鐵公告為準。',
-};
+const NOTICES=["10/16 8101D 須事先於台灣好行官網訂位（建議前一天中午前）；夜訪小野柳憑票券現場加購 NT$150，天候不佳會取消。","10/17 布農部落：出發前1天電話預約 089-561211#201；14:00 場滿 30 人才演出，射箭 14:40。","10/18 關山便當 089-811-100、火盛紅豆吐司 089-811-173：都要先預訂並約取餐時間。","回程自強號431（關山 15:34 → 台北 19:49）尚未訂位；普悠瑪425只有週六行駛。","実舍台東：入住 15:30、退房 11:00；10/13 前免費取消，10/13–10/15 收50%，當日收100%。10/17 換房，行李先寄放。","卑南豬血湯只收現金、不接受預約。阿美族民俗中心 15:20 趕不上定時展演。"];
+const CHECK=["身分證／健保卡／信用卡","少量現金（計程車與小吃）","手機、行動電源、充電線","預約憑證截圖（台鐵、8101D、DIY、布農部落）","輕便短袖＋傍晚薄外套","好走的鞋（夜訪小野柳要長褲＋包鞋）","防曬用品","防蚊液、輕便雨具","頭燈／手電筒","水壺與個人藥品"];
+const BUD=[["台北→台東 普悠瑪402",936],["卡塔文化 DIY",390],["8101D 半日券",250],["夜訪小野柳導覽",150],["布農部落獵人套票",720],["鹿野→台東 區間車（估）",40],["101 市區公車",25],["台東→關山 區間車（估）",90],["三天餐食（約8餐）",1600],["關山→台北 自強號431",870],["実舍台東（每人，2晚）",1345],["計程車：台東站↔卡塔",250],["計程車：市區→布農部落",350],["計程車：布農部落→鹿野高台",250]];
+const EXP=[["台北→台東（普悠瑪402）",1872,"B"],["關山→台北（自強號431）",1740,"B"],["実舍台東 x 2晚",2689,"A"],["8101D 夜訪小野柳",500,"A"],["布農部落獵人套票",1440,"A"],["卡塔文化DIY",780,"A"]];
+const API="https://script.google.com/macros/s/AKfycbyUU_yCCJJj6sU5fVimHJI1uy-P4MPPBC3nfHvikEhryleF1KnuhB_LCv4rFzoXO6X7aw/exec";
 
-let chips = ['♨️ 知本溫泉一泊二食', '🍞 關山火盛製餅舖', '🚂 藍皮解憂號', '🐢 每天只安排 2–3 個定點'];
+const $=id=>document.getElementById(id),E=encodeURIComponent,G="https://www.google.com/maps/";
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const ls={get(k,d){try{return JSON.parse(localStorage.getItem(k))??d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+let cur=ls.get("tab",0),plan=ls.get("plan","A"),checks=ls.get("checks",{}),exp=ls.get("exp",EXP.map(x=>({n:x[0],a:x[1],p:x[2]})));
+const TABS=["Day 1","Day 2","Day 3","須知","預算","分帳"];
 
-let notices = [
-  '全程搭區間車／公車／台灣好行代步，不自駕不騎車；若想更省時間，段落可升級成半日包車（4人以內約 $1,200/車，均攤更划算）',
-  '火盛製餅舖每日限量，建議出發前一天或當天早上先電話預約（08-981-1173，週四公休）',
-  'Day3 藍皮解憂號建議提前 3–7 天於雄獅官網或 KKday 訂票，並攜帶證件；所有票價時刻依台鐵／公路客運當日公告為準',
-];
-
-let budgetRows = [
-  { label:'台北→台東 自強號', display:'$903', amount:903 },
-  { label:'台東→知本 區間車', display:'$26', amount:26 },
-  { label:'知本溫泉一泊二食（雙人房均分，含大眾池）', display:'約$2,280', amount:2280 },
-  { label:'知本→關山→台東 區間車（兩段）', display:'約$115', amount:115 },
-  { label:'關山環鎮電動輔助車（2小時）', display:'約$150', amount:150 },
-  { label:'火盛製餅舖 紅豆吐司（伴手禮）', display:'約$60', amount:60 },
-  { label:'市區住宿 1 晚（雙人房均分）', display:'約$750', amount:750 },
-  { label:'藍皮解憂號 單程套票', display:'$699', amount:699 },
-  { label:'枋寮→高鐵左營 台灣好行墾丁快線', display:'$196', amount:196 },
-  { label:'高鐵左營→台北', display:'約$1,350', amount:1350 },
-  { label:'三天餐飲雜支', display:'約$1,400', amount:1400 },
-  { label:'彈性緩衝', display:'約$500', amount:500 },
-];
-
-let checklist = [
-  '身分證／證件（藍皮解憂號需核對）',
-  '確認知本溫泉飯店入住時間與接駁預約',
-  '電話預約火盛製餅舖（08-981-1173）',
-  '藍皮解憂號車票已完成訂購',
-  '台鐵自強號來回車票已劃位',
-  '泳裝／泡湯用品',
-  '拖鞋、輕便衣物（少走路行程）',
-  '行動電源、充電線',
-  '防曬乳、輕便雨具',
-  '暈車藥（區間車、山路路段）',
-].map(t => ({ text:t, checked:false }));
-
-const DEFAULT_DAYS = [
-  { id:'d1', label:'Day 1', accent:'a1', color:'d1', title:'知本泡湯過夜', stops: [
-    { time:'09:26', tag:'交通', type:'drv', key:'taipei-station', title:'台鐵自強號 台北→台東', loc:'約 3.5–4 小時，建議提前訂票劃位' },
-    { time:'13:00', tag:'轉乘', type:'drv', key:'taitung-station', title:'台東車站，月台轉乘區間車', loc:'📍 不出站，同月台候車，銜接約 15–20 分', link:'https://maps.google.com/?q=台東車站' },
-    { time:'13:40', tag:'$26／人', type:'drv', key:'zhiben-station', title:'抵達知本車站', loc:'📍 多數溫泉飯店提供免費接駁，先向飯店預約時段', link:'https://maps.google.com/?q=知本車站' },
-    { time:'14:00–19:00', tag:'一泊二食', type:'hot', key:'zhiben-hotel', gallery:['zhiben-hotel-room','zhiben-hotel-pool'], title:'知本溫泉飯店 Check-in＋泡湯', loc:'📍 知本溫泉區．先寄放行李，傍晚再慢慢泡', stats:[{l:'泉質',v:'碳酸氫鈉泉'},{l:'水溫',v:'38–42°C'},{l:'大眾池',v:'住客免費'}], link:'https://maps.google.com/?q=知本溫泉' },
-    { time:'14:30–15:10', tag:'輕鬆走', type:'see', key:'zhiben-forest', title:'知本國家森林遊樂區', loc:'📍 台東縣卑南鄉', stats:[{l:'步道',v:'白榕園環線'},{l:'門票',v:'約$80'},{l:'建議停留',v:'30–40分'}], desc:'選最平緩的環形步道走走即可，不必走全程，看老榕樹跟森林浴。', link:'https://maps.google.com/?q=知本國家森林遊樂區' },
-    { time:'16:00–17:00', tag:'小逛', type:'eat', key:'zhiben-street', title:'知本溫泉老街', loc:'📍 走路可回飯店', desc:'煮溫泉蛋、買點心，逛累了幾步就能回飯店。', link:'https://maps.google.com/?q=知本溫泉老街' },
-    { time:'19:00', tag:'晚餐', type:'eat', key:'zhiben-dinner', title:'飯店內用晚餐／附近小吃', loc:'泡完湯直接吃飯，不用再移動' },
-  ]},
-  { id:'d2', label:'Day 2', accent:'a2', color:'d2', title:'關山慢活', stops: [
-    { time:'08:30', tag:'悠閒', type:'hot', key:'zhiben-hotel-pool', title:'晨浴，不設鬧鐘', loc:'睡到自然醒再去泡一次晨湯' },
-    { time:'10:00', tag:'交通', type:'drv', key:'zhiben-hotel', title:'退房，飯店接駁回知本車站' },
-    { time:'10:30–11:20', tag:'約$70／人', type:'drv', key:'guanshan-train', title:'區間車 知本→關山', loc:'📍 沿縱谷風景，車程約 50 分', link:'https://maps.google.com/?q=關山車站' },
-    { time:'11:30', tag:'記得先預約', type:'eat', key:'huosheng-bakery', title:'火盛製餅舖', loc:'📍 關山鎮中山路90-1號', stats:[{l:'必買',v:'爆餡紅豆吐司'},{l:'預訂',v:'電話預約'},{l:'公休',v:'每週四'}], desc:'50年老店，吐司每日限量，沒預約常撲空。當車上點心或帶回台北都合適。', link:'https://maps.google.com/?q=火盛製餅舖' },
-    { time:'12:00–13:00', tag:'全程平地', type:'see', key:'guanshan-bikepath', gallery:['guanshan-ebike'], title:'關山環鎮自行車道', loc:'📍 台灣第一條環鎮自行車道', stats:[{l:'距離',v:'約12km'},{l:'難度',v:'低・平緩'},{l:'租車',v:'電動車約$150'}], desc:'租電動輔助車繞一小段稻田風景即可，不必騎完整圈，很省腳力。', link:'https://maps.google.com/?q=關山環鎮自行車道' },
-    { time:'13:00–14:00', tag:'午餐', type:'eat', key:'guanshan-lunch', title:'關山在地小吃', loc:'便當／米苔目，吃飽準備回程' },
-    { time:'14:30–15:10', tag:'約$45／人', type:'drv', key:'taitung-station', title:'區間車 關山→台東', loc:'📍 車程約 35–40 分', link:'https://maps.google.com/?q=台東車站' },
-    { time:'15:20', tag:'卸行李', type:'drv', key:'taitung-hotel', title:'市區飯店 Check-in' },
-    { time:'15:45–17:30', tag:'咖啡・發呆', type:'eat', key:'tiehua-village', title:'鐵花村／文創園區', loc:'📍 台東市新生路', desc:'遮陽棚下坐著喝咖啡，不特別排景點，隨意逛逛市集攤位。', link:'https://maps.google.com/?q=台東鐵花村' },
-    { time:'18:00', tag:'晚餐', type:'eat', key:'taitung-night-market', title:'台東觀光夜市／四維夜市', loc:'📍 走路可到就不叫車', link:'https://maps.google.com/?q=台東觀光夜市' },
-  ]},
-  { id:'d3', label:'Day 3', accent:'a3', color:'d3', title:'藍皮解憂賦歸', stops: [
-    { time:'09:00', tag:'早午餐', type:'eat', key:'taitung-hotel', title:'退房＋買伴手禮', loc:'地瓜酥、米麻糬，飯店附近解決即可' },
-    { time:'11:20', tag:'交通', type:'drv', key:'taitung-station', title:'計程車→台東車站報到', link:'https://maps.google.com/?q=台東車站' },
-    { time:'12:10', tag:'$699／人', type:'hot', key:'blue-train', gallery:['blue-train-view'], title:'藍皮解憂號 台東發車', loc:'📍 南下往枋寮，南迴海景路線', stats:[{l:'車程',v:'約3小時'},{l:'停靠',v:'3站下車導覽'},{l:'票價',v:'單程$699'}], desc:'太麻里／金崙／枋山三站下車導覽，其餘時間坐著看海就好。', link:'https://maps.google.com/?q=台東車站' },
-    { time:'車上導覽', tag:'下車拍照', type:'see', key:'taimali-station', title:'太麻里車站', link:'https://maps.google.com/?q=太麻里車站' },
-    { time:'車上導覽', tag:'下車導覽', type:'see', key:'jinlun-station', title:'金崙車站', loc:'📍 金崙部落走讀，約20–30分', link:'https://maps.google.com/?q=金崙車站' },
-    { time:'車上導覽', tag:'下車導覽', type:'see', key:'fangshan-station', title:'枋山車站', loc:'📍 全台最南端秘境海景', link:'https://maps.google.com/?q=枋山車站' },
-    { time:'約15:00', tag:'抵達', type:'drv', key:'fangliao-station', title:'枋寮站下車', link:'https://maps.google.com/?q=枋寮車站' },
-    { time:'15:20', tag:'$196', type:'drv', key:'kenting-express', title:'轉乘台灣好行墾丁快線', loc:'步行至站牌即可搭車 → 往高鐵左營站，約 1 小時 10 分' },
-    { time:'16:30', tag:'高鐵', type:'drv', key:'zuoying-station', title:'高鐵左營站轉乘', loc:'搭乘高鐵往南港/台北，約 1 小時 34 分' },
-    { time:'18:34', tag:'結束', type:'drv', key:'taipei-station', title:'抵達台北車站，行程結束', loc:'實際班次時刻依台鐵/公路客運/高鐵當日公告為準' },
-  ]},
-];
-
-let days = DEFAULT_DAYS;
-let currentDay = 0;
-
-const isImg = s => typeof s === 'string' && /^(https?:\/\/|data:image\/)/.test(s.trim());
-
-/* ============ 頂部內容渲染（標題／須知／預算／清單） ============ */
-function renderMeta() {
-  document.getElementById('siteTitle').textContent = meta.siteTitle;
-  document.getElementById('siteSub').textContent = meta.siteSub;
-  document.getElementById('infoTitle').textContent = meta.infoTitle;
-  document.getElementById('infoSub').textContent = meta.infoSub;
-  document.getElementById('budgetNote').textContent = meta.budgetNote;
-  // 分頁標題／icon：可在試算表 meta 加 pageTitle / favicon 欄位覆蓋，留空則沿用 siteTitle
-  document.getElementById('pageTitle').textContent = meta.pageTitle || meta.siteTitle;
-  if (meta.favicon) document.getElementById('pageFavicon').setAttribute('href', meta.favicon);
+function bar(){
+  $("bar").innerHTML=TABS.map((t,i)=>`<button class="tab${i===cur?" on":""}" data-i="${i}" ${i<3?`style="--c:${DAYS[i].c}"`:""}>${t}</button>`).join("");
+  document.documentElement.style.setProperty("--c",cur<3?DAYS[cur].c:"#2FA0C4");
 }
-function renderChips() {
-  document.getElementById('chipsWrap').innerHTML = chips.map(c => `<span class="chip">${c}</span>`).join('');
+function card(x){
+  const [t,ic,n,q,d,w,m]=x,tx=ic==="🚕"?" tx":"";
+  const nav=m?`<a class="b p" target="_blank" rel="noopener" href="${G}dir/?api=1&destination=${E(q)}&travelmode=${{d:"driving",w:"walking",r:"transit"}[m]}">🧭 導航</a>`:"";
+  return `<div class="it"><div class="tm">${t}</div><div class="cd${tx}"><h3>${ic} ${esc(n)}</h3>
+  <a class="ad" target="_blank" rel="noopener" href="${G}search/?api=1&query=${E(q)}">📍 ${esc(q)}</a>
+  <div class="nt">${esc(d)}</div>${w?`<div class="w">⚠ ${esc(w)}</div>`:""}
+  <div class="go">${nav}<a class="b" target="_blank" rel="noopener" href="${G}search/?api=1&query=${E(q)}">看地圖</a></div></div></div>`;
 }
-function renderNotices() {
-  document.getElementById('noticeWrap').innerHTML = notices.map(n => `<div class="notice-line">${n}</div>`).join('');
+function dayView(){
+  const D=DAYS[cur],s=D.s||D[plan];
+  const pts=s.map(x=>x[3]).filter((q,i,a)=>q!==a[i-1]);
+  const route=pts.length>1?`${G}dir/?api=1&origin=${E(pts[0])}&destination=${E(pts[pts.length-1])}&waypoints=${E(pts.slice(1,-1).slice(0,9).join("|"))}`:"";
+  let h=`<div class="hd"><b>${D.n} ・ ${D.d}</b><div class="sub" style="padding:2px 0 0">${D.t}</div></div>`;
+  if(cur===1)h+=`<div class="seg"><button data-p="A" class="${plan==="A"?"on":""}">Plan A：14:00 場</button><button data-p="B" class="${plan==="B"?"on":""}">Plan B：10:30 場（早到）</button></div>
+  <div class="box" style="margin-top:8px"><div style="font-size:13.5px">📞 <b>先打 089-561211#201</b>：問 14:00 場有沒有開（滿30人才演）。沒開就改 10:30，並確認射箭、午餐能排在 12:30 前後。<br><a class="b" style="margin-top:8px" href="tel:0895612110,201">撥號 089-561211 轉 201</a></div></div>`;
+  h+=`<div class="row">${route?`<a class="b p" target="_blank" rel="noopener" href="${route}">🗺 整天路線（Google Maps）</a>`:""}</div>`;
+  return h+s.map(card).join("");
 }
-function rowAmount(r) {
-  // 優先用 amount 欄位；如果試算表沒填、填成文字或算不出數字，就自動從 display（例如「約$2,280」）擷取數字當備援，
-  // 這樣就不會因為 amount 沒對到而讓總計整個變 0。
-  const n = Number(r.amount);
-  if (Number.isFinite(n) && n > 0) return n;
-  const digits = String(r.display || '').replace(/[^0-9.]/g, '');
-  return digits ? Number(digits) || 0 : 0;
+function infoView(){
+  const n=CHECK.filter((_,i)=>checks[i]).length;
+  return `<div class="box"><h2>行前須知</h2>${NOTICES.map(x=>`<div class="nl">${esc(x)}</div>`).join("")}</div>
+  <div class="box"><h2>行前清單 ${n}/${CHECK.length}</h2>${CHECK.map((x,i)=>`<div class="ck${checks[i]?" x":""}" data-k="${i}"><i>${checks[i]?"✓":""}</i><span>${esc(x)}</span></div>`).join("")}</div>`;
 }
-function renderBudget() {
-  document.getElementById('budgetRows').innerHTML = budgetRows.map(r =>
-    `<div class="brow"><div class="l">${r.label}</div><div class="v">${r.display}</div></div>`).join('');
-  const total = budgetRows.reduce((s, r) => s + rowAmount(r), 0);
-  document.getElementById('budgetTotal').textContent = '約$' + total.toLocaleString();
+function budView(){
+  const t=BUD.reduce((s,x)=>s+x[1],0);
+  return `<div class="box"><h2>預算（每人，不含伴手禮）</h2>${BUD.map(x=>`<div class="ln"><span>${x[0]}</span><span>$${x[1].toLocaleString()}</span></div>`).join("")}
+  <div class="tot"><span>總計</span><span>$${t.toLocaleString()}</span></div>
+  <div class="nt">計程車跳錶估算：市區→布農部落約 $500–600／車，高台→鹿野站另約 $200–230。若上面的 $350 是整車預算會不夠；若是每人，兩人合計 $700 就夠。</div></div>`;
 }
-function renderChecklist() {
-  const wrap = document.getElementById('checklistWrap');
-  wrap.innerHTML = '';
-  checklist.forEach((item, i) => {
-    const row = document.createElement('div');
-    row.className = 'checklist-item' + (item.checked ? ' checked' : '');
-    row.innerHTML = `<div class="checklist-box">${item.checked ? '✓' : ''}</div><div class="checklist-text">${item.text}</div>`;
-    row.onclick = () => { checklist[i].checked = !checklist[i].checked; renderChecklist(); };
-    wrap.appendChild(row);
-  });
-  const done = checklist.filter(i => i.checked).length;
-  document.getElementById('checklistProgress').textContent = `${done}/${checklist.length}`;
+function settle(){
+  const a=exp.filter(e=>e.p==="A").reduce((s,e)=>s+e.a,0),b=exp.filter(e=>e.p==="B").reduce((s,e)=>s+e.a,0),df=a-(a+b)/2;
+  return {a,b,r:!(a+b)?"尚無支出":Math.abs(df)<1?"兩人打平":df>0?`念臻需付 Gina $${Math.round(df).toLocaleString()}`:`Gina 需付念臻 $${Math.round(-df).toLocaleString()}`};
 }
-function renderStaticContent() { renderMeta(); renderChips(); renderNotices(); renderBudget(); renderChecklist(); }
-
-/* ============ 行程渲染 ============ */
-function renderDayTabs() {
-  const wrap = document.getElementById('dayTabs');
-  wrap.innerHTML = '';
-  days.forEach((d, i) => {
-    const btn = document.createElement('button');
-    btn.className = 'day-tab' + (i === currentDay ? ' active ' + d.accent : '');
-    btn.textContent = d.label;
-    btn.onclick = () => { currentDay = i; renderTrip(); };
-    wrap.appendChild(btn);
-  });
-  document.getElementById('dayDesc').textContent = `${days[currentDay].label} · ${days[currentDay].title}`;
+function splitView(){
+  const s=settle();
+  return `<div class="box"><h2>分帳</h2>${exp.map((e,i)=>`<div class="ex" data-i="${i}"><input data-f="n" style="flex:2" value="${esc(e.n)}"><input data-f="a" type="number" inputmode="numeric" style="flex:1.2" value="${e.a}"><select data-f="p"><option value="A"${e.p==="A"?" selected":""}>Gina</option><option value="B"${e.p==="B"?" selected":""}>念臻</option></select><button class="b" data-del="${i}">✕</button></div>`).join("")}
+  <button class="b" id="add" style="width:100%">＋ 新增支出</button>
+  <div class="ln" style="margin-top:10px"><span>Gina 已付</span><span id="pa">$${s.a.toLocaleString()}</span></div><div class="ln"><span>念臻 已付</span><span id="pb">$${s.b.toLocaleString()}</span></div>
+  <div class="tot"><span>結算</span><span id="settle" style="font-size:15px">${s.r}</span></div></div>`;
 }
-
-function renderCarousel() {
-  const wrap = document.getElementById('carousel');
-  wrap.innerHTML = '';
-  days[currentDay].stops.forEach((s, i) => {
-    const card = document.createElement('div');
-    card.className = 'c-card type-' + s.type;
-    if (isImg(s.image)) { card.style.backgroundImage = `url("${s.image}")`; card.classList.add('has-photo'); }
-    card.onclick = () => openDetail(currentDay, i);
-    card.innerHTML = `
-      <div class="ph-icon">${TYPE_ICON[s.type]}</div>
-      <span class="c-badge">${s.tag || TYPE_LABEL[s.type]}</span>
-      <div class="c-info">
-        <div class="c-time">${s.time}</div>
-        <div class="c-title">${s.title}</div>
-        ${s.loc ? `<div class="c-loc">${s.loc.replace('📍 ', '')}</div>` : ''}
-      </div>`;
-    wrap.appendChild(card);
-  });
+function render(){
+  bar();
+  $("main").innerHTML=[dayView,dayView,dayView,infoView,budView,splitView][cur]();
+  scrollTo(0,0);
+  if(cur===5)pull();
 }
+/* 分帳雲端同步：只在分帳頁開啟時才連線，不再背景輪詢 */
+let pushT;
+function save(){ls.set("exp",exp);clearTimeout(pushT);if(API)pushT=setTimeout(()=>fetch(API,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({action:"saveExpenses",expenses:exp.map(e=>({name:e.n,amount:e.a,payer:e.p}))})}).catch(()=>{}),800)}
+function pull(){if(!API)return;fetch(API+"?action=expenses&ts="+Date.now(),{cache:"no-store"}).then(r=>r.json()).then(j=>{if(cur===5&&Array.isArray(j.expenses)&&j.expenses.length&&!document.activeElement.closest(".ex")){exp=j.expenses.map(e=>({n:e.name,a:Number(e.amount)||0,p:e.payer}));ls.set("exp",exp);$("main").innerHTML=splitView()}}).catch(()=>{})}
 
-function renderChipStrip() {
-  const wrap = document.getElementById('chipStrip');
-  wrap.innerHTML = '';
-  days[currentDay].stops.forEach((s, i) => {
-    const chip = document.createElement('div');
-    chip.className = 'chip-card glass type-' + s.type;
-    chip.onclick = () => {
-      document.querySelectorAll('#carousel .c-card')[i]?.scrollIntoView({ behavior:'smooth', inline:'center', block:'nearest' });
-      chip.scrollIntoView({ behavior:'smooth', inline:'center', block:'nearest' });
-    };
-    chip.innerHTML = `<div class="chip-thumb"><span class="chip-time">${s.time.split('–')[0]}</span></div>
-      <div class="chip-body"><div class="chip-title">${s.title}</div></div>`;
-    if (isImg(s.image)) {
-      const thumb = chip.querySelector('.chip-thumb');
-      thumb.style.backgroundImage = `url("${s.image}")`;
-      thumb.classList.add('has-photo');
-    }
-    wrap.appendChild(chip);
-  });
-}
-
-function setupFocusScroll(container, sel) {
-  function update() {
-    const center = container.getBoundingClientRect().left + container.getBoundingClientRect().width / 2;
-    let closest = null, dist = Infinity;
-    container.querySelectorAll(sel).forEach(c => {
-      const r = c.getBoundingClientRect();
-      const d = Math.abs((r.left + r.width / 2) - center);
-      if (d < dist) { dist = d; closest = c; }
-      c.classList.remove('focus');
-    });
-    if (closest) closest.classList.add('focus');
-  }
-  container.addEventListener('scroll', () => requestAnimationFrame(update), { passive:true });
-  update();
-}
-
-function renderTrip() {
-  renderDayTabs();
-  renderCarousel();
-  renderChipStrip();
-  setupFocusScroll(document.getElementById('carousel'), '.c-card');
-  setupFocusScroll(document.getElementById('chipStrip'), '.chip-card');
-}
-
-/* ============ 詳情頁 ============ */
-// 圖文交錯：一段文字、一張圖、一段文字...依序排列
-// - 文字段落：desc 欄位裡用「空一行」分段（連續換行），就會被拆成多段文字
-// - 照片：用 gallery 欄位（跟主圖 image 不同的其他照片），依序穿插進文字段落之間
-// - 文字或照片其中一種比較多時，多出來的會接續放在後面，不會被省略
-function renderDetailContent(s) {
-  const wrap = document.getElementById('detailContent');
-  const fallback = '這一站沒有太多安排，放慢腳步，跟著時刻走就好。';
-  const paragraphs = String(s.desc || fallback).split(/\n\s*\n/).map(p => p.trim()).filter(Boolean);
-  const photos = (s.gallery || []).filter(isImg).filter(u => u !== s.image);
-
-  const blocks = [];
-  const len = Math.max(paragraphs.length, photos.length);
-  for (let i = 0; i < len; i++) {
-    if (paragraphs[i]) blocks.push({ type: 'text', value: paragraphs[i] });
-    if (photos[i]) blocks.push({ type: 'photo', value: photos[i] });
-  }
-  if (!blocks.length) blocks.push({ type: 'text', value: fallback });
-
-  wrap.innerHTML = blocks.map(b => b.type === 'text'
-    ? `<div class="dc-text">${b.value}</div>`
-    : `<div class="dc-photo" style="background-image:url('${b.value}')"></div>`
-  ).join('');
-}
-
-function openDetail(dayIdx, stopIdx) {
-  const isSame = window.currentDetail && window.currentDetail.day === dayIdx && window.currentDetail.stop === stopIdx;
-  window.currentDetail = { day: dayIdx, stop: stopIdx };
-  if (!isSame) window.currentDetailPhotoUrl = null;
-  const s = days[dayIdx].stops[stopIdx];
-  document.getElementById('detailHero').className = 'detail-hero type-' + s.type;
-
-  const allPhotos = [s.image, ...(s.gallery || [])].filter(isImg);
-  setHeroPhoto(window.currentDetailPhotoUrl || allPhotos[0] || '');
-
-  document.getElementById('detailEyebrow').textContent = `${days[dayIdx].label} · ${s.time}`;
-  document.getElementById('detailTitle').textContent = s.title;
-
-  // 地址列：只要有地址文字（loc）就自動變成可點擊，直接開 Google Maps 搜尋該地點，
-  // 不需要每個景點另外去填連結欄位。
-  const locEl = document.getElementById('detailLoc');
-  const locText = (s.loc || '').replace('📍 ', '').trim();
-  if (locText) {
-    const mapsUrl = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(locText || s.title);
-    locEl.outerHTML = `<a class="detail-loc mappable" id="detailLoc" href="${mapsUrl}" target="_blank" rel="noopener">
-        <span class="pin">📍</span><span>${locText}</span><span class="go-hint">・在 Google Maps 開啟</span>
-      </a>`;
-  } else {
-    locEl.outerHTML = `<div class="detail-loc" id="detailLoc">${s.tag || '這一站沒有特別的地址，跟著時刻走就好'}</div>`;
-  }
-
-  // 右側縮圖：改成「當天行程導覽」，只放圖片、不放文字，點一下就切到那一站的詳情
-  const galWrap = document.getElementById('detailGallery');
-  galWrap.innerHTML = '';
-  days[dayIdx].stops.forEach((stop, i) => {
-    const d = document.createElement('div');
-    d.className = 'detail-thumb' + (i === stopIdx ? ' current' : '');
-    if (isImg(stop.image)) d.style.backgroundImage = `url("${stop.image}")`;
-    d.onclick = () => openDetail(dayIdx, i);
-    galWrap.appendChild(d);
-  });
-  galWrap.querySelector('.detail-thumb.current')?.scrollIntoView({ block:'nearest' });
-
-  const stats = (s.stats && s.stats.length ? s.stats.slice(0, 3) : [
-    { l:'時段', v:s.time }, { l:'類型', v:TYPE_LABEL[s.type] }, { l:'備註', v:s.tag || '—' },
-  ]);
-  document.getElementById('detailStats').innerHTML = stats.map(st =>
-    `<div class="dstat"><div class="dstat-label">${st.l}</div><div class="dstat-val">${st.v}</div></div>`).join('');
-
-  renderDetailContent(s);
-
-  const priceLabel = document.getElementById('detailPriceLabel');
-  const priceVal = document.getElementById('detailPriceVal');
-  if (s.priceLabel && s.priceValue) { priceLabel.textContent = s.priceLabel; priceVal.textContent = s.priceValue; }
-  else if (s.tag && /[\$￥]/.test(s.tag)) { priceLabel.textContent = '參考費用'; priceVal.textContent = s.tag; }
-  else { priceLabel.textContent = '時段'; priceVal.textContent = s.time; }
-
-  // 沒有連結的景點，箭頭按鈕直接不顯示，而不是顯示一個點不下去的灰色按鈕
-  const goBtn = document.getElementById('detailGo');
-  if (s.link) { goBtn.href = s.link; goBtn.style.display = 'flex'; }
-  else { goBtn.style.display = 'none'; }
-
-  const overlay = document.getElementById('detailOverlay');
-  const wasOpen = overlay.classList.contains('open');
-  overlay.classList.add('open');
-  overlay.scrollTop = 0;
-  document.body.style.overflow = 'hidden';
-  if (!wasOpen) history.pushState({ detail:true }, '');
-}
-
-function setHeroPhoto(url) {
-  const hero = document.getElementById('detailHero');
-  if (url) { hero.style.backgroundImage = `url("${url}")`; hero.classList.add('has-photo'); }
-  else { hero.style.backgroundImage = 'none'; hero.classList.remove('has-photo'); }
-}
-
-function closeDetail(skipHistory) {
-  const overlay = document.getElementById('detailOverlay');
-  if (!overlay.classList.contains('open')) return;
-  overlay.classList.remove('open');
-  document.body.style.overflow = '';
-  if (!skipHistory && history.state && history.state.detail) history.back();
-}
-window.addEventListener('popstate', () => closeDetail(true));
-
-(function setupSwipeToClose() {
-  const overlay = document.getElementById('detailOverlay');
-  let startY = 0, dragging = false;
-  overlay.addEventListener('touchstart', e => { startY = e.touches[0].clientY; dragging = overlay.scrollTop <= 0; }, { passive:true });
-  overlay.addEventListener('touchmove', e => {
-    if (!dragging) return;
-    const dy = e.touches[0].clientY - startY;
-    if (dy > 0) overlay.style.transform = `translateY(${Math.min(dy, 220)}px)`;
-  }, { passive:true });
-  overlay.addEventListener('touchend', e => {
-    if (!dragging) return;
-    const dy = e.changedTouches[0].clientY - startY;
-    overlay.style.transform = '';
-    dragging = false;
-    if (dy > 110) closeDetail();
-  });
-})();
-
-/* ============ 底部導覽 ============ */
-function switchView(name, btn) {
-  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-  document.getElementById('view-' + name).classList.add('active');
-  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-  (btn || document.querySelector(`.nav-btn[data-nav="${name}"]`))?.classList.add('active');
-  const show = name === 'discover';
-  document.getElementById('dayTabs').style.display = show ? 'flex' : 'none';
-  document.getElementById('dayDesc').style.display = show ? 'block' : 'none';
-}
-
-/* ============ 分帳小工具（自動記住上次填的內容） ============ */
-const SPLIT_STORAGE_KEY = 'zhiben-trip-split-v1';
-const DEFAULT_EXPENSES = [
-  { name:'知本溫泉一泊二食', amount:4560, payer:'A' },
-  { name:'市區住宿 1 晚', amount:1500, payer:'B' },
-  { name:'藍皮解憂號套票 x2', amount:1398, payer:'A' },
-];
-/* ============ 分帳資料：改成跟 Apps Script 讀寫，兩人共用同一份 ============
- * 邏輯：打開頁面先跟後端要一次最新資料；之後每次編輯都會整批存回後端；
- * 同時每隔幾秒背景輪詢一次，讓對方存的更動也能同步過來。
- * 注意：這是「整批覆蓋」同步，不是逐格即時同步——如果兩人「同一秒」都在編輯，
- * 後存的會蓋掉先存的。一般兩人輪流填、隔幾秒看一下的用法完全沒問題。
- * ================================================= */
-function loadExpensesLocal() {
-  try {
-    const saved = localStorage.getItem(SPLIT_STORAGE_KEY);
-    if (saved) {
-      const parsed = JSON.parse(saved);
-      if (Array.isArray(parsed)) return parsed;
-    }
-  } catch (e) { console.warn('讀取本機分帳快取失敗，改用預設內容', e); }
-  return DEFAULT_EXPENSES;
-}
-function cacheExpensesLocal() {
-  try { localStorage.setItem(SPLIT_STORAGE_KEY, JSON.stringify(expenses)); }
-  catch (e) { console.warn('本機分帳快取失敗', e); }
-}
-let expenses = loadExpensesLocal(); // 開頭先用本機快取墊著，避免畫面閃空，稍後會被雲端資料覆蓋
-let expensesSyncTimer = null;
-let expensesSavingTimer = null;
-let expensesEditingNow = false; // 使用者正在打字時，暫停輪詢覆蓋畫面
-
-async function fetchExpensesFromCloud() {
-  if (!DATA_API_URL) return;
-  try {
-    const url = DATA_API_URL.trim() + (DATA_API_URL.includes('?') ? '&' : '?') + 'action=expenses&ts=' + Date.now();
-    const res = await fetch(url, { cache: 'no-store' });
-    if (!res.ok) throw new Error('HTTP ' + res.status);
-    const json = await res.json();
-    if (json.error) { console.warn('分帳資料讀取錯誤：' + json.error); return; }
-    if (Array.isArray(json.expenses) && !expensesEditingNow) {
-      expenses = json.expenses;
-      cacheExpensesLocal();
-      renderSplit();
-    }
-  } catch (e) { console.warn('分帳資料讀取失敗，暫用本機快取', e); }
-}
-
-async function saveExpensesToCloud() {
-  if (!DATA_API_URL) { cacheExpensesLocal(); return; }
-  cacheExpensesLocal();
-  try {
-    // 用 text/plain 送出，避免瀏覽器對 Apps Script 發出 CORS 預檢請求（Apps Script 不支援預檢，會直接失敗）
-    await fetch(DATA_API_URL.trim(), {
-      method: 'POST',
-      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-      body: JSON.stringify({ action: 'saveExpenses', expenses }),
-    });
-  } catch (e) { console.warn('分帳資料存雲端失敗，已保留在本機', e); }
-}
-function saveExpenses() {
-  // 打字時先本機存一份、debounce 0.7 秒再整批送雲端，避免每敲一個字就打一次 API
-  cacheExpensesLocal();
-  clearTimeout(expensesSavingTimer);
-  expensesSavingTimer = setTimeout(saveExpensesToCloud, 700);
-}
-function startExpensesSync() {
-  fetchExpensesFromCloud();
-  if (expensesSyncTimer) clearInterval(expensesSyncTimer);
-  expensesSyncTimer = setInterval(fetchExpensesFromCloud, 6000); // 每 6 秒背景同步一次對方的更動
-}
-function renderSplit() {
-  const rowsEl = document.getElementById('splitRows');
-  rowsEl.innerHTML = '';
-  expenses.forEach((e, i) => {
-    const row = document.createElement('div');
-    row.style.cssText = 'display:flex;gap:6px;align-items:center;margin-bottom:6px';
-    row.innerHTML = `
-      <input type="text" value="${e.name}" placeholder="項目" style="flex:2;min-width:0;padding:8px;border-radius:7px;border:1px solid var(--glass-line-soft);background:rgba(255,255,255,.55);backdrop-filter:blur(10px);color:var(--ink);font-size:13px">
-      <input type="number" value="${e.amount}" placeholder="金額" style="flex:1.3;min-width:0;padding:8px;border-radius:7px;border:1px solid var(--glass-line-soft);background:rgba(255,255,255,.55);backdrop-filter:blur(10px);color:var(--ink);font-size:13px">
-      <select style="flex:1;padding:8px 4px;border-radius:7px;border:1px solid var(--glass-line-soft);background:rgba(255,255,255,.55);backdrop-filter:blur(10px);color:var(--ink);font-size:13px">
-        <option value="A" ${e.payer==='A'?'selected':''}>Gina付</option>
-        <option value="B" ${e.payer==='B'?'selected':''}>念臻付</option>
-      </select>
-      <button style="padding:7px 10px;border-radius:7px;border:1px solid var(--glass-line-soft);background:none;color:#D9713F;font-size:13px">✕</button>`;
-    const [nameInput, amountInput, payerSelect, delBtn] = row.children;
-    const markEditing = () => { expensesEditingNow = true; clearTimeout(window.__editIdleTimer); window.__editIdleTimer = setTimeout(() => { expensesEditingNow = false; }, 1500); };
-    nameInput.oninput = () => { markEditing(); expenses[i].name = nameInput.value; saveExpenses(); };
-    amountInput.oninput = () => { markEditing(); expenses[i].amount = Number(amountInput.value) || 0; calcSettle(); saveExpenses(); };
-    payerSelect.onchange = () => { expenses[i].payer = payerSelect.value; calcSettle(); saveExpenses(); };
-    delBtn.onclick = () => { expenses.splice(i, 1); renderSplit(); saveExpenses(); };
-    rowsEl.appendChild(row);
-  });
-  calcSettle();
-}
-function calcSettle() {
-  const paidA = expenses.filter(e => e.payer === 'A').reduce((s, e) => s + e.amount, 0);
-  const paidB = expenses.filter(e => e.payer === 'B').reduce((s, e) => s + e.amount, 0);
-  document.getElementById('paidA').textContent = '$' + paidA.toLocaleString();
-  document.getElementById('paidB').textContent = '$' + paidB.toLocaleString();
-  const total = paidA + paidB;
-  const settleText = document.getElementById('settleText');
-  if (total === 0) { settleText.textContent = '尚無支出'; return; }
-  const diff = paidA - total / 2;
-  if (Math.abs(diff) < 1) settleText.textContent = '兩人打平';
-  else if (diff > 0) settleText.textContent = `念臻需付 Gina $${Math.round(diff).toLocaleString()}`;
-  else settleText.textContent = `Gina需付念臻 $${Math.round(-diff).toLocaleString()}`;
-}
-document.getElementById('addRowBtn').onclick = () => { expenses.push({ name:'', amount:0, payer:'A' }); renderSplit(); saveExpenses(); };
-
-/* ============ Google 試算表串接 ============
- * 部署好 Apps Script 後，把網址貼在下面 DATA_API_URL。
- * 標題、須知、預算、清單、每日行程（含圖片）都會整批換成試算表內容；
- * 留空或讀取失敗時，自動使用上面內建的預設內容，頁面不會空白。
- * 完整欄位設定，請看隨附的「Google試算表欄位對照.md」與「行程資料API.gs」。
- * ================================================= */
-const DATA_API_URL = "https://script.google.com/macros/s/AKfycbyUU_yCCJJj6sU5fVimHJI1uy-P4MPPBC3nfHvikEhryleF1KnuhB_LCv4rFzoXO6X7aw/exec"; // ← 貼你部署好的 Apps Script 網址
-
-async function loadTripData() {
-  if (!DATA_API_URL) return;
-  try {
-    // 加上時間戳並關閉快取：Google Apps Script 的網址常被瀏覽器／中繼快取記住舊回應，
-    // 導致試算表明明更新了，網頁重新整理卻還是讀到舊資料。這裡強制每次都拿最新版本。
-    const url = DATA_API_URL.trim() + (DATA_API_URL.includes('?') ? '&' : '?') + 'ts=' + Date.now();
-    const res = await fetch(url, { cache: 'no-store' });
-    if (!res.ok) throw new Error('HTTP ' + res.status);
-    const json = await res.json();
-    if (json.error) { console.warn('試算表回傳錯誤：' + json.error); return; }
-
-    if (json.meta) Object.assign(meta, json.meta);
-    if (Array.isArray(json.chips) && json.chips.length) chips = json.chips;
-    if (Array.isArray(json.notices) && json.notices.length) notices = json.notices;
-    if (json.budget && Array.isArray(json.budget.rows) && json.budget.rows.length) budgetRows = json.budget.rows;
-    if (Array.isArray(json.checklist) && json.checklist.length) checklist = json.checklist.map(t => ({ text:t, checked:false }));
-    if (Array.isArray(json.days) && json.days.length && json.days.every(d => Array.isArray(d.stops))) {
-      days = json.days;
-      if (currentDay >= days.length) currentDay = 0;
-    }
-
-    renderStaticContent();
-    renderTrip();
-    if (document.getElementById('detailOverlay').classList.contains('open') && window.currentDetail) {
-      openDetail(window.currentDetail.day, window.currentDetail.stop);
-    }
-  } catch (e) {
-    console.warn('行程資料載入失敗，改用內建預設內容。請確認 Apps Script 已部署為「所有人」可存取', e);
-  }
-}
-
-/* ============ 初始化 ============ */
-renderStaticContent();
-renderTrip();
-renderSplit();
-loadTripData();
-startExpensesSync();
+document.addEventListener("click",e=>{
+  const t=e.target.closest(".tab"),p=e.target.closest("[data-p]"),k=e.target.closest("[data-k]"),d=e.target.closest("[data-del]");
+  if(t){cur=+t.dataset.i;ls.set("tab",cur);render()}
+  else if(p){plan=p.dataset.p;ls.set("plan",plan);const y=scrollY;render();scrollTo(0,y)}
+  else if(k){const i=k.dataset.k;checks[i]=!checks[i];ls.set("checks",checks);const y=scrollY;render();scrollTo(0,y)}
+  else if(d){exp.splice(+d.dataset.del,1);save();$("main").innerHTML=splitView()}
+  else if(e.target.id==="add"){exp.push({n:"",a:0,p:"A"});save();$("main").innerHTML=splitView()}
+});
+document.addEventListener("input",e=>{
+  const r=e.target.closest(".ex");if(!r)return;
+  const i=+r.dataset.i,f=e.target.dataset.f;exp[i][f]=f==="a"?Number(e.target.value)||0:e.target.value;save();
+  const s=settle();$("settle").textContent=s.r;$("pa").textContent="$"+s.a.toLocaleString();$("pb").textContent="$"+s.b.toLocaleString();
+});
+document.addEventListener("change",e=>{const r=e.target.closest(".ex");if(r&&e.target.dataset.f==="p"){exp[+r.dataset.i].p=e.target.value;save();const s=settle();$("settle").textContent=s.r;$("pa").textContent="$"+s.a.toLocaleString();$("pb").textContent="$"+s.b.toLocaleString()}});
+render();
 </script>
 </body>
 </html>
