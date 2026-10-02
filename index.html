@@ -56,8 +56,88 @@ nav button{flex:1;border:0;background:none;font:700 12px inherit;color:var(--mu)
 .gr{display:grid;grid-template-columns:1fr 1fr;gap:10px}.gr img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:28px;background:#fff}
 .bar{position:sticky;bottom:0;background:#E2E9D6;padding:14px 16px calc(14px + env(safe-area-inset-bottom));display:flex;align-items:center;gap:14px;border-radius:32px 32px 0 0}
 .bar small{display:block;font-size:13px;color:var(--mu)}.bar b{font:700 26px/1.1 inherit}.go{flex:1;text-align:center;background:var(--lime);color:var(--ink);font-weight:800;font-size:17px;padding:19px 10px;border-radius:99px;text-decoration:none}
+
+/* ===== v2 手機放大＋參考圖比例 ===== */
+html,body{background:#f2f2e6}
+body{font-size:17px;font-variant-emoji:text;padding-bottom:116px}
+.hero{padding-left:20px;padding-right:20px}
+.top span{font-size:16px;padding:12px 20px;background:#eae8d1}
+.hero h1{font-size:46px;line-height:1.1;margin:22px 2px 18px}
+.route{background:#eae8d1;padding:22px 20px;border-radius:34px}
+.route b{font-size:34px}.route small{font-size:15px}
+.line i{width:42px;height:42px;line-height:42px;font-size:18px;top:-21px}
+.rb span{font-size:16px;padding:13px 18px}
+.nx{font-size:17px;padding:16px 20px;line-height:1.5}
+.tabs{padding:12px 16px 16px;gap:10px}
+.tabs button{background:#e8e7d5;padding:13px 0;border-radius:44px}
+.tabs button.on{background:var(--lime)}
+.tabs small{font-size:14px}.tabs b{font-size:30px;margin:2px 0}
+main{padding:0 16px}
+.plan p{font-size:15px}.plan button{font-size:16px;padding:15px 4px}
+.tip{font-size:16px;padding:16px 18px;border-radius:24px}
+.chips button{font-size:16px;padding:14px 22px;background:#e8e7d5}.chips button.on{background:var(--ink)}
+.st{grid-template-columns:16.667% 1fr;min-height:210px;border-radius:34px;margin-bottom:16px}
+.sl{padding-top:20px}
+.sl span{font-size:25px;letter-spacing:.24em;color:#f1f6b8;font-weight:400}
+.sl i{width:48px;height:48px;font-size:22px;bottom:16px}
+.up{padding:20px 18px 14px 20px}
+.t{font-size:36px}
+.n{font-size:20px;font-weight:600;margin-top:10px;line-height:1.3}
+.ic{width:60px;height:60px;font-size:24px}
+.ft{padding:14px 18px 14px 20px;gap:22px}
+.ft small{font-size:13px}.ft b{font-size:17px;margin-top:2px}
+.mp{width:50px;height:50px;font-size:23px}
+.st.taxi{padding:18px 20px;border-radius:30px}.taxi .t{font-size:24px}.taxi .n{font-size:18px}
+.car{font-size:15px}.d{font-size:16px;line-height:1.55}.d.nt{font-size:16px}
+.p{font-size:15px;padding:8px 15px}.m{font-size:16px;padding:13px 20px}
+.card{padding:22px 20px;border-radius:30px}.card>b{font-size:24px}
+.row,.ck{font-size:17px;padding:15px 0}
+input,select{font-size:16px;padding:13px}
+nav{max-width:448px;padding:7px}nav button{font-size:13px;padding:10px 0}nav button i{font-size:23px}
+/* 細節頁 */
+.dt{background:#e8eddd}
+.dh{height:460px;border-radius:0 0 56px 56px}
+.dh:after{background:linear-gradient(#0000 35%,#000c)}
+.cb{width:54px;height:54px;background:rgba(0,0,0,.4);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.cb svg{width:26px;height:26px;stroke:#fff}
+.dtt{left:24px;right:24px;bottom:38px}
+.mt{font-size:17px;font-weight:500;opacity:.95}
+.dtt h2{font-size:46px;line-height:1.1;font-weight:700;margin-top:10px}
+.ey{font-size:16px;margin:26px 0 16px}
+.db{padding:0 16px 28px}
+.cs{gap:10px;margin-bottom:16px}.cs span{font-size:17px;padding:14px 20px;font-weight:500}
+.tiles{gap:12px;margin-bottom:16px}
+.tiles div{background:#d6e2c9;border-radius:28px;padding:18px;min-height:112px;font-size:17px;font-weight:500;line-height:1.4}
+.tiles i{font-size:24px}
+.gr{gap:12px}
+.bar{background:#e8eddd;padding:16px 18px calc(16px + env(safe-area-inset-bottom));gap:16px}
+.bar small{font-size:15px}.bar b{font-size:30px}
+.go{font-size:19px;padding:21px 10px}
+
+/* ===== v3 ===== */
+button{font-family:inherit}
+.route{margin-top:20px}
+.t{font-weight:800}.tabs b{font-weight:800}
+.sl span{writing-mode:horizontal-tb;transform:rotate(270deg);align-self:flex-start;margin-top:36px;letter-spacing:0;color:#6c7a00;font-size:26px;font-weight:700;white-space:nowrap}
+.sl i{color:#fff}
+.ic{background:#e5e6e8}
+.mp{display:none}
+.chips button{background:#fff;color:var(--ink);font-weight:500;font-size:16px;padding:14px 20px}
+.chips button.on{background:var(--lime);color:var(--ink);font-weight:700}
+#sp button{width:52px;height:52px;flex:none;border:0;border-radius:16px;background:#e8e7d5;color:var(--ink);font-size:22px}
+#sp input,#sp select{height:52px}
+#add{height:56px;border:0;border-radius:99px;background:var(--lime);color:var(--ink);font-size:17px;font-weight:700}
+.dh{height:440px;border-radius:0 0 50% 50%/0 0 90px 90px}
+.dtt{bottom:92px}
+.ey{margin:22px 0 6px}
+.ttl{text-align:center;font-size:26px;font-weight:700;line-height:1.3;padding:0 20px 18px;color:var(--ink)}
+.tiles{display:flex;gap:12px;overflow-x:auto;margin:0 -16px 18px;padding:0 16px;scroll-snap-type:x proximity}
+.tiles::-webkit-scrollbar{display:none}
+.tiles div{flex:none;min-width:124px;max-width:190px;min-height:124px;scroll-snap-align:start;border-radius:28px;background:#d6e2c9;justify-content:space-between}
+.tiles i{font-size:26px;line-height:1}
+.bar{border-radius:0}
 </style></head><body><div class="bg"></div>
-<div class="hero"><div class="top"><span>✦ Taitung</span><span>10/16 – 10/18</span></div><h1>台東<br>三日慢行</h1><div class="route"><div><b>台北</b><small>Taipei</small></div><div class="line"><i>➤</i></div><div class="r"><b>台東</b><small>Taitung</small></div><div class="rb"><span>実舍台東・2 晚</span><span>點卡片看細節</span></div></div><div class="nx" id="nx"></div></div>
+<div class="hero"><div class="top"><span>✦ Taitung</span><span>10/16 – 10/18</span></div><div class="route"><div><b>台北</b><small>Taipei</small></div><div class="line"><i>➤</i></div><div class="r"><b>台東</b><small>Taitung</small></div><div class="rb"><span>実舍台東・2 晚</span></div></div></div>
 
 <div class="v on" id="v0"><div class="tabs" id="tabs"></div><main><div id="plan"></div><div class="chips" id="chips"></div><div id="list"></div></main></div>
 <div class="v" id="v1"><main style="padding-top:18px"><div class="card" id="notes"></div><div class="card"><b>行前清單</b><div id="ck"></div></div></main></div>
@@ -128,7 +208,7 @@ const ico=n=>/⇄/.test(n)?"⇄":/搭|車|區間|自強|普悠瑪|8101D|轉運/.
 const T0=new Date();if(T0.getFullYear()==2026&&T0.getMonth()==9&&T0.getDate()>=16&&T0.getDate()<=18)day=T0.getDate()-16;
 function nowIdx(L){const n=new Date();if(!(n.getFullYear()==2026&&n.getMonth()==9&&n.getDate()==16+day))return-1;const m=n.getHours()*60+n.getMinutes();let r=-1;L.forEach((s,i)=>{const[h,mi]=s[0].split(":");if(h*60+ +mi<=m)r=i});return r}
 let f="全部",CUR=[];
-const CL={交通:"交通",吃:"美食",玩:"體驗",住:"住宿"},SY={全部:"✦",吃:"♨︎",玩:"♪",交通:"➤",住:"⌂"};
+const CL={交通:"行",吃:"美食",玩:"體驗",住:"住宿"},SY={全部:"✦",吃:"♨︎",玩:"♪",交通:"➤",住:"⌂"};
 const cat=n=>{const c=ico(n);return c=="⇄"||c=="➤"?"交通":c=="♨︎"?"吃":c=="⌂"?"住":"玩"};
 const gal=(n,q)=>{for(const k in IMG)if((n+q).includes(k))return IMG[k];return[]};
 const im=u=>`<img loading="lazy" decoding="async" src="${u}" onerror="this.remove()">`;
@@ -137,14 +217,14 @@ function render(){const d=D[day];document.documentElement.style.setProperty("--a
 $("tabs").innerHTML=D.map((x,i)=>`<button class="${i==day?"on":""}" onclick="day=${i};render()"><small>Day ${i+1}</small><b>${16+i}</b><small>週${DT[i].slice(-1)}</small></button>`).join("");
 $("plan").innerHTML=d.plan?`<div class="plan"><p>週六 14:00 場要滿30人才演，預約電話確認後選一個：</p><div><button class="${pl=="A"?"on":""}" onclick="pl='A';render()">14:00 場（原案）</button><button class="${pl=="B"?"on":""}" onclick="pl='B';render()">10:30 場（提早）</button></div></div>`+(pl=="B"?'<div class="tip">◷ 最晚 09:10 從市區出發；早餐提前到 07:15、退房提前到 08:30，前一晚先約車。</div>':""):"";
 const L=d.plan?d[pl]:d.s,ni=nowIdx(L);CUR=L;
-$("nx").innerHTML=ni>=0?`現在：<b>${L[ni][0]} ${L[ni][1]}</b>`+(L[ni+1]?`<br>下一站：${L[ni+1][0]} ${L[ni+1][1]}`:""):`<b>${DT[day]}</b>　${TT[day]}`;
-$("chips").innerHTML=["全部","吃","玩","交通","住"].map(c=>`<button class="${c==f?"on":""}" onclick="f='${c}';render()">${SY[c]} ${c}</button>`).join("");
+$("chips").innerHTML=["全部","吃","玩","交通","住"].map(c=>`<button class="${c==f?"on":""}" onclick="f='${c}';render()">${SY[c]} ${c=="交通"?"行":c}</button>`).join("");
 $("list").innerHTML=L.map((s,i)=>{const[t,n,q,ds,p,ty,a,b]=s,c=cat(n);if(f!="全部"&&c!=f)return"";
 if(ty=="taxi")return`<div class="st taxi" onclick="this.classList.toggle('open')"><div class="hd"><span class="t">${t}</span>${ds?'<span class="car">細節 ▾</span>':""}</div><div class="n">${n}</div>${ds?`<div class="d">${ds}</div>`:""}${p?`<span class="p">${p}</span>`:""}<div><a class="m" href="${dir(a,b)}" target="_blank" onclick="event.stopPropagation()">➤ 看實際路線距離</a></div></div>`;
 const g=gal(n,q);
-return`<div class="st ${i==ni?"now":""}" onclick="openD(${i})"><div class="sl"><span>${CL[c]}</span><i>${ico(n)}</i></div><div class="sr"><div class="up"><div><div class="t">${t}</div><div class="n">${n}</div></div><span class="ic">${ico(n)}${g[0]?im(g[0]):""}</span></div><div class="ft"><div><small>類型</small><b>${CL[c]}</b></div><div><small>費用</small><b>${p||"—"}</b></div>${q?`<a class="mp" href="${mp(q)}" target="_blank" onclick="event.stopPropagation()">◉</a>`:""}</div></div></div>`}).join("")}
-function openD(i){const[t,n,q,ds,p]=CUR[i],g=gal(n,q),c=cat(n);
-$("dt").innerHTML=`<div class="dh"><span class="em">${ico(n)}</span>${g[0]?im(g[0]):""}<button class="cb" onclick="history.back()">${BK}</button><a class="cb r" href="${mp(q)}" target="_blank">${PIN}</a><div class="dtt"><div class="mt">${SY[c]} ${CL[c]}　${DT[day]} ${t}</div><h2>${n}</h2></div></div><div class="ey">✦ TAITUNG ・ DAY ${day+1}</div><div class="db"><div class="cs"><span>◷ ${t}</span>${p?`<span>＄ ${p}</span>`:""}<span>◉ ${DT[day]}</span></div>${ds?`<div class="tiles">${ds.split("\n").map(x=>`<div><i>✦</i>${x}</div>`).join("")}</div>`:""}${g.length>1?`<div class="gr">${g.slice(1).map(im).join("")}</div>`:""}</div><div class="bar"><div><small>${p?"參考費用":"時間"}</small><b>${p||t}</b></div><a class="go" href="${mp(q)}" target="_blank">Google Maps 導航</a></div>`;
+return`<div class="st ${i==ni?"now":""}" onclick="openD(${i})"><div class="sl"><span>${c=="交通"?"交通":CL[c]}</span><i>${ico(n)}</i></div><div class="sr"><div class="up"><div><div class="t">${t}</div><div class="n">${n}</div></div><span class="ic">${ico(n)}${g[0]?im(g[0]):""}</span></div><div class="ft"><div><small>類型</small><b>${CL[c]}</b></div><div><small>費用</small><b>${p||"—"}</b></div></div></div></div>`}).join("")}
+const FI=x=>/電話|\d{3}-\d{3}/.test(x)?"☎︎":/\$|費|現金|元/.test(x)?"＄":/分|時|:|點/.test(x)?"◷":/訂|預約|憑證/.test(x)?"✎":/長褲|包鞋|手電|防曬|防蚊|外套/.test(x)?"❖":"✦";
+function openD(i){const[t,n,q,ds,p]=CUR[i],g=gal(n,q),c=cat(n),segs=(ds||"").split(/[\n，；]/).map(x=>x.trim()).filter(Boolean);
+$("dt").innerHTML=`<div class="dh"><span class="em">${ico(n)}</span>${g[0]?im(g[0]):""}<button class="cb" onclick="history.back()">${BK}</button><a class="cb r" href="${mp(q)}" target="_blank">${PIN}</a><div class="dtt"><div class="mt">${SY[c]} ${CL[c]}　${DT[day]} ${t}</div><h2>${n}</h2></div></div><div class="ey">✦ TAITUNG ・ DAY ${day+1}</div><div class="ttl">${TT[day]}</div><div class="db"><div class="cs"><span>◷ ${t}</span>${p?`<span>＄ ${p}</span>`:""}<span>◉ ${DT[day]}</span></div>${segs.length?`<div class="tiles">${segs.map(x=>`<div><i>${FI(x)}</i>${x}</div>`).join("")}</div>`:""}${g.length>1?`<div class="gr">${g.slice(1).map(im).join("")}</div>`:""}</div><div class="bar"><div><small>${p?"參考費用":"時間"}</small><b>${p||t}</b></div><a class="go" href="${mp(q)}" target="_blank">Google Maps</a></div>`;
 $("dt").scrollTop=0;$("dt").classList.add("open");document.body.style.overflow="hidden";history.pushState({d:1},"")}
 window.onpopstate=()=>{$("dt").classList.remove("open");document.body.style.overflow=""};
 function view(i){document.querySelectorAll(".v").forEach((e,j)=>e.classList.toggle("on",i==j));[...$("nav").children].forEach((b,j)=>b.classList.toggle("on",i==j));if(i==3)sync()}
