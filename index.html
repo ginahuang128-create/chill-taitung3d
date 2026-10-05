@@ -328,6 +328,17 @@ body.fpon{padding-bottom:0;overflow:hidden}
 .fcd{position:static;margin-top:8px;padding:10px 12px;border-radius:22px}
 .fds{margin:8px 0}.fnx{padding:9px 14px}
 .fbg{padding:5px 10px;min-width:70px}.fbg b{font-size:20px}.ftt b{font-size:17px}.ftt p{font-size:13px}
+
+/* ===== 旅途中操作優化 ===== */
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+button,a,.st{touch-action:manipulation}
+.st{scroll-margin-top:118px;transition:transform .15s}.st:active{transform:scale(.98)}
+button:active,.nowbar a:active,.fgo:active{transform:scale(.95)}
+.nowbar{display:flex;align-items:center;gap:12px;margin:0 0 14px;padding:12px 12px 12px 16px;border-radius:24px;background:var(--teal);color:var(--mist)}
+.nowbar>div{flex:1;min-width:0}.nowbar small{display:block;font-size:12px;font-weight:700;color:var(--lime);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.nowbar b{display:block;font-size:17px;line-height:1.35;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.nowbar a,.fgo{flex:none;background:var(--lime);color:var(--teal);font-weight:800;font-size:14px;border-radius:99px;padding:12px 18px;text-decoration:none}
+.fgo{margin-left:auto;padding:12px 14px}.ftt{flex:1}
 </style></head><body><div class="bg"></div>
 <div class="hero"><div class="top"><span><em class="sy">✦</em> Taitung</span><span>10/16 – 10/18</span></div><div class="route"><div><b>台北</b><small>Taipei</small></div><div class="line"><i>➤</i></div><div class="r"><b>台東</b><small>Taitung</small></div><div class="rb"><span>実舍台東・2 晚</span></div></div></div>
 
@@ -336,7 +347,7 @@ body.fpon{padding-bottom:0;overflow:hidden}
 <div class="ftabs" id="ftabs"></div>
 <div class="fmw"><div class="fdl" id="fdl"></div><button class="fov" onclick="FP.go(-1)">全覽</button>
 <svg id="fm" class="fnt" viewBox="0 0 340 440"><g id="fring" fill="none" stroke="rgba(202,255,166,.13)"><circle cx="170" cy="220" r="160"/><circle cx="170" cy="220" r="110"/><circle cx="170" cy="220" r="60"/><path d="M-400 220H800M170 -400V900" stroke-dasharray="3 6"/></g><g id="fcam"><g id="ftw"></g><g id="frt"></g><g id="fmk"></g></g></svg></div>
-<div class="fcd"><div class="fr1"><div class="fbg" id="fbg"></div><div class="ftt" id="ftt"></div></div><div class="fds"></div><button class="fnx" id="fnx" onclick="FP.nxt()"></button></div></main></div>
+<div class="fcd"><div class="fr1"><div class="fbg" id="fbg"></div><div class="ftt" id="ftt"></div><a class="fgo" id="fgo" target="_blank" rel="noopener">導航</a></div><div class="fds"></div><button class="fnx" id="fnx" onclick="FP.nxt()"></button></div></main></div>
 <div class="v" id="v1"><main style="padding-top:18px"><div class="card" id="notes"></div><div class="card"><b>行前清單</b><div id="ck"></div></div></main></div>
 <div class="v" id="v2"><main style="padding-top:18px"><div class="card"><b>預算（每人）</b><div id="bud"></div></div></main></div>
 <div class="v" id="v3"><main style="padding-top:18px"><div class="card"><b>分帳</b><div id="sp" style="margin-top:8px"></div><button id="add" style="width:100%;padding:9px;margin-top:6px">＋ 新增支出</button><div id="res" style="margin-top:10px;font-weight:700"></div></div></main></div>
@@ -364,8 +375,8 @@ let g=`<g transform="translate(${p[0]} ${p[1]})" onclick="FP.go(${i})" style="cu
 if(on){const w=Math.max(s[1].length*12.5+22,72);g+=`<g transform="translate(0 -52)"><rect x="${-w/2}" y="-21" width="${w}" height="42" rx="8" fill="#F7F9E1"/><text text-anchor="middle" y="-3" font-size="12" font-weight="800" fill="#40616A">${s[0]}</text><text text-anchor="middle" y="14" font-size="13" font-weight="700" fill="#204654">${s[1]}</text></g>`}
 return g+"</g></g>"}).join("")}
 function card(){const d=DAYS[day],n=S.length;
-if(k<0){$("fbg").innerHTML=`<b>${d.l}</b><small>週${d.w.slice(-1)}</small>`;$("ftt").innerHTML=`<small>全日足跡</small><b>共 ${n} 站</b><p>${S[0][1]} → ${S[n-1][1]}</p>`;$("fnx").innerHTML=`<div><small>第一站</small><b>${S[0][0]} ${S[0][1]}</b></div><i>›</i>`}
-else{const s=S[k];$("fbg").innerHTML=`<b>${s[0]}</b><small>第 ${k+1}／${n} 站</small>`;$("ftt").innerHTML=`<small>${d.l} 週${d.w.slice(-1)}</small><b>${s[1]}</b><p>${s[4]}</p>`;
+if(k<0){$("fgo").style.display="none";$("fbg").innerHTML=`<b>${d.l}</b><small>週${d.w.slice(-1)}</small>`;$("ftt").innerHTML=`<small>全日足跡</small><b>共 ${n} 站</b><p>${S[0][1]} → ${S[n-1][1]}</p>`;$("fnx").innerHTML=`<div><small>第一站</small><b>${S[0][0]} ${S[0][1]}</b></div><i>›</i>`}
+else{const s=S[k];$("fgo").style.display="";$("fgo").href="https://www.google.com/maps/dir/?api=1&destination="+s[3]+","+s[2];$("fbg").innerHTML=`<b>${s[0]}</b><small>第 ${k+1}／${n} 站</small>`;$("ftt").innerHTML=`<small>${d.l} 週${d.w.slice(-1)}</small><b>${s[1]}</b><p>${s[4]}</p>`;
 $("fnx").innerHTML=k<n-1?`<div><small>下一站</small><b>${S[k+1][0]} ${S[k+1][1]}</b></div><i>›</i>`:`<div><small>抵達終點</small><b>重新看一次全覽</b></div><i>↻</i>`}}
 function stop(){clearTimeout(tm)}
 function auto(){stop();if(matchMedia("(prefers-reduced-motion:reduce)").matches)return;tm=setTimeout(()=>{if(k<S.length-1){go(k+1,1);auto()}},k<0?1800:3800)}
@@ -482,4 +493,28 @@ try{const j=await(await fetch(DATA_API_URL+"?action=expenses&ts="+Date.now(),{ca
 if(Array.isArray(j.expenses)&&s!==last&&!document.activeElement.matches("input")){last=s;ex=j.expenses;localStorage.setItem("sp1",s);rsp()}}catch(e){}
 timer=setTimeout(sync,10000)}
 rsp();render();
+(()=>{
+const g=k=>{try{return localStorage.getItem(k)}catch(e){return null}},w=(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}};
+const inTrip=T0.getFullYear()==2026&&T0.getMonth()==9&&T0.getDate()>=16&&T0.getDate()<=18;
+let first=1;
+function enh(){w("tp_day",day);if(!nowOn())return;
+const L=CUR,ni=nowIdx(L);let j=ni+1;while(j<L.length&&L[j][5]=="taxi")j++;
+const cur=ni>=0&&L[ni][5]!="taxi"?L[ni]:null,nx=L[j];if(!cur&&!nx)return;const tg=nx||cur;
+$("list").insertAdjacentHTML("afterbegin",`<div class="nowbar"><div><small>${cur?"現在・"+cur[0]+" "+cur[1]:"今日第一站"}</small><b>${nx?"下一站 "+nx[0]+" "+nx[1]:"最後一站 "+cur[1]}</b></div><a href="${mp(tg[2])}" target="_blank" rel="noopener">導航</a></div>`);
+if(first){first=0;const e=document.querySelector(".st.now");if(e)setTimeout(()=>e.scrollIntoView({block:"center"}),200)}}
+const nowOn=()=>{const n=new Date();return n.getFullYear()==2026&&n.getMonth()==9&&n.getDate()==16+day};
+const R=render;render=function(){R();enh()};
+const V=view;view=function(i){V(i);w("tp_view",i);if(i==1){const b=document.querySelectorAll("#ftabs button")[day];if(b&&!b.classList.contains("on"))b.click()}};
+// 還原上次的頁面與日期
+const d=+g("tp_day");if(!inTrip&&d>0&&d<D.length)day=d;
+const v=+g("tp_view");if(v>=1&&v<=4)view(v);
+render();
+// 左右滑動切換日期
+let x0=null,y0,el;
+addEventListener("touchstart",e=>{const t=e.touches[0];x0=t.clientX;y0=t.clientY;el=e.target},{passive:true});
+addEventListener("touchend",e=>{if(x0==null)return;const t=e.changedTouches[0],dx=t.clientX-x0,dy=t.clientY-y0;x0=null;
+if(Math.abs(dx)<70||Math.abs(dy)>45||$("dt").classList.contains("open")||el.closest(".tiles,.gr,.chips,input,select"))return;
+const sel=$("vF").classList.contains("on")?"#ftabs button":$("v0").classList.contains("on")?"#tabs button":null;if(!sel)return;
+const bs=[...document.querySelectorAll(sel)],n=bs.findIndex(b=>b.classList.contains("on"))+(dx<0?1:-1);if(bs[n]){bs[n].click();scrollTo(0,0)}},{passive:true});
+})();
 </script></body></html>
