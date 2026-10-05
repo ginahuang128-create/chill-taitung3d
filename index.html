@@ -136,8 +136,18 @@ button{font-family:inherit}
 .tiles div{flex:none;min-width:124px;max-width:190px;min-height:124px;scroll-snap-align:start;border-radius:28px;background:#d6e2c9;justify-content:space-between}
 .tiles i{font-size:26px;line-height:1}
 .bar{border-radius:0}
+
+/* ===== v4 字小20%、符號大20% ===== */
+.t{font-size:29px}
+.dtt h2{font-size:37px}
+.sy{font-style:normal;font-size:1.2em;line-height:1;vertical-align:-.05em}
+.sl i{font-size:26px}
+.ic{font-size:29px}
+.line i{font-size:22px}
+nav button i{font-size:28px}
+.tiles i{font-size:31px}
 </style></head><body><div class="bg"></div>
-<div class="hero"><div class="top"><span>✦ Taitung</span><span>10/16 – 10/18</span></div><div class="route"><div><b>台北</b><small>Taipei</small></div><div class="line"><i>➤</i></div><div class="r"><b>台東</b><small>Taitung</small></div><div class="rb"><span>実舍台東・2 晚</span></div></div></div>
+<div class="hero"><div class="top"><span><em class="sy">✦</em> Taitung</span><span>10/16 – 10/18</span></div><div class="route"><div><b>台北</b><small>Taipei</small></div><div class="line"><i>➤</i></div><div class="r"><b>台東</b><small>Taitung</small></div><div class="rb"><span>実舍台東・2 晚</span></div></div></div>
 
 <div class="v on" id="v0"><div class="tabs" id="tabs"></div><main><div id="plan"></div><div class="chips" id="chips"></div><div id="list"></div></main></div>
 <div class="v" id="v1"><main style="padding-top:18px"><div class="card" id="notes"></div><div class="card"><b>行前清單</b><div id="ck"></div></div></main></div>
@@ -217,20 +227,20 @@ function render(){const d=D[day];document.documentElement.style.setProperty("--a
 $("tabs").innerHTML=D.map((x,i)=>`<button class="${i==day?"on":""}" onclick="day=${i};render()"><small>Day ${i+1}</small><b>${16+i}</b><small>週${DT[i].slice(-1)}</small></button>`).join("");
 $("plan").innerHTML=d.plan?`<div class="plan"><p>週六 14:00 場要滿30人才演，預約電話確認後選一個：</p><div><button class="${pl=="A"?"on":""}" onclick="pl='A';render()">14:00 場（原案）</button><button class="${pl=="B"?"on":""}" onclick="pl='B';render()">10:30 場（提早）</button></div></div>`+(pl=="B"?'<div class="tip">◷ 最晚 09:10 從市區出發；早餐提前到 07:15、退房提前到 08:30，前一晚先約車。</div>':""):"";
 const L=d.plan?d[pl]:d.s,ni=nowIdx(L);CUR=L;
-$("chips").innerHTML=["全部","吃","玩","交通","住"].map(c=>`<button class="${c==f?"on":""}" onclick="f='${c}';render()">${SY[c]} ${c=="交通"?"行":c}</button>`).join("");
+$("chips").innerHTML=["全部","吃","玩","交通","住"].map(c=>`<button class="${c==f?"on":""}" onclick="f='${c}';render()"><em class="sy">${SY[c]}</em> ${c=="交通"?"行":c}</button>`).join("");
 $("list").innerHTML=L.map((s,i)=>{const[t,n,q,ds,p,ty,a,b]=s,c=cat(n);if(f!="全部"&&c!=f)return"";
 if(ty=="taxi")return`<div class="st taxi" onclick="this.classList.toggle('open')"><div class="hd"><span class="t">${t}</span>${ds?'<span class="car">細節 ▾</span>':""}</div><div class="n">${n}</div>${ds?`<div class="d">${ds}</div>`:""}${p?`<span class="p">${p}</span>`:""}<div><a class="m" href="${dir(a,b)}" target="_blank" onclick="event.stopPropagation()">➤ 看實際路線距離</a></div></div>`;
 const g=gal(n,q);
 return`<div class="st ${i==ni?"now":""}" onclick="openD(${i})"><div class="sl"><span>${c=="交通"?"交通":CL[c]}</span><i>${ico(n)}</i></div><div class="sr"><div class="up"><div><div class="t">${t}</div><div class="n">${n}</div></div><span class="ic">${ico(n)}${g[0]?im(g[0]):""}</span></div><div class="ft"><div><small>類型</small><b>${CL[c]}</b></div><div><small>費用</small><b>${p||"—"}</b></div></div></div></div>`}).join("")}
 const FI=x=>/電話|\d{3}-\d{3}/.test(x)?"☎︎":/\$|費|現金|元/.test(x)?"＄":/分|時|:|點/.test(x)?"◷":/訂|預約|憑證/.test(x)?"✎":/長褲|包鞋|手電|防曬|防蚊|外套/.test(x)?"❖":"✦";
 function openD(i){const[t,n,q,ds,p]=CUR[i],g=gal(n,q),c=cat(n),segs=(ds||"").split(/[\n，；]/).map(x=>x.trim()).filter(Boolean);
-$("dt").innerHTML=`<div class="dh"><span class="em">${ico(n)}</span>${g[0]?im(g[0]):""}<button class="cb" onclick="history.back()">${BK}</button><a class="cb r" href="${mp(q)}" target="_blank">${PIN}</a><div class="dtt"><div class="mt">${SY[c]} ${CL[c]}　${DT[day]} ${t}</div><h2>${n}</h2></div></div><div class="ey">✦ TAITUNG ・ DAY ${day+1}</div><div class="ttl">${TT[day]}</div><div class="db"><div class="cs"><span>◷ ${t}</span>${p?`<span>＄ ${p}</span>`:""}<span>◉ ${DT[day]}</span></div>${segs.length?`<div class="tiles">${segs.map(x=>`<div><i>${FI(x)}</i>${x}</div>`).join("")}</div>`:""}${g.length>1?`<div class="gr">${g.slice(1).map(im).join("")}</div>`:""}</div><div class="bar"><div><small>${p?"參考費用":"時間"}</small><b>${p||t}</b></div><a class="go" href="${mp(q)}" target="_blank">Google Maps</a></div>`;
+$("dt").innerHTML=`<div class="dh"><span class="em">${ico(n)}</span>${g[0]?im(g[0]):""}<button class="cb" onclick="history.back()">${BK}</button><a class="cb r" href="${mp(q)}" target="_blank">${PIN}</a><div class="dtt"><div class="mt"><em class="sy">${SY[c]}</em> ${CL[c]}　${DT[day]} ${t}</div><h2>${n}</h2></div></div><div class="ey"><em class="sy">✦</em> TAITUNG ・ DAY ${day+1}</div><div class="ttl">${TT[day]}</div><div class="db"><div class="cs"><span><em class="sy">◷</em> ${t}</span>${p?`<span><em class="sy">＄</em> ${p}</span>`:""}<span><em class="sy">◉</em> ${DT[day]}</span></div>${segs.length?`<div class="tiles">${segs.map(x=>`<div><i>${FI(x)}</i>${x}</div>`).join("")}</div>`:""}${g.length>1?`<div class="gr">${g.slice(1).map(im).join("")}</div>`:""}</div><div class="bar"><div><small>${p?"參考費用":"時間"}</small><b>${p||t}</b></div><a class="go" href="${mp(q)}" target="_blank">Google Maps</a></div>`;
 $("dt").scrollTop=0;$("dt").classList.add("open");document.body.style.overflow="hidden";history.pushState({d:1},"")}
 window.onpopstate=()=>{$("dt").classList.remove("open");document.body.style.overflow=""};
 function view(i){document.querySelectorAll(".v").forEach((e,j)=>e.classList.toggle("on",i==j));[...$("nav").children].forEach((b,j)=>b.classList.toggle("on",i==j));if(i==3)sync()}
 $("nav").innerHTML=[["☰","行程"],["ⓘ","須知"],["＄","預算"],["÷","分帳"]].map((e,i)=>`<button onclick="view(${i})"><i>${e[0]}</i>${e[1]}</button>`).join("");$("nav").children[0].classList.add("on");
 $("notes").innerHTML="<b>行前須知</b>"+NOTES.map(n=>`<div class="d">• ${n}</div>`).join("");
-const ck=CK.map(t=>({t,x:0}));function rck(){$("ck").innerHTML=ck.map((c,i)=>`<div class="ck ${c.x?"x":""}" onclick="ck[${i}].x^=1;rck()">${c.x?"●":"○"} ${c.t}</div>`).join("")}rck();
+const ck=CK.map(t=>({t,x:0}));function rck(){$("ck").innerHTML=ck.map((c,i)=>`<div class="ck ${c.x?"x":""}" onclick="ck[${i}].x^=1;rck()"><em class="sy">${c.x?"●":"○"}</em> ${c.t}</div>`).join("")}rck();
 $("bud").innerHTML=BUD.map(([l,v])=>`<div class="row"><span>${l}</span><span>$${v.toLocaleString()}</span></div>`).join("")+`<div class="row"><b>總計</b><b>約$${BUD.reduce((s,r)=>s+r[1],0).toLocaleString()}</b></div><div class="d">計程車為距離試算，實際以跳表為準；不含伴手禮。</div>`;
 /* 分帳：本機先顯示，進分帳頁才向雲端同步（只在頁面可見時、每10秒、內容有變才重畫） */
 let ex=JSON.parse(localStorage.getItem("sp1")||"[]"),last="",timer;
