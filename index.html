@@ -146,6 +146,57 @@ button{font-family:inherit}
 .line i{font-size:22px}
 nav button i{font-size:28px}
 .tiles i{font-size:31px}
+
+/* ===== v4 手機閱讀節奏微調（390px 基準） ===== */
+body{font-size:16px;line-height:1.55;padding-bottom:104px;-webkit-text-size-adjust:100%}
+.hero{padding:calc(14px + env(safe-area-inset-top)) 16px 2px}
+.top span{font-size:15px;padding:10px 18px}
+.route{padding:16px 18px;border-radius:30px;margin:14px 0 12px;gap:6px}
+.route b{font-size:28px}.route small{font-size:14px}
+.line i{width:38px;height:38px;line-height:38px;top:-19px;font-size:16px}
+.line{height:22px}
+.rb{margin-top:6px}.rb span{font-size:15px;padding:11px 18px}
+.tabs{padding:8px 16px 12px;gap:8px}
+.tabs button{padding:10px 0}
+.tabs small{font-size:13px}.tabs b{font-size:26px;line-height:1.15;margin:0}
+.plan p{font-size:14px}.plan button{font-size:15.5px;padding:13px 4px}
+.tip{font-size:15px;line-height:1.55;padding:14px 18px;margin-bottom:12px}
+.chips{gap:8px;padding-bottom:12px}
+.chips button{font-size:15.5px;padding:12px 18px}
+.st{min-height:184px;margin-bottom:14px}
+.sl span{font-size:24px}
+.sl i{width:44px;height:44px;bottom:14px}
+.up{padding:18px 14px 12px 18px}
+.t{font-size:34px;line-height:1.05}
+.n{font-size:19px;line-height:1.35;margin-top:8px}
+.ic{width:56px;height:56px}
+.ft{padding:12px 16px 13px 18px;gap:20px}
+.ft small{font-size:13px}.ft b{font-size:16px}
+.st.taxi{padding:16px 18px}.taxi .t{font-size:22px}.taxi .n{font-size:17px}
+.d,.d.nt{font-size:15.5px;line-height:1.65}
+.p{font-size:14.5px}.m{font-size:15.5px;padding:12px 20px}
+.card{padding:20px 18px}.card>b{font-size:22px}
+.row,.ck{font-size:16px;line-height:1.5;padding:14px 0}
+.sub{font-size:14px}
+input,select{font-size:16px;min-height:48px}
+nav{padding:6px}nav button{font-size:13px;padding:9px 0}nav button i{font-size:22px;line-height:1.2}
+/* 細節頁 */
+.dt{display:flex;flex-direction:column}
+.dh{flex:none;height:410px;border-radius:0 0 50% 50%/0 0 80px 80px}
+.cb{width:50px;height:50px}
+.dtt{left:22px;right:22px;bottom:84px}
+.mt{font-size:16px}
+.dtt h2{font-size:40px;line-height:1.15;margin-top:8px}
+.ey{font-size:15px;margin:20px 0 4px}
+.ttl{font-size:22px;padding:0 20px 16px}
+.db{flex:none;padding:0 16px 20px}
+.cs span{font-size:16px;padding:12px 18px}
+.tiles div{min-width:128px;max-width:176px;min-height:116px;padding:16px;font-size:16px;line-height:1.45}
+.bar{margin-top:auto;padding:12px 16px calc(14px + env(safe-area-inset-bottom));position:sticky}
+.bar small{font-size:14px}.bar b{font-size:28px}
+.go{font-size:18px;padding:19px 10px}
+.tiles{scroll-padding-left:16px}
+.cs{flex-wrap:nowrap}.cs span{white-space:nowrap}
 </style></head><body><div class="bg"></div>
 <div class="hero"><div class="top"><span><em class="sy">✦</em> Taitung</span><span>10/16 – 10/18</span></div><div class="route"><div><b>台北</b><small>Taipei</small></div><div class="line"><i>➤</i></div><div class="r"><b>台東</b><small>Taitung</small></div><div class="rb"><span>実舍台東・2 晚</span></div></div></div>
 
@@ -234,7 +285,7 @@ const g=gal(n,q);
 return`<div class="st ${i==ni?"now":""}" onclick="openD(${i})"><div class="sl"><span>${c=="交通"?"交通":CL[c]}</span><i>${ico(n)}</i></div><div class="sr"><div class="up"><div><div class="t">${t}</div><div class="n">${n}</div></div><span class="ic">${ico(n)}${g[0]?im(g[0]):""}</span></div><div class="ft"><div><small>類型</small><b>${CL[c]}</b></div><div><small>費用</small><b>${p||"—"}</b></div></div></div></div>`}).join("")}
 const FI=x=>/電話|\d{3}-\d{3}/.test(x)?"☎︎":/\$|費|現金|元/.test(x)?"＄":/分|時|:|點/.test(x)?"◷":/訂|預約|憑證/.test(x)?"✎":/長褲|包鞋|手電|防曬|防蚊|外套/.test(x)?"❖":"✦";
 function openD(i){const[t,n,q,ds,p]=CUR[i],g=gal(n,q),c=cat(n),segs=(ds||"").split(/[\n，；]/).map(x=>x.trim()).filter(Boolean);
-$("dt").innerHTML=`<div class="dh"><span class="em">${ico(n)}</span>${g[0]?im(g[0]):""}<button class="cb" onclick="history.back()">${BK}</button><a class="cb r" href="${mp(q)}" target="_blank">${PIN}</a><div class="dtt"><div class="mt"><em class="sy">${SY[c]}</em> ${CL[c]}　${DT[day]} ${t}</div><h2>${n}</h2></div></div><div class="ey"><em class="sy">✦</em> TAITUNG ・ DAY ${day+1}</div><div class="ttl">${TT[day]}</div><div class="db"><div class="cs"><span><em class="sy">◷</em> ${t}</span>${p?`<span><em class="sy">＄</em> ${p}</span>`:""}<span><em class="sy">◉</em> ${DT[day]}</span></div>${segs.length?`<div class="tiles">${segs.map(x=>`<div><i>${FI(x)}</i>${x}</div>`).join("")}</div>`:""}${g.length>1?`<div class="gr">${g.slice(1).map(im).join("")}</div>`:""}</div><div class="bar"><div><small>${p?"參考費用":"時間"}</small><b>${p||t}</b></div><a class="go" href="${mp(q)}" target="_blank">Google Maps</a></div>`;
+$("dt").innerHTML=`<div class="dh"><span class="em">${ico(n)}</span>${g[0]?im(g[0]):""}<button class="cb" onclick="history.back()">${BK}</button><a class="cb r" href="${mp(q)}" target="_blank">${PIN}</a><div class="dtt"><div class="mt"><em class="sy">${SY[c]}</em> ${CL[c]}　${DT[day]} ${t}</div><h2>${n}</h2></div></div><div class="ey"><em class="sy">✦</em> TAITUNG ・ DAY ${day+1}</div><div class="ttl">${TT[day]}</div><div class="db"><div class="cs"><span><em class="sy">◷</em> ${t}</span>${p?`<span><em class="sy">＄</em> ${p}</span>`:""}</div>${segs.length?`<div class="tiles">${segs.map(x=>`<div><i>${FI(x)}</i>${x}</div>`).join("")}</div>`:""}${g.length>1?`<div class="gr">${g.slice(1).map(im).join("")}</div>`:""}</div><div class="bar"><div><small>${p?"參考費用":"時間"}</small><b>${p||t}</b></div><a class="go" href="${mp(q)}" target="_blank">Google Maps</a></div>`;
 $("dt").scrollTop=0;$("dt").classList.add("open");document.body.style.overflow="hidden";history.pushState({d:1},"")}
 window.onpopstate=()=>{$("dt").classList.remove("open");document.body.style.overflow=""};
 function view(i){document.querySelectorAll(".v").forEach((e,j)=>e.classList.toggle("on",i==j));[...$("nav").children].forEach((b,j)=>b.classList.toggle("on",i==j));if(i==3)sync()}
