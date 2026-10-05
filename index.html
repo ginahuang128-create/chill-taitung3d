@@ -290,7 +290,7 @@ nav button{color:var(--mu)}nav button.on{background:var(--teal);color:var(--lime
 .go{background:var(--teal);color:var(--lime)}
 
 /* ===== 足跡 ===== */
-#vF h2{text-align:center;font-size:30px;font-weight:800;letter-spacing:.1em;margin:4px 0 0}#vF h2 i{font-style:normal;font-size:22px;color:var(--mu);margin:0 8px}
+#vF h2{text-align:center;font-size:30px;font-weight:800;letter-spacing:.1em;margin:4px 0 0}
 #vF .fsb{text-align:center;color:var(--mu);font-size:14px;margin:0 0 12px}
 .ftabs{display:flex;gap:8px;margin-bottom:12px}
 .ftabs button{flex:1;border:1.5px solid var(--bd);background:var(--tint);border-radius:99px;padding:10px 0;font-weight:700;color:var(--teal)}
@@ -315,14 +315,27 @@ nav button{color:var(--mu)}nav button.on{background:var(--teal);color:var(--lime
 .fds{border-top:2px dashed var(--bd);margin:14px 0}
 .fnx{display:flex;align-items:center;justify-content:space-between;width:100%;border:0;border-radius:18px;background:var(--teal);color:var(--mist);padding:13px 18px;text-align:left}.fnx small{display:block;font-size:13px;font-weight:700;color:var(--lime)}.fnx b{font-size:16px}.fnx i{font-style:normal;font-size:24px;color:var(--lime)}
 @media (prefers-reduced-motion:reduce){#vF *{animation:none!important;transition:none!important}}
+
+/* 足跡：一屏顯示、地圖優先（不用滑動） */
+body.fpon .hero{display:none}
+body.fpon{padding-bottom:0;overflow:hidden}
+#vF main{display:flex;flex-direction:column;height:100vh;height:100dvh;padding:calc(10px + env(safe-area-inset-top)) 16px calc(86px + env(safe-area-inset-bottom))}
+#vF h2{font-size:22px;margin:0;line-height:1.2;letter-spacing:.08em}
+#vF .fsb{font-size:12px;margin:0 0 6px}
+.ftabs{margin-bottom:8px}.ftabs button{padding:7px 0;font-size:13px}
+.fmw{flex:1;min-height:0;aspect-ratio:auto;border-radius:26px}
+#fm{position:absolute;inset:0}
+.fcd{position:static;margin-top:8px;padding:10px 12px;border-radius:22px}
+.fds{margin:8px 0}.fnx{padding:9px 14px}
+.fbg{padding:5px 10px;min-width:70px}.fbg b{font-size:20px}.ftt b{font-size:17px}.ftt p{font-size:13px}
 </style></head><body><div class="bg"></div>
 <div class="hero"><div class="top"><span><em class="sy">✦</em> Taitung</span><span>10/16 – 10/18</span></div><div class="route"><div><b>台北</b><small>Taipei</small></div><div class="line"><i>➤</i></div><div class="r"><b>台東</b><small>Taitung</small></div><div class="rb"><span>実舍台東・2 晚</span></div></div></div>
 
 <div class="v on" id="v0"><div class="tabs" id="tabs"></div><main><div id="plan"></div><div class="chips" id="chips"></div><div id="list"></div></main></div>
-<div class="v" id="vF"><main style="padding-top:14px"><h2><i>≋</i>足跡<i>≋</i></h2><p class="fsb">跟著縱谷風走一圈</p>
+<div class="v" id="vF"><main style="padding-top:14px"><h2>足跡</h2><p class="fsb">跟著縱谷風走一圈</p>
 <div class="ftabs" id="ftabs"></div>
 <div class="fmw"><div class="fdl" id="fdl"></div><button class="fov" onclick="FP.go(-1)">全覽</button>
-<svg id="fm" class="fnt" viewBox="0 0 340 440"><g fill="none" stroke="rgba(202,255,166,.13)"><circle cx="170" cy="220" r="160"/><circle cx="170" cy="220" r="110"/><circle cx="170" cy="220" r="60"/><path d="M0 220H340M170 0V440" stroke-dasharray="3 6"/></g><g id="fcam"><g id="ftw"></g><g id="frt"></g><g id="fmk"></g></g></svg></div>
+<svg id="fm" class="fnt" viewBox="0 0 340 440"><g id="fring" fill="none" stroke="rgba(202,255,166,.13)"><circle cx="170" cy="220" r="160"/><circle cx="170" cy="220" r="110"/><circle cx="170" cy="220" r="60"/><path d="M-400 220H800M170 -400V900" stroke-dasharray="3 6"/></g><g id="fcam"><g id="ftw"></g><g id="frt"></g><g id="fmk"></g></g></svg></div>
 <div class="fcd"><div class="fr1"><div class="fbg" id="fbg"></div><div class="ftt" id="ftt"></div></div><div class="fds"></div><button class="fnx" id="fnx" onclick="FP.nxt()"></button></div></main></div>
 <div class="v" id="v1"><main style="padding-top:18px"><div class="card" id="notes"></div><div class="card"><b>行前清單</b><div id="ck"></div></div></main></div>
 <div class="v" id="v2"><main style="padding-top:18px"><div class="card"><b>預算（每人）</b><div id="bud"></div></div></main></div>
@@ -340,10 +353,11 @@ for(let j=0;j<pts.length-1;j++){const a=pts[j],b=pts[j+1],f=(j%2?-1:1)*.18;r+=`<
 $("frt").innerHTML=r;
 $("ftabs").innerHTML=DAYS.map((d,i)=>`<button class="${i==day?"on":""}" onclick="FP.setDay(${i})">Day ${i+1}・${d.l}</button>`).join("");
 $("fdl").textContent="✦ DAY "+(day+1)+" 足跡"}
-function cam(){let s,x,y;
-if(k<0){const X=pts.map(p=>p[0]),Y=pts.map(p=>p[1]),x0=Math.min(...X),x1=Math.max(...X),y0=Math.min(...Y),y1=Math.max(...Y);s=Math.min(11,(340-30)/Math.max(x1-x0,1),(440-60)/Math.max(y1-y0,1));x=(x0+x1)/2;y=(y0+y1)/2}
+function dim(){const e=$("fm"),w=e.clientWidth||340,h=e.clientHeight||440;e.setAttribute("viewBox","0 0 "+w+" "+h);$("fring").setAttribute("transform","translate("+(w/2-170)+" "+(h/2-220)+")");return[w,h]}
+function cam(){const[W,H]=dim();let s,x,y;
+if(k<0){const X=pts.map(p=>p[0]),Y=pts.map(p=>p[1]),x0=Math.min(...X),x1=Math.max(...X),y0=Math.min(...Y),y1=Math.max(...Y);s=Math.min(11,(W-30)/Math.max(x1-x0,1),(H-60)/Math.max(y1-y0,1));x=(x0+x1)/2;y=(y0+y1)/2}
 else{s=10.5;[x,y]=pts[k]}
-$("fm").style.setProperty("--s",s);$("fcam").style.transform=`translate(${170-x*s}px,${(k<0?220:260)-y*s}px) scale(${s})`}
+$("fm").style.setProperty("--s",s);$("fcam").style.transform=`translate(${W/2-x*s}px,${(k<0?H/2:H*.6)-y*s}px) scale(${s})`}
 function paint(){const o=pts.map((_,i)=>i).sort((a,b)=>(a==k)-(b==k));
 $("fmk").innerHTML=o.map(i=>{const p=pts[i],on=i==k,s=S[i];
 let g=`<g transform="translate(${p[0]} ${p[1]})" onclick="FP.go(${i})" style="cursor:pointer"><g class="finv"><g class="fpin${on?" on":""}">${on?'<circle class="fpl" r="5"/>':""}<path d="M0 0C-5-6-8-9-8-13a8 8 0 1 1 16 0c0 4-3 7-8 13z" fill="${i<=k?"#CAFFA6":"#A9E0F1"}" stroke="#F7F9E1" stroke-width="1.4"/><text y="-9.5" text-anchor="middle" font-size="9" font-weight="800" fill="#204654">${i+1}</text></g>`;
@@ -368,7 +382,7 @@ if(sig===""&&z===JSON.stringify(DAYS)){sig=z;return}
 sig=z;DAYS.splice(0,DAYS.length,...nd);if(day>=DAYS.length)day=0;
 setDay(day,$("vF").classList.contains("on")?0:1)}catch(e){}}
 window.FP={go,nxt,setDay,stop,enter(){setDay(day);load()}};
-setDay(0,1);requestAnimationFrame(()=>requestAnimationFrame(()=>$("fm").classList.remove("fnt")));setTimeout(load,0);
+setDay(0,1);requestAnimationFrame(()=>requestAnimationFrame(()=>$("fm").classList.remove("fnt")));setTimeout(load,0);addEventListener("resize",()=>{if($("vF").classList.contains("on"))cam()});
 })();
 const DATA_API_URL="https://script.google.com/macros/s/AKfycbyUU_yCCJJj6sU5fVimHJI1uy-P4MPPBC3nfHvikEhryleF1KnuhB_LCv4rFzoXO6X7aw/exec";
 /* 格式：[時間,標題,地圖關鍵字,說明,標籤,type]  type: taxi=計程車段 go=交通 */
@@ -452,7 +466,7 @@ function openD(i){const[t,n,q,ds,p]=CUR[i],g=gal(n,q),c=cat(n),segs=(ds||"").spl
 $("dt").innerHTML=`<div class="dh"><span class="em">${ico(n)}</span>${g[0]?im(g[0]):""}<button class="cb" onclick="history.back()">${BK}</button><a class="cb r" href="${mp(q)}" target="_blank">${PIN}</a><div class="dtt"><div class="mt"><em class="sy">${SY[c]}</em> ${CL[c]}　${DT[day]} ${t}</div><h2>${n}</h2></div></div><div class="ey"><em class="sy">✦</em> TAITUNG ・ DAY ${day+1}</div><div class="ttl">${TT[day]}</div><div class="db"><div class="cs"><span><em class="sy">◷</em> ${t}</span>${p?`<span><em class="sy">＄</em> ${p}</span>`:""}</div>${segs.length?`<div class="tiles">${segs.map(x=>`<div><i>${FI(x)}</i>${x}</div>`).join("")}</div>`:""}${g.length>1?`<div class="gr">${g.slice(1).map(im).join("")}</div>`:""}</div><div class="bar"><div><small>${p?"參考費用":"時間"}</small><b>${p||t}</b></div><a class="go" href="${mp(q)}" target="_blank">Google Maps</a></div>`;
 $("dt").scrollTop=0;$("dt").classList.add("open");document.body.style.overflow="hidden";history.pushState({d:1},"")}
 window.onpopstate=()=>{$("dt").classList.remove("open");document.body.style.overflow=""};
-function view(i){document.querySelectorAll(".v").forEach((e,j)=>e.classList.toggle("on",i==j));[...$("nav").children].forEach((b,j)=>b.classList.toggle("on",i==j));if(i==1)FP.enter();else FP.stop();if(i==4)sync()}
+function view(i){document.querySelectorAll(".v").forEach((e,j)=>e.classList.toggle("on",i==j));[...$("nav").children].forEach((b,j)=>b.classList.toggle("on",i==j));document.body.classList.toggle("fpon",i==1);scrollTo(0,0);if(i==1)FP.enter();else FP.stop();if(i==4)sync()}
 $("nav").innerHTML=[["☰","行程"],["◎","足跡"],["ⓘ","須知"],["＄","預算"],["÷","分帳"]].map((e,i)=>`<button onclick="view(${i})"><i>${e[0]}</i>${e[1]}</button>`).join("");$("nav").children[0].classList.add("on");
 $("notes").innerHTML="<b>行前須知</b>"+NOTES.map(n=>`<div class="d nt">• ${n}</div>`).join("");
 const ck=CK.map(t=>({t,x:0}));function rck(){$("ck").innerHTML=ck.map((c,i)=>`<div class="ck ${c.x?"x":""}" onclick="ck[${i}].x^=1;rck()"><em class="sy">${c.x?"●":"○"}</em> ${c.t}</div>`).join("")}rck();
