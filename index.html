@@ -611,7 +611,7 @@ if(C.stops&&C.stops.length){const m={},it=r=>[r[2],r[3],r[4],r[5],r[6],r[7],r[8]
 if(C.notes&&C.notes.length)NOTES.splice(0,99,...C.notes);if(C.ck&&C.ck.length)CK.splice(0,99,...C.ck);if(C.bud&&C.bud.length)BUD.splice(0,99,...C.bud);
 if(C.stops)C.stops.forEach(r=>{const u=[r[10],...String(r[11]||"").split(",")].map(x=>String(x||"").trim()).filter(Boolean);if(u.length)GL[r[3]+"|"+r[4]]=[...new Set(u)]});
 if(C.board&&C.board.length)BOARD.splice(0,99,...C.board);if(C.phones&&C.phones.length)PH.splice(0,99,...C.phones)}
-const ico=n=>/⇄/.test(n)?T("sym.leg"):/搭|車|區間|自強|普悠瑪|8101D|轉運/.test(n)?T("sym.交通"):/早|餐|水煎|吐司|豬血|微光|夜市|便當/.test(n)?T("sym.吃"):/退房|Check|換房/.test(n)?T("sym.住"):/部落劇場/.test(n)?T("sym.玩"):/DIY|琉璃/.test(n)?T("sym.diy"):T("sym.spot");
+const ico=n=>/⇄|^(計程車|步行)/.test(n)?T("sym.leg"):/搭|車|區間|自強|普悠瑪|8101D|轉運/.test(n)?T("sym.交通"):/早|餐|水煎|吐司|豬血|微光|夜市|便當/.test(n)?T("sym.吃"):/退房|Check|換房|寄放|回會館/.test(n)?T("sym.住"):/部落劇場/.test(n)?T("sym.玩"):/DIY|琉璃/.test(n)?T("sym.diy"):T("sym.spot");
 const T0=new Date();if(T0.getFullYear()==2026&&T0.getMonth()==9&&T0.getDate()>=16&&T0.getDate()<=18)day=T0.getDate()-16;
 function nowIdx(L){const n=new Date();if(!(n.getFullYear()==2026&&n.getMonth()==9&&n.getDate()==16+day))return-1;const m=n.getHours()*60+n.getMinutes();let r=-1;L.forEach((s,i)=>{const[h,mi]=s[0].split(":");if(h*60+ +mi<=m)r=i});return r}
 let f="全部",CUR=[];
