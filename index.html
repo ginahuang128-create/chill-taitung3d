@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="zh-Hant"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="color-scheme" content="light"><title>台東三日</title>
+<meta name="color-scheme" content="light"><meta name="theme-color" content="#FBF8EE"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><title>台東三日</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Huninn&display=swap" rel="stylesheet">
 <style>
@@ -94,12 +94,37 @@ h2{display:flex;align-items:center;gap:12px;font-size:25px;font-weight:400;margi
 .it.leg b{text-decoration:none;font-size:16px}
 .it p{opacity:.75}
 .bx{flex-basis:26px;height:26px;border-radius:9px}
+
+html{-webkit-text-size-adjust:100%}a,button{touch-action:manipulation}
+body{padding-bottom:calc(88px + env(safe-area-inset-bottom))}main{padding-top:10px}
+header{padding:max(6px,env(safe-area-inset-top)) 14px 6px}.hb{gap:10px}.lg{width:26px;height:32px}
+.ht{flex:1;font-size:21px;letter-spacing:.08em}
+#hd{font-size:14px;background:var(--ye);border:var(--b);border-radius:99px;padding:0 12px;line-height:1.7;white-space:nowrap}
+.hero .art{height:150px}.hero h1{font-size:34px;margin:10px 0 2px}section{margin-bottom:20px}
+nav{position:fixed;z-index:20;left:0;right:0;bottom:0;display:flex;gap:2px;background:var(--wh);border-top:var(--b);padding:6px 6px calc(6px + env(safe-area-inset-bottom))}
+nav button{flex:1;min-height:56px;border:3px solid transparent;border-radius:18px;background:none;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:12px;line-height:1.3;cursor:pointer}
+nav button svg{width:24px;height:24px;fill:none;stroke:var(--ink);stroke-width:2.2;stroke-linejoin:round;stroke-linecap:round}
+nav button.on{background:var(--co);border-color:var(--ink)}
+.strip button{min-height:64px}.td .sw{opacity:1;font-weight:700;color:#B5483A}
+.now{flex:none;border:var(--b);border-radius:99px;background:var(--co);padding:0 14px;min-height:44px;cursor:pointer}
+.pl button{min-height:40px;padding:0 16px}
+.tl{padding-left:30px}.tl:before{left:9px}.dot{left:-30px}.it.leg .dot{left:-26px}
+.it .c time{display:inline-block;font-size:15px;font-weight:700;opacity:1;margin-right:8px}.it.leg .c time{font-weight:400;opacity:.8}
+.it.past{opacity:.5}.it.nx:not(.leg) .c{background:var(--ye);box-shadow:0 4px 0 var(--ink)}.it.nx:not(.leg) .dot{background:var(--co)}
+.it a{display:inline-flex;align-items:center;min-height:44px;padding:0 18px;margin-top:8px;border:var(--b);border-radius:99px;background:var(--sk);text-decoration:none;font-size:15px}
+.it.leg a{min-height:38px;font-size:14px;margin-top:4px}
+a.tg{display:inline-flex;align-items:center;min-height:44px;padding:0 16px;font-size:15px;margin-top:6px}
+.ck{min-height:52px}.bx{flex-basis:28px;height:28px}.ph{padding:12px 0;min-height:52px}
+.sp{flex-wrap:wrap}.sp input,.sp select,.sp button{min-height:46px;font-size:16px}
+.sp input:first-child{flex:1 1 100%!important}.sp input[type=number]{flex:1 1 0!important}.sp select{flex:1 1 0}.sp button{width:46px;padding:0}
+.add{min-height:52px;font-size:17px}#nd{margin:2px 0 0}
+#res{position:sticky;bottom:calc(84px + env(safe-area-inset-bottom));font-size:17px;box-shadow:0 4px 0 var(--ink)}
 </style></head><body id="top">
-<header><div class="hb"><a href="#top" aria-label="回到頂端"><svg class="lg" viewBox="0 0 28 34" stroke="#3E3A39" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"><ellipse cx="14" cy="12" rx="11" ry="11" fill="#F2A497"/><path d="M14 1c-6 7-6 15 0 22M14 1c6 7 6 15 0 22" fill="none"/><path d="M7 21l5 7M21 21l-5 7" fill="none"/><rect x="10" y="27" width="8" height="6" rx="1.5" fill="#F6D27A"/></svg></a>
-<nav><a href="#s0" class="on">車票</a><a href="#s1">行程</a><a href="#s2">準備</a><a href="#s3">預算</a><a href="#s4">分帳</a></nav></div></header>
+<header><div class="hb"><a href="#top" aria-label="回到頂端" style="display:flex"><svg class="lg" viewBox="0 0 28 34" stroke="#3E3A39" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"><ellipse cx="14" cy="12" rx="11" ry="11" fill="#F2A497"/><path d="M14 1c-6 7-6 15 0 22M14 1c6 7 6 15 0 22" fill="none"/><path d="M7 21l5 7M21 21l-5 7" fill="none"/><rect x="10" y="27" width="8" height="6" rx="1.5" fill="#F6D27A"/></svg></a>
+<span class="ht">台東三日</span><span id="hd"></span></div></header>
 <main>
 <div class="hero">
-<svg class="art" viewBox="0 0 360 230" role="img" aria-label="台東插圖：三仙台跨海步橋、熱氣球與普悠瑪列車">
+<svg class="art" viewBox="0 0 360 230" preserveAspectRatio="xMidYMid slice" role="img" aria-label="台東插圖：三仙台跨海步橋、熱氣球與普悠瑪列車">
 <g stroke="#3E3A39" stroke-width="3" stroke-linejoin="round" stroke-linecap="round">
 <g class="spin"><circle cx="306" cy="48" r="20" fill="#F6D27A"/><path d="M306 16v-7M306 87v-7M274 48h-7M345 48h-7M283 25l-5-5M329 25l5-5M283 71l-5 5M329 71l5 5" fill="none"/></g>
 <path d="M44 38q6-7 12 0q6-7 12 0M92 58q5-6 10 0q5-6 10 0" fill="none"/>
@@ -122,7 +147,7 @@ h2{display:flex;align-items:center;gap:12px;font-size:25px;font-weight:400;margi
 
 <section id="s1"><h2><i class="ic cc"><svg viewBox="0 0 24 24"><circle cx="12" cy="9" r="6" fill="#F6D27A"/><path d="M7 14l3 5M17 14l-3 5"/><rect x="9" y="19" width="6" height="3" rx="1"/></svg></i><span>每日行程</span></h2>
 <div class="strip" id="dt"></div><div class="dc" id="dc"></div>
-<div class="pl" id="pl" hidden></div><ul class="tl" id="tl"></ul></section>
+<div class="pl" id="pl" hidden></div><ul class="tl" id="tl"></ul><button class="add" id="nd" onclick="pick(day+1);scrollTo(0,0)"></button></section>
 
 <section id="s2"><h2><i class="ic g"><svg viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="12" rx="3"/><path d="M9 8V5h6v3"/><circle cx="12" cy="14" r="1.5"/></svg></i><span>出發前準備</span></h2>
 <h3 class="sh">行前清單</h3><div class="c" id="ck"></div>
@@ -135,15 +160,16 @@ h2{display:flex;align-items:center;gap:12px;font-size:25px;font-weight:400;margi
 
 <section id="s3"><h2><i class="ic y"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M9 10h5a2 2 0 0 1 0 4H9"/></svg></i><span id="bt">預算</span></h2><div class="c" id="bud"></div></section>
 <section id="s4"><h2><i class="ic cc"><svg viewBox="0 0 24 24"><circle cx="9" cy="12" r="6"/><circle cx="15" cy="12" r="6"/></svg></i><span id="st">分帳</span></h2><div id="sp"></div><button class="add" id="add"></button><div class="c" id="res"></div></section>
-</main>
+</main><nav aria-label="主選單"><button data-v="s1" onclick="go('s1')"><svg viewBox="0 0 24 24"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg><span>行程</span></button><button data-v="s0" onclick="go('s0')"><svg viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="14" rx="4"/><path d="M5 11h14M9 21l2-4M15 21l-2-4"/></svg><span>車票</span></button><button data-v="s2" onclick="go('s2')"><svg viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="12" rx="3"/><path d="M9 8V5h6v3"/></svg><span>準備</span></button><button data-v="s3" onclick="go('s3')"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M9 10h5a2 2 0 0 1 0 4H9"/></svg><span>預算</span></button><button data-v="s4" onclick="go('s4')"><svg viewBox="0 0 24 24"><circle cx="9" cy="12" r="6"/><circle cx="15" cy="12" r="6"/></svg><span>分帳</span></button></nav>
 <script>
 const API="https://script.google.com/macros/s/AKfycbyUU_yCCJJj6sU5fVimHJI1uy-P4MPPBC3nfHvikEhryleF1KnuhB_LCv4rFzoXO6X7aw/exec";
 const $=s=>document.querySelector(s),e=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
-let D={ui:{},days:[],stops:[],notes:[],ck:[],bud:[],phones:[]},day=0,plan="A",ex=[],last="",timer,tmr,view=0;
+let D={ui:{},days:[],stops:[],notes:[],ck:[],bud:[],phones:[]},day=0,plan="A",ex=[],last="",timer,tmr,view="s1";
 try{Object.assign(D,JSON.parse(localStorage.getItem("tp_content")||"{}"))}catch(_){}
 try{ex=JSON.parse(localStorage.getItem("sp1")||"[]")}catch(_){}
 const U=(k,d="")=>(D.ui||{})[k]||d,A=()=>U("name.A","A"),B=()=>U("name.B","B");
 const t0=new Date();if(t0.getFullYear()==2026&&t0.getMonth()==9&&t0.getDate()>=16&&t0.getDate()<=18)day=t0.getDate()-16;
+const dd0=Math.round((new Date(2026,9,16)-new Date(t0.getFullYear(),t0.getMonth(),t0.getDate()))/864e5),todayIdx=dd0<=0&&dd0>-3?-dd0:-1;
 const tagOf=r=>/計程車/.test(r[3])||r[7]=="taxi"?["計程車","y"]:/步行/.test(r[3])||r[7]=="walk"?["步行","g"]:/8101D|好行/.test(r[3])?["巴士","s"]:/區間|普悠瑪/.test(r[3])?["火車","cc"]:null;
 const MAP="https://www.google.com/maps/";
 const SEC=["s0","s1","s2","s3","s4"];
@@ -156,25 +182,30 @@ bridge:G+'<circle cx="64" cy="16" r="8" fill="#F6D27A"/><rect y="52" width="80" 
 rice:G+'<circle cx="62" cy="16" r="8" fill="#F6D27A"/><path d="M0 46Q20 28 40 44T80 40V54H0z" fill="#B9DAA5"/><rect y="52" width="80" height="28" fill="#F6D27A"/><path d="M0 62h80M0 72h80" fill="none"/><ellipse cx="16" cy="40" rx="8" ry="10" fill="#A5CF8F"/><path d="M16 50v8" fill="none"/><circle cx="42" cy="66" r="6" fill="#FFFEFA"/><circle cx="62" cy="66" r="6" fill="#FFFEFA"/><path d="M42 66l8-12 12 12M50 54h-4M55 52h6" fill="none"/></g></svg>'};
 function scn(){const used=new Set(),R=[["balloon",/熱氣球|鹿野|高台/],["bridge",/三仙台|海|小野柳|都蘭|石雨傘|東管/],["rice",/稻|池上|伯朗|關山|單車|腳踏車/],["train",/火車|普悠瑪|車站|抵達|前往/]],O=["train","balloon","bridge","rice"];
 return D.days.map((d,i)=>{const t=d[3]+" "+D.stops.filter(r=>r[0]==i+1).map(r=>r[3]+" "+r[4]).join(" "),k=(R.find(([n,x])=>!used.has(n)&&x.test(t))||[O.find(n=>!used.has(n))])[0];used.add(k);return k})}
-function head(){document.title=U("pageTitle","台東三日");$("#hs").textContent=U("siteSub");$("#bt").textContent=U("bud.title","預算（每人）");$("#st").textContent=U("sp.title","分帳");$("#add").textContent=U("btn.add","＋ 新增支出")}
-function spy(){const y=innerHeight*.35;let k=0;SEC.forEach((x,i)=>{if($("#"+x).getBoundingClientRect().top<=y)k=i});if(innerHeight+scrollY>=document.body.scrollHeight-4)k=4;
-document.querySelectorAll("nav a").forEach((a,i)=>a.classList.toggle("on",i==k));if(k!=view){view=k;if(k==4)sync()}}
-addEventListener("scroll",spy,{passive:true});
+function head(){hdr();document.title=U("pageTitle","台東三日");$("#hs").textContent=U("siteSub");$("#bt").textContent=U("bud.title","預算（每人）");$("#st").textContent=U("sp.title","分帳");$("#add").textContent=U("btn.add","＋ 新增支出")}
+function go(v,k){view=v;SEC.forEach(x=>$("#"+x).hidden=x!=v);$(".hero").hidden=v!="s1";document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("on",b.dataset.v==v));if(!k)scrollTo(0,0);if(v=="s4")sync()}
+function hdr(){$("#hd").textContent=dd0>0?`倒數 ${dd0} 天`:dd0>-3?`第 ${1-dd0} 天`:"旅程結束"}
+function goNow(){go("s1",1);($(".it.nx")||$("#tl")).scrollIntoView({behavior:"smooth",block:"center"})}
+let sx=0,sy=0;const S1=$("#s1");S1.addEventListener("touchstart",ev=>{sx=ev.touches[0].clientX;sy=ev.touches[0].clientY},{passive:true});
+S1.addEventListener("touchend",ev=>{const t=ev.changedTouches[0],dx=t.clientX-sx,dy=t.clientY-sy;if(Math.abs(dx)>70&&Math.abs(dy)<45){const n=day+(dx<0?1:-1);if(n>=0&&n<D.days.length)pick(n)}},{passive:true});
 function pick(i){day=i;rDays()}
 function setPlan(p){plan=p;rDays()}
 function rDays(){
 const n=D.days.length||1,sc=scn(),cols=["#F9DAD4","#DCEBD2","#FBEBC0","#D9ECF4"];
 $("#dt").style.setProperty("--n",n);
-$("#dt").innerHTML=D.days.map((d,i)=>`<button class="${i==day?"on":""}" onclick="pick(${i})"><i class="dp"></i><span class="mk">${i==day?BAL:""}</span><span class="sd">${e(d[1])}</span><small class="sw">${e(d[2])}</small></button>`).join("");
+$("#dt").innerHTML=D.days.map((d,i)=>`<button class="${i==day?"on":""}${i==todayIdx?" td":""}" onclick="pick(${i})"><i class="dp"></i><span class="mk">${i==day?BAL:""}</span><span class="sd">${e(d[1])}</span><small class="sw">${e(d[2])}</small></button>`).join("");
 const d=D.days[day];$("#dc").hidden=!d;$("#dc").style.background=cols[day%4];
-$("#dc").innerHTML=d?`<div class="th">${SC[sc[day]]}</div><div><small>Day ${day+1}</small><b>${e(d[3])}</b><small>${day<n-1?"住 行雲會館":"11:00 退房・16:50 關山回程"}</small></div>`:"";
+$("#dc").innerHTML=d?`<div class="th">${SC[sc[day]]}</div><div><small>Day ${day+1}${day==todayIdx?"・今天":""}</small><b>${e(d[3])}</b><small>${day<n-1?"住 行雲會館":"11:00 退房・16:50 關山回程"}</small></div>${day==todayIdx?'<button class="now" onclick="goNow()">現在</button>':""}`:"";
 const L=D.stops.filter(r=>r[0]==day+1),hp=L.some(r=>r[1]);$("#pl").hidden=!hp;
 if(hp)$("#pl").innerHTML=`<small>${e(U("plan.q"))}</small>`+["A","B"].map(p=>`<button class="${p==plan?"on":""}" onclick="setPlan('${p}')">${e(U("plan."+p,p))}</button>`).join("")+`<small>${e(U("plan.tip"))}</small>`;
-$("#tl").innerHTML=L.filter(r=>!r[1]||r[1]==plan).map((r,i)=>{
+const F=L.filter(r=>!r[1]||r[1]==plan),T=F.map(r=>/^\d\d:\d\d/.test(r[2])?+r[2].slice(0,2)*60+ +r[2].slice(3,5):null),nd=new Date(),nw=nd.getHours()*60+nd.getMinutes();let nx=-1;
+if(day==todayIdx){nx=T.findIndex(x=>x!=null&&x>=nw);if(nx<0&&T.some(x=>x!=null))nx=F.length}
+$("#nd").hidden=day>=n-1;$("#nd").textContent=`看第 ${day+2} 天 ›`;
+$("#tl").innerHTML=F.map((r,i)=>{
 const tg=tagOf(r),leg=!!tg||r[7]=="taxi"||r[7]=="walk",title=e(String(r[3]).replace(/^⇄\s*/,"")),must=/夜訪|八部合音|豬血湯|吐司/.test(r[3]);
 const url=r[8]&&r[9]?`${MAP}dir/?api=1&origin=${encodeURIComponent(r[8])}&destination=${encodeURIComponent(r[9])}&travelmode=${r[7]=="walk"?"walking":"driving"}`:r[4]?`${MAP}search/?api=1&query=${encodeURIComponent(r[4])}`:"";
 const ds=String(r[5]||"").split("\n").map(x=>`<p>${e(x)}</p>`).join("");
-return `<li class="it ${leg?"leg":""}" style="animation-delay:${Math.min(i,12)*40}ms"><time>${e(r[2])}</time><i class="dot"></i><div class="c">${tg?`<span class="tg ${tg[1]}">${tg[0]}</span>`:""}${must?'<span class="tg must">必去</span>':""}<b>${title}</b>${r[6]?`<span class="px">${e(r[6])}</span>`:""}${leg?"":r[10]?`<img loading="lazy" alt="" src="${e(r[10])}" onerror="this.remove()">`:""}${ds}${url?`<a href="${url}" target="_blank" rel="noopener">${leg?"看路線":"導航"}</a>`:""}</div></li>`}).join("")||`<li class="it"><i class="dot"></i><div class="c">${e(U("tool.loading","載入中…"))}</div></li>`}
+return `<li class="it ${leg?"leg":""}${nx>=0&&i<nx?" past":""}${i==nx?" nx":""}" style="animation-delay:${Math.min(i,12)*40}ms"><i class="dot"></i><div class="c"><time>${e(r[2])}</time>${i==nx?'<span class="tg cc">下一站</span>':""}${tg?`<span class="tg ${tg[1]}">${tg[0]}</span>`:""}${must?'<span class="tg must">必去</span>':""}<b>${title}</b>${r[6]?`<span class="px">${e(r[6])}</span>`:""}${leg?"":r[10]?`<img loading="lazy" alt="" src="${e(r[10])}" onerror="this.remove()">`:""}${ds}${url?`<a href="${url}" target="_blank" rel="noopener">${leg?"看路線":"導航"}</a>`:""}</div></li>`}).join("")||`<li class="it"><i class="dot"></i><div class="c">${e(U("tool.loading","載入中…"))}</div></li>`}
 let ckS=[];try{ckS=JSON.parse(localStorage.getItem("tp_ck")||"[]")}catch(_){}
 function rLists(){
 $("#ck").innerHTML=D.ck.map((t,i)=>`<div class="ck ${ckS[i]?"x":""}" onclick="tg(${i})"><i class="bx">${ckS[i]?"✓":""}</i><span>${e(t)}</span></div>`).join("");
@@ -187,11 +218,11 @@ function calc(){const a=ex.filter(x=>x.payer=="A").reduce((s,x)=>s+x.amount,0),b
 $("#res").textContent=`${A()} $${a} ／ ${B()} $${b}　`+(Math.abs(d)<1?U("sp.even","打平"):d>0?`${B()} ${U("sp.pay","付")} ${A()} $${Math.round(d)}`:`${A()} ${U("sp.pay","付")} ${B()} $${Math.round(-d)}`)}
 function sv(){localStorage.setItem("sp1",JSON.stringify(ex));clearTimeout(tmr);tmr=setTimeout(()=>fetch(API,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({action:"saveExpenses",expenses:ex})}).catch(()=>{}),800)}
 $("#add").onclick=()=>{ex.push({name:"",amount:0,payer:"A"});rsp();sv()};
-async function sync(){clearTimeout(timer);if(view!=4||document.hidden)return;
+async function sync(){clearTimeout(timer);if(view!="s4"||document.hidden)return;
 try{const j=await(await fetch(API+"?action=expenses&ts="+Date.now(),{cache:"no-store"})).json(),s=JSON.stringify(j.expenses);
 if(Array.isArray(j.expenses)&&s!==last&&!document.activeElement.matches("input")){last=s;ex=j.expenses;localStorage.setItem("sp1",s);rsp()}}catch(_){}
 timer=setTimeout(sync,10000)}
-function all(){head();spy();rDays();rLists();rsp()}
+function all(){head();go(view,1);rDays();rLists();rsp()}
 all();
 (async()=>{try{const j0=await(await fetch(API+"?action=content&ts="+Date.now(),{cache:"no-store"})).json(),j=j0.sheets||j0;
 const nt=x=>{x=String(x||"").trim();const m=/^(\d{1,2}):(\d{2})/.exec(x);return m?m[1].padStart(2,"0")+":"+m[2]:x},
