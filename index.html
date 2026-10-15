@@ -143,6 +143,8 @@ a.tg{display:inline-flex;align-items:center;min-height:44px;padding:0 16px;font-
 
 <section id="s0"><h2><i class="ic s"><svg viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="14" rx="4"/><path d="M5 11h14M9 21l2-4M15 21l-2-4"/></svg></i><span>車票</span></h2>
 <div class="fl"><div class="fh"><span>10／16（五）去程</span><span>普悠瑪 402</span></div><div class="fb"><div class="fr"><b>06:05</b><div class="fm">約 4h 05m</div><b>10:10</b></div><div class="fs"><span>台北</span><span>台東</span></div><p class="fn">已訂位・$936</p></div></div>
+<div class="fl"><div class="fh"><span>10／16（五）半日券</span><span>8101D 夜訪小野柳</span></div><div class="fb"><div class="fr"><b>13:40</b><div class="fm">約 6h 20m</div><b>20:00</b></div><div class="fs"><span>台東轉運站</span><span>台東轉運站</span></div><p class="fn">已訂位・$250</p></div></div>
+<div class="fl"><div class="fh"><span>10／17（六）回程</span><span>8168A 縱谷鹿野線</span></div><div class="fb"><div class="fr"><b>16:53</b><div class="fm">約 1h 27m</div><b>18:20</b></div><div class="fs"><span>鹿野高台</span><span>台東轉運站</span></div><p class="fn">待訂位・10/16 12:00 前・約 $97</p></div></div>
 <div class="fl g"><div class="fh"><span>10／18（日）回程</span><span>普悠瑪 21</span></div><div class="fb"><div class="fr"><b>16:50</b><div class="fm">回家</div><b>20:48</b></div><div class="fs"><span>關山</span><span>樹林</span></div><p class="fn">已買票・$870</p></div></div></section>
 
 <section id="s1"><h2><i class="ic cc"><svg viewBox="0 0 24 24"><circle cx="12" cy="9" r="6" fill="#F6D27A"/><path d="M7 14l3 5M17 14l-3 5"/><rect x="9" y="19" width="6" height="3" rx="1"/></svg></i><span>每日行程</span></h2>
@@ -170,7 +172,7 @@ try{ex=JSON.parse(localStorage.getItem("sp1")||"[]")}catch(_){}
 const U=(k,d="")=>(D.ui||{})[k]||d,A=()=>U("name.A","A"),B=()=>U("name.B","B");
 const t0=new Date();if(t0.getFullYear()==2026&&t0.getMonth()==9&&t0.getDate()>=16&&t0.getDate()<=18)day=t0.getDate()-16;
 const dd0=Math.round((new Date(2026,9,16)-new Date(t0.getFullYear(),t0.getMonth(),t0.getDate()))/864e5),todayIdx=dd0<=0&&dd0>-3?-dd0:-1;
-const tagOf=r=>/計程車/.test(r[3])||r[7]=="taxi"?["計程車","y"]:/步行/.test(r[3])||r[7]=="walk"?["步行","g"]:/8101D|好行/.test(r[3])?["巴士","s"]:/區間|普悠瑪/.test(r[3])?["火車","cc"]:null;
+const tagOf=r=>/計程車/.test(r[3])||r[7]=="taxi"?["計程車","y"]:/步行/.test(r[3])||r[7]=="walk"?["步行","g"]:/8101D|8161|8168|好行/.test(r[3])?["巴士","s"]:/區間|普悠瑪/.test(r[3])?["火車","cc"]:null;
 const MAP="https://www.google.com/maps/";
 const SEC=["s0","s1","s2","s3","s4"];
 const G='<svg viewBox="0 0 80 80"><g stroke="#3E3A39" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round">';
